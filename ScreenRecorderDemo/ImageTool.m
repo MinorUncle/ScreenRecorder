@@ -6,6 +6,11 @@
 
 @implementation ImageTool
 
+void dataProviderReleaseDataCallback(void * __nullable info,
+                                     const void *  data, size_t size){
+    free((void*)data);
+    NSLog(@"free dataProviderReleaseDataCallback");
+}
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect {
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
@@ -16,17 +21,20 @@
     
     // gl renders "upside down" so swap top to bottom into new array.
     // there's gotta be a better way, but this works.
-    GLubyte *buffer2 = (GLubyte *) malloc(myDataLength);
-    for(int y = 0; y <rect.size.height; y++)
-    {
-        for(int x = 0; x <rect.size.width * 4; x++)
-        {
-            buffer2[((int)rect.size.height - y) * (int)rect.size.width * 4 + x] = buffer[y * 4 * (int)rect.size.width + x];
-        }
-    }
-    
+    GLubyte tem;
+    int height = rect.size.height,width = rect.size.width;
+//    for(int y = 0; y <(height >> 1); y++)
+//    {
+//        for(int x = 0; x <rect.size.width * 4; x++)
+//        {
+//            tem = buffer[(height - y) * width * 4 + x];
+//            buffer[(height - y) * width * 4 + x]=buffer[y * 4 * width + x];
+//            buffer[y * 4 * width + x] = tem;
+//        }
+//    }
+//    
     // make data provider with data.
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer2, myDataLength, NULL);
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients
     int bitsPerComponent = 8;
@@ -38,10 +46,10 @@
     
     // make the cgimage
     CGImageRef imageRef = CGImageCreate(rect.size.width, rect.size.height, bitsPerComponent, bitsPerPixel, bytesPerRow, colorSpaceRef, bitmapInfo, provider, NULL, NO, renderingIntent);
-    
     // then make the uiimage from that
-    UIImage *myImage = [UIImage imageWithCGImage:imageRef];
-    
+    UIImage *myImage = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationDownMirrored];
+    CGImageRelease(imageRef);
+    CGDataProviderRelease(provider);
     return myImage;
 }
 //合并图片
@@ -52,11 +60,7 @@
     
     CGSize fristSize = firstImage.size;
     CGSize secondSize = secondImage.size;
-    fristSize.height /= firstImage.scale ;
-    fristSize.width /= firstImage.scale;
-    secondSize.height /= secondImage.scale;
-    secondSize.width /= secondImage.scale;
-
+    
     [firstImage drawInRect:CGRectMake(fristPoint.x, fristPoint.y, fristSize.width, fristSize.height)];
     [secondImage drawInRect:CGRectMake(secondPoint.x, secondPoint.y, secondSize.width, secondSize.height)];
     

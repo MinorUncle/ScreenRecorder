@@ -1,17 +1,17 @@
 //
-//  KKScreenRecorder.m
+//  ScreenRecorder.m
 //  ScreenRecorderDemo
 //
 //  Created by mac on 16/11/17.
 //  Copyright © 2016年 lezhixing. All rights reserved.
 //
 
-#import "KKScreenRecorder.h"
+#import "ScreenRecorder.h"
 #import "GJQueue.h"
 #import <AVFoundation/AVFoundation.h>
 #import "ImageTool.h"
 
-@interface KKScreenRecorder()<GJH264EncoderDelegate>
+@interface ScreenRecorder()<GJH264EncoderDelegate>
 {
     GJQueue<UIImage*> _imageCache;//有问题
     dispatch_queue_t _writeQueue;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation KKScreenRecorder
+@implementation ScreenRecorder
 - (instancetype)initWithType:(ScreenRecorderType)recorderType
 {
     self = [super init];
@@ -60,23 +60,23 @@
 //                    _imageCache.queuePush(image);
                     break;
                 case screenRecorderRealImageType:
-                    if ([self.delegate respondsToSelector:@selector(KKScreenRecorder:recorderImage:FinishWithError:)]) {
-                            [self.delegate KKScreenRecorder:self recorderImage:image FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderImage:FinishWithError:)]) {
+                            [self.delegate ScreenRecorder:self recorderImage:image FinishWithError:nil];
                     }
                     break;
                 case screenRecorderRealRGBA8Type:
                 {
                     NSData* data = [ImageTool convertUIImageToBitmapRGBA8:image];
-                    if ([self.delegate respondsToSelector:@selector(KKScreenRecorder:recorderRGBA8Data:FinishWithError:)]) {
-                        [self.delegate KKScreenRecorder:self recorderRGBA8Data:data FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderRGBA8Data:FinishWithError:)]) {
+                        [self.delegate ScreenRecorder:self recorderRGBA8Data:data FinishWithError:nil];
                     }
                 }
                     break;
                 case screenRecorderRealYUVType:
                 {
                     NSData* data = [ImageTool convertUIImageToBitmapYUV240P:image];
-                    if ([self.delegate respondsToSelector:@selector(KKScreenRecorder:recorderYUVData:FinishWithError:)]) {
-                        [self.delegate KKScreenRecorder:self recorderYUVData:data FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderYUVData:FinishWithError:)]) {
+                        [self.delegate ScreenRecorder:self recorderYUVData:data FinishWithError:nil];
                     }
                 }
                     break;
@@ -126,12 +126,14 @@
             [self _writeFile];
         }
     }
-    __weak KKScreenRecorder* wkSelf = self;
+    __weak ScreenRecorder* wkSelf = self;
     dispatch_async(_captureQueue, ^{
         wkSelf.fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/fps target:self selector:@selector(_captureCurrentView) userInfo:nil repeats:YES];
         [wkSelf.fpsTimer fire];
         _captureRunLoop = [NSRunLoop currentRunLoop];
         [_captureRunLoop run];
+        [_captureRunLoop run];
+
         NSLog(@"after runloop");
 
     });
@@ -145,10 +147,10 @@
     CFRunLoopStop(_captureRunLoop.getCFRunLoop);
     _status = screenRecorderStopStatus;
     NSLog(@"recode stop");
-//    if (_pixelBuffer) {
-//        CFRelease(_pixelBuffer);
-//        _pixelBuffer=NULL;
-//    }
+    if(self.recorderType != screenRecorderFileType && _pixelBuffer){
+        CFRelease(_pixelBuffer);
+        _pixelBuffer=NULL;
+    }
     _status = screenRecorderStopStatus;
 
 }
@@ -200,7 +202,7 @@
     [videoWriter startWriting];
     [videoWriter startSessionAtSourceTime:kCMTimeZero];
     
-    dispatch_queue_t dispatchQueue = dispatch_queue_create("KKScreenRecorderWriteQueue", NULL);
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("ScreenRecorderWriteQueue", NULL);
     
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
     
@@ -214,12 +216,14 @@
                 [writerInput markAsFinished];
                 //[videoWriter finishWriting];
                 [videoWriter finishWritingWithCompletionHandler:^{
-                    if ([self.delegate respondsToSelector:@selector(KKScreenRecorder:recorderFile:FinishWithError:)]) {
+                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderFile:FinishWithError:)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate KKScreenRecorder:self recorderFile:self.destFileUrl FinishWithError:nil];
+                            [self.delegate ScreenRecorder:self recorderFile:self.destFileUrl FinishWithError:nil];
                         });
                     }
                 }];
+                CFRelease(_pixelBuffer);
+                _pixelBuffer=NULL;
                 break;
             }else{
                 UIImage* image = _cacheArry.firstObject;
@@ -255,8 +259,8 @@
 }
 
 -(void)GJH264Encoder:(GJH264Encoder *)encoder encodeCompleteBuffer:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
-    if ([self.delegate respondsToSelector:@selector(KKScreenRecorder:recorderH264Data:withLenth:keyFrame:dts:)]) {
-        [self.delegate KKScreenRecorder:self recorderH264Data:buffer withLenth:totalLenth keyFrame:keyFrame dts:dts];
+    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderH264Data:withLenth:keyFrame:dts:)]) {
+        [self.delegate ScreenRecorder:self recorderH264Data:buffer withLenth:totalLenth keyFrame:keyFrame dts:dts];
     }
 }
 -(void)dealloc{

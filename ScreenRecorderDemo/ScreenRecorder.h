@@ -1,5 +1,5 @@
 //
-//  KKScreenRecorder.h
+//  ScreenRecorder.h
 //  ScreenRecorderDemo
 //
 //  Created by mac on 16/11/17.
@@ -9,14 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIView.h>
 #import "GJH264Encoder.h"
-@class KKScreenRecorder;
-@protocol KKScreenRecorderDelegate <NSObject>
+@class ScreenRecorder;
+@protocol ScreenRecorderDelegate <NSObject>
 @optional
--(void)KKScreenRecorder:(KKScreenRecorder*)recorder recorderFile:(NSString*)fileUrl FinishWithError:(NSError*) error;
--(void)KKScreenRecorder:(KKScreenRecorder*)recorder recorderImage:(UIImage*)image FinishWithError:(NSError*) error;
--(void)KKScreenRecorder:(KKScreenRecorder*)recorder recorderYUVData:(NSData*)yuvData FinishWithError:(NSError*) error;
--(void)KKScreenRecorder:(KKScreenRecorder*)recorder recorderRGBA8Data:(NSData*)RGBA8Data FinishWithError:(NSError*) error;
--(void)KKScreenRecorder:(KKScreenRecorder*)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts;
+-(void)ScreenRecorder:(ScreenRecorder*)recorder recorderFile:(NSString*)fileUrl FinishWithError:(NSError*) error;
+-(void)ScreenRecorder:(ScreenRecorder*)recorder recorderImage:(UIImage*)image FinishWithError:(NSError*) error;
+-(void)ScreenRecorder:(ScreenRecorder*)recorder recorderYUVData:(NSData*)yuvData FinishWithError:(NSError*) error;
+-(void)ScreenRecorder:(ScreenRecorder*)recorder recorderRGBA8Data:(NSData*)RGBA8Data FinishWithError:(NSError*) error;
+-(void)ScreenRecorder:(ScreenRecorder*)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts;
 
 
 @end
@@ -33,13 +33,13 @@ typedef enum ScreenRecorderStatus{
     screenRecorderPauseStatus,
     screenRecorderRecorderingStatus,
 }ScreenRecorderStatus;
-@interface KKScreenRecorder : NSObject
+@interface ScreenRecorder : NSObject
 @property(readonly,nonatomic,assign)ScreenRecorderType recorderType;
 @property(readonly,nonatomic,retain)GJH264Encoder* h264Encoder;
 @property(readonly,nonatomic,assign)NSInteger fps;
 @property(readonly,nonatomic,assign)ScreenRecorderStatus status;
 @property(readonly,nonatomic,copy)NSString* destFileUrl;
-@property(nonatomic,weak)id<KKScreenRecorderDelegate> delegate;
+@property(nonatomic,weak)id<ScreenRecorderDelegate> delegate;
 @property(weak,nonatomic,readonly)UIView* captureView;
 
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;

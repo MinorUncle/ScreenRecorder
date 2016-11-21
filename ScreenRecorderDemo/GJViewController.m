@@ -16,7 +16,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AVFoundation/AVPlayerLayer.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "KKScreenRecorder.h"
+#import "ScreenRecorder.h"
 #import "GJPullDownView.h"
 
 #import "GJH264Decoder.h"
@@ -26,10 +26,10 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 
 
-@interface GJViewController ()<KKScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
+@interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
 {
     DrawBoard *_drawView;
-    KKScreenRecorder *myScreenRecorder;
+    ScreenRecorder *myScreenRecorder;
     FilePlayerView *_movieShow;
     UIButton* _drawButton;
     UIButton* _glCaptureButton;
@@ -93,7 +93,7 @@
     CGFloat midH = 20.0,midW = 50.0,padding = 5.0;
     int itemCount = 4;
     CGFloat margin = (self.view.bounds.size.width - 2*padding -itemCount*midW)/(itemCount-1);
-    myScreenRecorder = [[KKScreenRecorder alloc] initWithType:screenRecorderFileType];
+    myScreenRecorder = [[ScreenRecorder alloc] initWithType:screenRecorderFileType];
     myScreenRecorder.delegate = self;
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -173,10 +173,14 @@
     
     rect.size.width*=[UIScreen mainScreen].scale;
     rect.size.height*= [UIScreen mainScreen].scale;
-    UIImage* glimage = [ImageTool glToUIImageWithRect:rect];
-    UIImage* image = [ImageTool mergerImage:kitImage fristPoint:CGPointZero secodImage:glimage secondPoint:_displayView.frame.origin destSize:kitImage.size];
+//    UIImage* glimage = [ImageTool glToUIImageWithRect:rect];
+//    UIImage* image = [ImageTool mergerImage:kitImage fristPoint:CGPointZero secodImage:glimage secondPoint:_displayView.frame.origin destSize:kitImage.size];
     [_produceView addSubview:_iconShow];
-    _iconShow.image = image;
+    _iconShow.image = kitImage;
+    
+    UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
+    imageView.frame = CGRectMake(100, 30, 100, 100);
+    [_yuvShowView addSubview:imageView];
 }
 
 -(void)GJPullDownView:(GJPullDownView *)pulldownView selectIndex:(NSInteger)index{
@@ -245,7 +249,7 @@
             
             [_displayView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [_displayView addSubview:showView];
-            myScreenRecorder = [[KKScreenRecorder alloc]initWithType:type];
+            myScreenRecorder = [[ScreenRecorder alloc]initWithType:type];
             myScreenRecorder.delegate = self;
             [myScreenRecorder startWithView:_produceView fps:15 fileUrl:_fileUrl];
             _drawButton.selected = YES;
@@ -260,15 +264,14 @@
 
 
 
--(void)KKScreenRecorder:(KKScreenRecorder *)recorder recorderFile:(NSString *)fileUrl FinishWithError:(NSError *)error{
-    
-    
+-(void)ScreenRecorder:(ScreenRecorder *)recorder recorderFile:(NSString *)fileUrl FinishWithError:(NSError *)error{
     
 //    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:[fileUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
 //    [_movieShow loadRequest:request];
 //    return;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [_movieShow setFileURL:[NSURL URLWithString:fileUrl]];
+        [_movieShow setFileURL:[NSURL fileURLWithPath:fileUrl]];
+        
         [_movieShow playWithFinish:^(BOOL finished) {
             NSLog(@"play success");
         }];
@@ -277,13 +280,13 @@
 //    [self.player play];
 //    NSLog(@"did play");
 }
--(void)KKScreenRecorder:(KKScreenRecorder *)recorder recorderImage:(UIImage *)image FinishWithError:(NSError *)error{
+-(void)ScreenRecorder:(ScreenRecorder *)recorder recorderImage:(UIImage *)image FinishWithError:(NSError *)error{
     dispatch_async(dispatch_get_main_queue(), ^{
         _imageShowView.image = image;
     });
 }
 
--(void)KKScreenRecorder:(KKScreenRecorder *)recorder recorderRGBA8Data:(NSData *)RGBA8Data FinishWithError:(NSError *)error{
+-(void)ScreenRecorder:(ScreenRecorder *)recorder recorderRGBA8Data:(NSData *)RGBA8Data FinishWithError:(NSError *)error{
     UIImage* image = [ImageTool convertBitmapRGBA8ToUIImage:(unsigned char *) RGBA8Data.bytes withWidth:recorder.captureView.bounds.size.width withHeight:recorder.captureView.bounds.size.height];
     dispatch_async(dispatch_get_main_queue(), ^{
         _imageShowView.image = image;
@@ -294,7 +297,7 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
     NSLog(@"rec:%p",releaseRefCon);
     free(baseAddress);
 }
--(void)KKScreenRecorder:(KKScreenRecorder *)recorder recorderYUVData:(NSData *)yuvData FinishWithError:(NSError *)error{
+-(void)ScreenRecorder:(ScreenRecorder *)recorder recorderYUVData:(NSData *)yuvData FinishWithError:(NSError *)error{
     
 //    CVPixelBufferRef pixelBuffer;
 //    CGSize size = recorder.captureView.bounds.size;
@@ -317,7 +320,7 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
         [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureView.bounds.size.width height:recorder.captureView.bounds.size.height];
     });
 }
--(void)KKScreenRecorder:(KKScreenRecorder *)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
+-(void)ScreenRecorder:(ScreenRecorder *)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
     if (keyFrame) {
         unsigned char * spsppsData = (unsigned char*)malloc(recorder.h264Encoder.parameterSet.length);
         memcpy(spsppsData, (unsigned char *)recorder.h264Encoder.parameterSet.bytes, recorder.h264Encoder.parameterSet.length);

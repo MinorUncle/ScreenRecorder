@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 @class DrawView;
-@class KKScreenRecorder;
+@class ScreenRecorder;
 
 @interface GJViewController : UIViewController
 
