@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/KKScreenRecorder.mm"
-            timestampString = "501402492.601097"
+            timestampString = "501416079.205478"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
+            startingLineNumber = "207"
+            endingLineNumber = "207"
             landmarkName = "-_writeFile"
             landmarkType = "7">
          </BreakpointContent>
@@ -298,11 +298,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ImageTool.m"
-            timestampString = "501413279.687119"
+            timestampString = "501417956.29636"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "188"
-            endingLineNumber = "188"
+            startingLineNumber = "201"
+            endingLineNumber = "201"
             landmarkName = "+convertUIImageToBitmapYUV240P:"
             landmarkType = "7">
          </BreakpointContent>
@@ -314,11 +314,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ImageTool.m"
-            timestampString = "501413279.687119"
+            timestampString = "501417956.29636"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "166"
-            endingLineNumber = "166"
+            startingLineNumber = "179"
+            endingLineNumber = "179"
             landmarkName = "+convertUIImageToBitmapYUV240P:"
             landmarkType = "7">
          </BreakpointContent>
@@ -330,11 +330,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ImageTool.m"
-            timestampString = "501413279.687119"
+            timestampString = "501417956.29636"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "183"
-            endingLineNumber = "183"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
             landmarkName = "+convertUIImageToBitmapYUV240P:"
             landmarkType = "7">
          </BreakpointContent>
@@ -346,11 +346,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ImageTool.m"
-            timestampString = "501413279.687119"
+            timestampString = "501417956.29636"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "219"
-            endingLineNumber = "219"
+            startingLineNumber = "232"
+            endingLineNumber = "232"
             landmarkName = "+newBitmapRGBA8ContextFromImage:"
             landmarkType = "7">
          </BreakpointContent>
@@ -362,11 +362,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/KKScreenRecorder.mm"
-            timestampString = "501402492.601097"
+            timestampString = "501416079.205478"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "108"
-            endingLineNumber = "108"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
             landmarkName = "-startWithView:fps:fileUrl:"
             landmarkType = "7">
          </BreakpointContent>
@@ -502,7 +502,7 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/FilePlayerView.m"
@@ -538,11 +538,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/FilePlayerView.m"
-            timestampString = "501409409.404972"
+            timestampString = "501414518.579546"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "151"
-            endingLineNumber = "151"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "-setPlayerItem:"
             landmarkType = "7">
          </BreakpointContent>
@@ -592,6 +592,182 @@
             startingLineNumber = "250"
             endingLineNumber = "250"
             landmarkName = "-observeValueForKeyPath:ofObject:change:context:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/FilePlayerView.m"
+            timestampString = "501414116.467848"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "62"
+            endingLineNumber = "62"
+            landmarkName = "-setFileURL:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/FilePlayerView.m"
+            timestampString = "501414261.452741"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "37"
+            endingLineNumber = "37"
+            landmarkName = "-_init"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[FilePlayerView _init]"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Downloads/ScreenRecorderDemo/ScreenRecorderDemo/FilePlayerView.m"
+                  timestampString = "501414261.565351"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "37"
+                  endingLineNumber = "37"
+                  offsetFromSymbolStart = "368">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__23-[FilePlayerView _init]_block_invoke"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Downloads/ScreenRecorderDemo/ScreenRecorderDemo/FilePlayerView.m"
+                  timestampString = "501414261.566574"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "38"
+                  endingLineNumber = "38"
+                  offsetFromSymbolStart = "20">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/FilePlayerView.m"
+            timestampString = "501414305.917096"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "397"
+            endingLineNumber = "397"
+            landmarkName = "-touchesBegan:withEvent:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "501417347.139699"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-glCapture"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/ImageTool.m"
+            timestampString = "501418065.714852"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "+mergerImage:fristPoint:secodImage:secondPoint:destSize:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/ImageTool.m"
+            timestampString = "501418098.851357"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "55"
+            endingLineNumber = "55"
+            landmarkName = "+mergerImage:fristPoint:secodImage:secondPoint:destSize:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[ImageTool mergerImage:fristPoint:secodImage:secondPoint:destSize:]"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Downloads/ScreenRecorderDemo/ScreenRecorderDemo/ImageTool.m"
+                  timestampString = "501418098.858253"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "188">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "+[ImageTool mergerImage:fristPoint:secodImage:secondPoint:destSize:]"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/Downloads/ScreenRecorderDemo/ScreenRecorderDemo/ImageTool.m"
+                  timestampString = "501418098.859299"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "55"
+                  endingLineNumber = "55"
+                  offsetFromSymbolStart = "252">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/ImageTool.m"
+            timestampString = "501418099.61103"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "49"
+            endingLineNumber = "49"
+            landmarkName = "+mergerImage:fristPoint:secodImage:secondPoint:destSize:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

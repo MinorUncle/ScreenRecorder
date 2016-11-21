@@ -38,7 +38,7 @@
                                withHeight:(int)height;
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect ;
--(UIImage *)mergerImage:(UIImage *)firstImage fristPoint:(CGPoint)fristPoint secodImage:(UIImage *)secondImage secondPoint:(CGPoint)secondPoint destSize:(CGSize)destSize;
++(UIImage *)mergerImage:(UIImage *)firstImage fristPoint:(CGPoint)fristPoint secodImage:(UIImage *)secondImage secondPoint:(CGPoint)secondPoint destSize:(CGSize)destSize;
 
 @end
 

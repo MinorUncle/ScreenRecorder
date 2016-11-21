@@ -328,7 +328,6 @@ void main(void)\
 	 */
     glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
     glBindAttribLocation(_program, ATTRIB_TEXTURE, "TexCoordIn");
-    
     glLinkProgram(_program);
     
 	/** 

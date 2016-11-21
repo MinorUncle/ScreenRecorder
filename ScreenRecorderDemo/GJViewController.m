@@ -65,8 +65,8 @@
 //    return;
     [myScreenRecorder startWithView:_drawView fps:15 fileUrl:_fileUrl];
     _drawButton.selected = YES;
-
 }
+
 -(void)drawClick:(UIButton*)button
 {
     button.selected = !button.selected;
@@ -168,8 +168,13 @@
 }
 
 -(void)glCapture{
-    CGRect rect = (CGRect){0,0,_imageShowView.bounds.size};
-    UIImage* image = [ImageTool glToUIImageWithRect:rect];
+    CGRect rect = (CGRect){0,0,_displayView.bounds.size};
+    UIImage* kitImage = [myScreenRecorder captureImageWithView:self.view];
+    
+    rect.size.width*=[UIScreen mainScreen].scale;
+    rect.size.height*= [UIScreen mainScreen].scale;
+    UIImage* glimage = [ImageTool glToUIImageWithRect:rect];
+    UIImage* image = [ImageTool mergerImage:kitImage fristPoint:CGPointZero secodImage:glimage secondPoint:_displayView.frame.origin destSize:kitImage.size];
     [_produceView addSubview:_iconShow];
     _iconShow.image = image;
 }

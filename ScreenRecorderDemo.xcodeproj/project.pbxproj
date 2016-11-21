@@ -33,7 +33,6 @@
 		629A119B17A12B4D002DE046 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119A17A12B4D002DE046 /* AVFoundation.framework */; };
 		629A119D17A12B58002DE046 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119C17A12B58002DE046 /* CoreVideo.framework */; };
 		629A119F17A12B66002DE046 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119E17A12B66002DE046 /* CoreMedia.framework */; };
-		629A11A717A12C62002DE046 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 629A11A617A12C62002DE046 /* DrawView.m */; };
 		AE5B9E961DE1B12E003FA8F5 /* DrawBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */; };
 		AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */; };
 		AE5B9EC21DE1E9F6003FA8F5 /* GJH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */; };
@@ -82,8 +81,6 @@
 		629A119A17A12B4D002DE046 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		629A119C17A12B58002DE046 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		629A119E17A12B66002DE046 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
-		629A11A517A12C62002DE046 /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
-		629A11A617A12C62002DE046 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
 		AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
 		AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
 		AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJPullDownView.h; sourceTree = "<group>"; };
@@ -215,8 +212,6 @@
 				AE5B9EC51DE1FE67003FA8F5 /* include */,
 				AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */,
 				AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */,
-				629A11A517A12C62002DE046 /* DrawView.h */,
-				629A11A617A12C62002DE046 /* DrawView.m */,
 				AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */,
 				AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */,
 				046080F81DE2E03400FD1E6F /* TitleActivityIndicatorView.h */,
@@ -333,7 +328,6 @@
 				046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */,
 				046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */,
 				629A118D17A12B17002DE046 /* GJViewController.m in Sources */,
-				629A11A717A12C62002DE046 /* DrawView.m in Sources */,
 				04DDD4C11DDDA8BA0072230C /* KKScreenRecorder.mm in Sources */,
 				0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */,
 				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,

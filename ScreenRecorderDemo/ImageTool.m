@@ -45,13 +45,20 @@
     return myImage;
 }
 //合并图片
--(UIImage *)mergerImage:(UIImage *)firstImage fristPoint:(CGPoint)fristPoint secodImage:(UIImage *)secondImage secondPoint:(CGPoint)secondPoint destSize:(CGSize)destSize{
++(UIImage *)mergerImage:(UIImage *)firstImage fristPoint:(CGPoint)fristPoint secodImage:(UIImage *)secondImage secondPoint:(CGPoint)secondPoint destSize:(CGSize)destSize{
     
     CGSize imageSize = destSize;
     UIGraphicsBeginImageContext(imageSize);
     
-    [firstImage drawInRect:CGRectMake(fristPoint.x, fristPoint.y, firstImage.size.width, firstImage.size.height)];
-    [secondImage drawInRect:CGRectMake(secondPoint.x, secondPoint.y, secondImage.size.width, secondImage.size.height)];
+    CGSize fristSize = firstImage.size;
+    CGSize secondSize = secondImage.size;
+    fristSize.height /= firstImage.scale ;
+    fristSize.width /= firstImage.scale;
+    secondSize.height /= secondImage.scale;
+    secondSize.width /= secondImage.scale;
+
+    [firstImage drawInRect:CGRectMake(fristPoint.x, fristPoint.y, fristSize.width, fristSize.height)];
+    [secondImage drawInRect:CGRectMake(secondPoint.x, secondPoint.y, secondSize.width, secondSize.height)];
     
     UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
@@ -154,18 +161,24 @@ bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned lo
 + (NSData *) convertUIImageToBitmapYUV240P:(UIImage *)image{
     NSData* rgba8 = [self convertUIImageToBitmapRGBA8:image];
 
-    int h = image.size.height;
-    if (h%2 ==1) {
+    int ch = image.size.height;
+    int cw = image.size.width;
+
+    if (ch%2 ==1) {
         NSLog(@"警告，高为单数");
+        ch++;
+    }
+    if (cw%2 == 1) {
+        cw ++;
     }
     //     NSLog(@"data:%@",rgba8);
     uint8_t* rgba = (uint8_t*)[rgba8 bytes];
     CGSize size = image.size;
     int total = size.height * size.width;
-    int memTotal = total* total*1.5;
-    if (h%2 == 1) {//最后一排两个共用一个
-        memTotal += size.width/2.0;
-    }
+//    int memTotal = total* total*1.5;
+//    if (h%2 == 1) {//最后一排两个共用一个
+//        memTotal += size.width/2.0;
+//    }
     
     uint8_t* blockData = (uint8_t*)malloc(total*1.5);
     

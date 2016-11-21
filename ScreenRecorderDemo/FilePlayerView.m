@@ -86,10 +86,7 @@
         return;
     }
     
-    if (self.player.currentItem != self.playerItem) {
-        [self.player replaceCurrentItemWithPlayerItem:self.playerItem];
 
-    }
     self.status = basePlayerStatusWaitting;
     [self.player play];
 
@@ -153,7 +150,10 @@
     [_playerItem removeObserver:self forKeyPath:@"playbackBufferFull"];
     [_playerItem removeObserver:self forKeyPath:@"playbackBufferEmpty"];
     [_playerItem removeObserver:self forKeyPath:@"playbackLikelyToKeepUp"];
-
+    if (self.player.currentItem != playerItem) {
+        [self.player replaceCurrentItemWithPlayerItem:playerItem];
+        
+    }
 
     _playerItem = playerItem;
 //    _playerItem.canUseNetworkResourcesForLiveStreamingWhilePaused = YES;
@@ -391,6 +391,10 @@
     if(self.playerLayer != nil){
         [self removeAVPlayerObserver];
     }
+}
+
+-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
+    [_player seekToTime:kCMTimeZero toleranceBefore:CMTimeMake(1, 1) toleranceAfter:CMTimeMake(1, 1)];
 }
 
 /*

@@ -99,6 +99,18 @@
         UIGraphicsEndImageContext();
     }
 }
+
+-(UIImage*)captureImageWithView:(UIView*)view{
+    UIImage *image ;
+    @synchronized (self) {
+        UIGraphicsBeginImageContext(view.bounds.size);
+        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    return image;
+}
+
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
     _status = screenRecorderRecorderingStatus;
     _fps = fps;
@@ -129,6 +141,7 @@
 -(void)stopRecord{
     [_fpsTimer invalidate];
     _fpsTimer=nil;
+    
     CFRunLoopStop(_captureRunLoop.getCFRunLoop);
     _status = screenRecorderStopStatus;
     NSLog(@"recode stop");

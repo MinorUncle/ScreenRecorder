@@ -47,4 +47,5 @@ typedef enum ScreenRecorderStatus{
 -(void)stopRecord;
 -(void)pause;
 -(void)resume;
+-(UIImage*)captureImageWithView:(UIView*)view;
 @end
