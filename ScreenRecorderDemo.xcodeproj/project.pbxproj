@@ -1,0 +1,468 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		043226571DDECE430012A0C0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226561DDECE430012A0C0 /* MediaPlayer.framework */; };
+		0432265A1DDED5EE0012A0C0 /* ImageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226591DDED5D00012A0C0 /* ImageTool.m */; };
+		0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */ = {isa = PBXBuildFile; fileRef = 0432265C1DDEE6320012A0C0 /* OpenGLView20.m */; };
+		0432265F1DDEE7200012A0C0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0432265E1DDEE7200012A0C0 /* OpenGLES.framework */; };
+		043226611DDEE7660012A0C0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226601DDEE7660012A0C0 /* QuartzCore.framework */; };
+		043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */; };
+		043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226631DDEEE990012A0C0 /* GJH264Encoder.m */; };
+		043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226741DDF03110012A0C0 /* VideoToolbox.framework */; };
+		046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F31DE2DF9900FD1E6F /* FilePlayerView.m */; };
+		046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F61DE2DFAB00FD1E6F /* PlayerView.m */; };
+		046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */; };
+		046080FC1DE2E50A00FD1E6F /* 2016031903.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */; };
+		04DDD4C11DDDA8BA0072230C /* KKScreenRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04DDD4C01DDDA8BA0072230C /* KKScreenRecorder.mm */; };
+		629A117417A12B17002DE046 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A117317A12B17002DE046 /* UIKit.framework */; };
+		629A117617A12B17002DE046 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A117517A12B17002DE046 /* Foundation.framework */; };
+		629A117817A12B17002DE046 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A117717A12B17002DE046 /* CoreGraphics.framework */; };
+		629A117E17A12B17002DE046 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 629A117C17A12B17002DE046 /* InfoPlist.strings */; };
+		629A118017A12B17002DE046 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 629A117F17A12B17002DE046 /* main.m */; };
+		629A118417A12B17002DE046 /* GJAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 629A118317A12B17002DE046 /* GJAppDelegate.m */; };
+		629A118617A12B17002DE046 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 629A118517A12B17002DE046 /* Default.png */; };
+		629A118817A12B17002DE046 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629A118717A12B17002DE046 /* Default@2x.png */; };
+		629A118A17A12B17002DE046 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 629A118917A12B17002DE046 /* Default-568h@2x.png */; };
+		629A118D17A12B17002DE046 /* GJViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 629A118C17A12B17002DE046 /* GJViewController.m */; };
+		629A119B17A12B4D002DE046 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119A17A12B4D002DE046 /* AVFoundation.framework */; };
+		629A119D17A12B58002DE046 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119C17A12B58002DE046 /* CoreVideo.framework */; };
+		629A119F17A12B66002DE046 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A119E17A12B66002DE046 /* CoreMedia.framework */; };
+		629A11A717A12C62002DE046 /* DrawView.m in Sources */ = {isa = PBXBuildFile; fileRef = 629A11A617A12C62002DE046 /* DrawView.m */; };
+		AE5B9E961DE1B12E003FA8F5 /* DrawBoard.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */; };
+		AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */; };
+		AE5B9EC21DE1E9F6003FA8F5 /* GJH264Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */; };
+		AE5B9EC41DE1F482003FA8F5 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		043226561DDECE430012A0C0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		043226581DDED59A0012A0C0 /* ImageTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageTool.h; sourceTree = "<group>"; };
+		043226591DDED5D00012A0C0 /* ImageTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageTool.m; sourceTree = "<group>"; };
+		0432265B1DDEE6320012A0C0 /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
+		0432265C1DDEE6320012A0C0 /* OpenGLView20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView20.m; sourceTree = "<group>"; };
+		0432265E1DDEE7200012A0C0 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		043226601DDEE7660012A0C0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		043226621DDEEE990012A0C0 /* GJH264Encoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJH264Encoder.h; sourceTree = "<group>"; };
+		043226631DDEEE990012A0C0 /* GJH264Encoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJH264Encoder.m; sourceTree = "<group>"; };
+		043226651DDEEEA30012A0C0 /* GJFormats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJFormats.h; sourceTree = "<group>"; };
+		0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "13031I1XF-14H6.png"; sourceTree = "<group>"; };
+		043226721DDF03070012A0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		043226741DDF03110012A0C0 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		046080F21DE2DF9900FD1E6F /* FilePlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePlayerView.h; sourceTree = "<group>"; };
+		046080F31DE2DF9900FD1E6F /* FilePlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePlayerView.m; sourceTree = "<group>"; };
+		046080F51DE2DFAB00FD1E6F /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
+		046080F61DE2DFAB00FD1E6F /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
+		046080F81DE2E03400FD1E6F /* TitleActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleActivityIndicatorView.h; sourceTree = "<group>"; };
+		046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleActivityIndicatorView.m; sourceTree = "<group>"; };
+		046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2016031903.mp4; sourceTree = "<group>"; };
+		04DDD4BE1DDDA85B0072230C /* GJQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJQueue.h; sourceTree = "<group>"; };
+		04DDD4BF1DDDA8BA0072230C /* KKScreenRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KKScreenRecorder.h; sourceTree = "<group>"; };
+		04DDD4C01DDDA8BA0072230C /* KKScreenRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = KKScreenRecorder.mm; sourceTree = "<group>"; };
+		629A116F17A12B17002DE046 /* ScreenRecorderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenRecorderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		629A117317A12B17002DE046 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		629A117517A12B17002DE046 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		629A117717A12B17002DE046 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		629A117B17A12B17002DE046 /* ScreenRecorderDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ScreenRecorderDemo-Info.plist"; sourceTree = "<group>"; };
+		629A117D17A12B17002DE046 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		629A117F17A12B17002DE046 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		629A118117A12B17002DE046 /* ScreenRecorderDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ScreenRecorderDemo-Prefix.pch"; sourceTree = "<group>"; };
+		629A118217A12B17002DE046 /* GJAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJAppDelegate.h; sourceTree = "<group>"; };
+		629A118317A12B17002DE046 /* GJAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJAppDelegate.m; sourceTree = "<group>"; };
+		629A118517A12B17002DE046 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		629A118717A12B17002DE046 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		629A118917A12B17002DE046 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		629A118B17A12B17002DE046 /* GJViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GJViewController.h; sourceTree = "<group>"; };
+		629A118C17A12B17002DE046 /* GJViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GJViewController.m; sourceTree = "<group>"; };
+		629A119A17A12B4D002DE046 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		629A119C17A12B58002DE046 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		629A119E17A12B66002DE046 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		629A11A517A12C62002DE046 /* DrawView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawView.h; sourceTree = "<group>"; };
+		629A11A617A12C62002DE046 /* DrawView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawView.m; sourceTree = "<group>"; };
+		AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
+		AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
+		AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJPullDownView.h; sourceTree = "<group>"; };
+		AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJPullDownView.m; sourceTree = "<group>"; };
+		AE5B9EC01DE1E9F6003FA8F5 /* GJH264Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJH264Decoder.h; sourceTree = "<group>"; };
+		AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJH264Decoder.m; sourceTree = "<group>"; };
+		AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		AE5B9EC71DE1FE67003FA8F5 /* basic_concept.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = basic_concept.hxx; sourceTree = "<group>"; };
+		AE5B9EC81DE1FE67003FA8F5 /* buffer_creator.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = buffer_creator.hxx; sourceTree = "<group>"; };
+		AE5B9EC91DE1FE67003FA8F5 /* pixel_convertor.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_convertor.hxx; sourceTree = "<group>"; };
+		AE5B9ECA1DE1FE67003FA8F5 /* pixel_iterator.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_iterator.hxx; sourceTree = "<group>"; };
+		AE5B9ECB1DE1FE67003FA8F5 /* pixel_walker.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_walker.hxx; sourceTree = "<group>"; };
+		AE5B9ECC1DE1FE67003FA8F5 /* predefine.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = predefine.hxx; sourceTree = "<group>"; };
+		AE5B9ECD1DE1FE67003FA8F5 /* scope_block.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = scope_block.hxx; sourceTree = "<group>"; };
+		AE5B9ECE1DE1FE67003FA8F5 /* undefine.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = undefine.hxx; sourceTree = "<group>"; };
+		AE5B9ECF1DE1FE67003FA8F5 /* rgb2yuv.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = rgb2yuv.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		629A116C17A12B17002DE046 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AE5B9EC41DE1F482003FA8F5 /* CoreImage.framework in Frameworks */,
+				043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */,
+				043226611DDEE7660012A0C0 /* QuartzCore.framework in Frameworks */,
+				0432265F1DDEE7200012A0C0 /* OpenGLES.framework in Frameworks */,
+				043226571DDECE430012A0C0 /* MediaPlayer.framework in Frameworks */,
+				629A119F17A12B66002DE046 /* CoreMedia.framework in Frameworks */,
+				629A119D17A12B58002DE046 /* CoreVideo.framework in Frameworks */,
+				629A119B17A12B4D002DE046 /* AVFoundation.framework in Frameworks */,
+				629A117417A12B17002DE046 /* UIKit.framework in Frameworks */,
+				629A117617A12B17002DE046 /* Foundation.framework in Frameworks */,
+				629A117817A12B17002DE046 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		629A116417A12B17002DE046 = {
+			isa = PBXGroup;
+			children = (
+				629A119E17A12B66002DE046 /* CoreMedia.framework */,
+				629A119C17A12B58002DE046 /* CoreVideo.framework */,
+				629A119A17A12B4D002DE046 /* AVFoundation.framework */,
+				629A117917A12B17002DE046 /* ScreenRecorderDemo */,
+				629A117217A12B17002DE046 /* Frameworks */,
+				629A117017A12B17002DE046 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		629A117017A12B17002DE046 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				629A116F17A12B17002DE046 /* ScreenRecorderDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		629A117217A12B17002DE046 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */,
+				043226741DDF03110012A0C0 /* VideoToolbox.framework */,
+				043226721DDF03070012A0C0 /* AudioToolbox.framework */,
+				043226601DDEE7660012A0C0 /* QuartzCore.framework */,
+				0432265E1DDEE7200012A0C0 /* OpenGLES.framework */,
+				043226561DDECE430012A0C0 /* MediaPlayer.framework */,
+				629A117317A12B17002DE046 /* UIKit.framework */,
+				629A117517A12B17002DE046 /* Foundation.framework */,
+				629A117717A12B17002DE046 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		629A117917A12B17002DE046 /* ScreenRecorderDemo */ = {
+			isa = PBXGroup;
+			children = (
+				629A11A417A12C4E002DE046 /* DrawView */,
+				629A11A017A12BDB002DE046 /* ScreenRecorder */,
+				629A118217A12B17002DE046 /* GJAppDelegate.h */,
+				629A118317A12B17002DE046 /* GJAppDelegate.m */,
+				0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */,
+				629A118B17A12B17002DE046 /* GJViewController.h */,
+				629A118C17A12B17002DE046 /* GJViewController.m */,
+				629A117A17A12B17002DE046 /* Supporting Files */,
+			);
+			path = ScreenRecorderDemo;
+			sourceTree = "<group>";
+		};
+		629A117A17A12B17002DE046 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				629A117B17A12B17002DE046 /* ScreenRecorderDemo-Info.plist */,
+				629A117C17A12B17002DE046 /* InfoPlist.strings */,
+				629A117F17A12B17002DE046 /* main.m */,
+				629A118117A12B17002DE046 /* ScreenRecorderDemo-Prefix.pch */,
+				629A118517A12B17002DE046 /* Default.png */,
+				629A118717A12B17002DE046 /* Default@2x.png */,
+				629A118917A12B17002DE046 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		629A11A017A12BDB002DE046 /* ScreenRecorder */ = {
+			isa = PBXGroup;
+			children = (
+				046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */,
+				AE5B9EC01DE1E9F6003FA8F5 /* GJH264Decoder.h */,
+				AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */,
+				043226651DDEEEA30012A0C0 /* GJFormats.h */,
+				043226621DDEEE990012A0C0 /* GJH264Encoder.h */,
+				043226631DDEEE990012A0C0 /* GJH264Encoder.m */,
+				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
+				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
+				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
+				04DDD4BF1DDDA8BA0072230C /* KKScreenRecorder.h */,
+				04DDD4C01DDDA8BA0072230C /* KKScreenRecorder.mm */,
+				043226581DDED59A0012A0C0 /* ImageTool.h */,
+				043226591DDED5D00012A0C0 /* ImageTool.m */,
+			);
+			name = ScreenRecorder;
+			sourceTree = "<group>";
+		};
+		629A11A417A12C4E002DE046 /* DrawView */ = {
+			isa = PBXGroup;
+			children = (
+				AE5B9EC51DE1FE67003FA8F5 /* include */,
+				AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */,
+				AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */,
+				629A11A517A12C62002DE046 /* DrawView.h */,
+				629A11A617A12C62002DE046 /* DrawView.m */,
+				AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */,
+				AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */,
+				046080F81DE2E03400FD1E6F /* TitleActivityIndicatorView.h */,
+				046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */,
+				046080F51DE2DFAB00FD1E6F /* PlayerView.h */,
+				046080F61DE2DFAB00FD1E6F /* PlayerView.m */,
+				046080F21DE2DF9900FD1E6F /* FilePlayerView.h */,
+				046080F31DE2DF9900FD1E6F /* FilePlayerView.m */,
+			);
+			name = DrawView;
+			sourceTree = "<group>";
+		};
+		AE5B9EC51DE1FE67003FA8F5 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				AE5B9EC61DE1FE67003FA8F5 /* detail */,
+				AE5B9ECF1DE1FE67003FA8F5 /* rgb2yuv.hpp */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		AE5B9EC61DE1FE67003FA8F5 /* detail */ = {
+			isa = PBXGroup;
+			children = (
+				AE5B9EC71DE1FE67003FA8F5 /* basic_concept.hxx */,
+				AE5B9EC81DE1FE67003FA8F5 /* buffer_creator.hxx */,
+				AE5B9EC91DE1FE67003FA8F5 /* pixel_convertor.hxx */,
+				AE5B9ECA1DE1FE67003FA8F5 /* pixel_iterator.hxx */,
+				AE5B9ECB1DE1FE67003FA8F5 /* pixel_walker.hxx */,
+				AE5B9ECC1DE1FE67003FA8F5 /* predefine.hxx */,
+				AE5B9ECD1DE1FE67003FA8F5 /* scope_block.hxx */,
+				AE5B9ECE1DE1FE67003FA8F5 /* undefine.hxx */,
+			);
+			path = detail;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		629A116E17A12B17002DE046 /* ScreenRecorderDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 629A119317A12B17002DE046 /* Build configuration list for PBXNativeTarget "ScreenRecorderDemo" */;
+			buildPhases = (
+				629A116B17A12B17002DE046 /* Sources */,
+				629A116C17A12B17002DE046 /* Frameworks */,
+				629A116D17A12B17002DE046 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ScreenRecorderDemo;
+			productName = ScreenRecorderDemo;
+			productReference = 629A116F17A12B17002DE046 /* ScreenRecorderDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		629A116617A12B17002DE046 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = LZX;
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = lezhixing;
+				TargetAttributes = {
+					629A116E17A12B17002DE046 = {
+						DevelopmentTeam = X33DX68294;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 629A116917A12B17002DE046 /* Build configuration list for PBXProject "ScreenRecorderDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 629A116417A12B17002DE046;
+			productRefGroup = 629A117017A12B17002DE046 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				629A116E17A12B17002DE046 /* ScreenRecorderDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		629A116D17A12B17002DE046 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				629A117E17A12B17002DE046 /* InfoPlist.strings in Resources */,
+				629A118617A12B17002DE046 /* Default.png in Resources */,
+				046080FC1DE2E50A00FD1E6F /* 2016031903.mp4 in Resources */,
+				629A118817A12B17002DE046 /* Default@2x.png in Resources */,
+				629A118A17A12B17002DE046 /* Default-568h@2x.png in Resources */,
+				043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		629A116B17A12B17002DE046 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				629A118017A12B17002DE046 /* main.m in Sources */,
+				0432265A1DDED5EE0012A0C0 /* ImageTool.m in Sources */,
+				629A118417A12B17002DE046 /* GJAppDelegate.m in Sources */,
+				046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */,
+				046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */,
+				629A118D17A12B17002DE046 /* GJViewController.m in Sources */,
+				629A11A717A12C62002DE046 /* DrawView.m in Sources */,
+				04DDD4C11DDDA8BA0072230C /* KKScreenRecorder.mm in Sources */,
+				0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */,
+				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,
+				AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */,
+				AE5B9EC21DE1E9F6003FA8F5 /* GJH264Decoder.m in Sources */,
+				046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */,
+				AE5B9E961DE1B12E003FA8F5 /* DrawBoard.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		629A117C17A12B17002DE046 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				629A117D17A12B17002DE046 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		629A119117A12B17002DE046 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		629A119217A12B17002DE046 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		629A119417A12B17002DE046 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = X33DX68294;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScreenRecorderDemo/ScreenRecorderDemo-Prefix.pch";
+				INFOPLIST_FILE = "ScreenRecorderDemo/ScreenRecorderDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		629A119517A12B17002DE046 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = X33DX68294;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ScreenRecorderDemo/ScreenRecorderDemo-Prefix.pch";
+				INFOPLIST_FILE = "ScreenRecorderDemo/ScreenRecorderDemo-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		629A116917A12B17002DE046 /* Build configuration list for PBXProject "ScreenRecorderDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				629A119117A12B17002DE046 /* Debug */,
+				629A119217A12B17002DE046 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		629A119317A12B17002DE046 /* Build configuration list for PBXNativeTarget "ScreenRecorderDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				629A119417A12B17002DE046 /* Debug */,
+				629A119517A12B17002DE046 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 629A116617A12B17002DE046 /* Project object */;
+}
