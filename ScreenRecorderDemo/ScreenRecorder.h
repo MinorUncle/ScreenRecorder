@@ -40,7 +40,15 @@ typedef enum ScreenRecorderStatus{
 @property(readonly,nonatomic,assign)ScreenRecorderStatus status;
 @property(readonly,nonatomic,copy)NSString* destFileUrl;
 @property(nonatomic,weak)id<ScreenRecorderDelegate> delegate;
+
+@property(assign,nonatomic,readonly)CGSize captureSize;
 @property(weak,nonatomic,readonly)UIView* captureView;
+
+@property(strong,nonatomic,readonly)NSArray<UIView*>* mixtureCaptureAboveView;
+@property(assign,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureAboveViewFrame;
+@property(strong,nonatomic,readonly)NSArray<UIView*>* mixtureCaptureBelowView;
+@property(assign,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureBelowViewFrame;
+
 
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl;
@@ -49,7 +57,18 @@ typedef enum ScreenRecorderStatus{
 -(void)resume;
 -(UIImage*)captureImageWithView:(UIView*)view;
 
--(void)startMixtureWithAboveView:(UIView*)aboveView belowView:(UIView*)belowView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl;
+-(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                       aboveRect:(NSArray<NSValue*>*)aboveRect
+                       belowView:(NSArray<UIView*>*)belowView
+                       belowRect:(NSArray<NSValue*>*)belowRect
+                        hostSize:(CGSize)hostSize
+                             fps:(NSInteger)fps
+                         fileUrl:(NSString*)fileUrl;
 
+-(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                      aboveRect:(NSArray<NSValue*>*)aboveRect
+                      belowView:(NSArray<UIView*>*)belowView
+                      belowRect:(NSArray<NSValue*>*)belowRect
+                       hostSize:(CGSize)hostSize;
 
 @end

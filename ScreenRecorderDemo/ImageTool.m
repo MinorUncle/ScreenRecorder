@@ -13,6 +13,8 @@ void dataProviderReleaseDataCallback(void * __nullable info,
 }
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect {
+    rect.size.height *= [UIScreen mainScreen].scale;
+    rect.size.width *= [UIScreen mainScreen].scale;
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
     // allocate array and read pixels into it.

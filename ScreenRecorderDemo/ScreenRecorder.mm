@@ -20,6 +20,7 @@
     CVPixelBufferRef _pixelBuffer ;//cache
     NSInteger* _totalCount;
     CFRunLoopRef _captureRunLoop;
+    CGRect _glRect;
     BOOL _mixtureRecorder;
 //    NSMutableArray* _cacheArry;//效率很低，待改善
 }
@@ -52,9 +53,24 @@
 
 -(void)_captureCurrentView{
     @synchronized (self) {
-        UIGraphicsBeginImageContext(self.captureView.bounds.size);
-        [self.captureView.layer renderInContext:UIGraphicsGetCurrentContext()];
-        __strong UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsBeginImageContext(self.captureSize);
+        UIImage *image;
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+        if (!_mixtureRecorder) {
+            [self.captureView.layer renderInContext:ctx];
+            image = UIGraphicsGetImageFromCurrentImageContext();
+        }else{
+            for (int i = 0; i< _mixtureCaptureBelowView.count; i++) {
+                [_mixtureCaptureBelowView[i].layer renderInContext:ctx];
+            }
+            UIImage* glImage = [ImageTool glToUIImageWithRect:CGRectMake(0, 0, _glRect.size.width, _glRect.size.height)];
+            [glImage drawInRect:_glRect];
+            for (int i = 0; i< _mixtureCaptureAboveView.count; i++) {
+                [_mixtureCaptureAboveView[i].layer renderInContext:ctx];
+            }
+            image = UIGraphicsGetImageFromCurrentImageContext();
+        }
+  
         if (image) {
             switch (self.recorderType) {
                 case screenRecorderFileType:
@@ -113,13 +129,61 @@
     }
     return image;
 }
--(void)startMixtureWithAboveView:(UIView*)aboveView belowView:(UIView*)belowView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
 
+-(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                        aboveRect:(NSArray<NSValue*>*)aboveRect
+                        belowView:(NSArray<UIView*>*)belowView
+                        belowRect:(NSArray<NSValue*>*)belowRect
+                         hostSize:(CGSize)hostSize{
+    UIImage *image ;
+    @synchronized (self) {
+        UIGraphicsBeginImageContext(hostSize);
+        CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+        for (int i = 0; i< belowView.count; i++) {
+            CGRect rect = [belowRect[i] CGRectValue];
+            CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
+            [belowView[i].layer renderInContext:ctx];
+            CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
+        }
+        UIImage* glImage = [ImageTool glToUIImageWithRect:CGRectMake(0, 0, glRect.size.width, glRect.size.height)];
+        [glImage drawInRect:glRect];
+        for (int i = 0; i< aboveView.count; i++) {
+            CGRect rect = [aboveRect[i] CGRectValue];
+            CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
+            [aboveView[i].layer renderInContext:ctx];
+            CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
+        }
+        image = UIGraphicsGetImageFromCurrentImageContext();
+        
+        UIGraphicsEndImageContext();
+    }
+    return image;
+}
+
+-(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                      aboveRect:(NSArray<NSValue*>*)aboveRect
+                      belowView:(NSArray<UIView*>*)belowView
+                      belowRect:(NSArray<NSValue*>*)belowRect
+                       hostSize:(CGSize)hostSize
+                            fps:(NSInteger)fps
+                        fileUrl:(NSString*)fileUrl{
+    _mixtureRecorder = YES;
+    _mixtureCaptureAboveView = aboveView;
+    _mixtureCaptureBelowView = belowView;
+    _glRect = glRect;
+    _captureSize = hostSize;
+    [self _startWithFps:fps fileUrl:fileUrl];
 }
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
+    _mixtureRecorder = NO;
+    _captureView=targetView;
+    _captureSize = targetView.bounds.size;
+    [self _startWithFps:fps fileUrl:fileUrl];
+}
+-(void)_startWithFps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
     _status = screenRecorderRecorderingStatus;
     _fps = fps;
-    _captureView=targetView;
     _destFileUrl = fileUrl;
     if(_pixelBuffer){
         CFRelease(_pixelBuffer);
@@ -128,10 +192,10 @@
     
     if (_recorderType == screenRecorderFileType || _recorderType == screenRecorderRealH264Type){
         //cache buffer
-        CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, self.captureView.frame.size.width, self.captureView.frame.size.height, kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) _options, &_pixelBuffer);
+        CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, _captureSize.width, _captureSize.height, kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) _options, &_pixelBuffer);
         NSParameterAssert(status == kCVReturnSuccess && _pixelBuffer != NULL);
         if(_recorderType == screenRecorderFileType){
-        //start
+            //start
             [self _writeFile];
         }
     }
@@ -140,15 +204,18 @@
         wkSelf.fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/fps target:self selector:@selector(_captureCurrentView) userInfo:nil repeats:YES];
         [wkSelf.fpsTimer fire];
         _captureRunLoop = CFRunLoopGetCurrent();
-
-//        NSDate* date = [NSDate distantFuture];
+        
+        //        NSDate* date = [NSDate distantFuture];
         CFRunLoopRunInMode(kCFRunLoopDefaultMode,DBL_MAX, NO);
         NSLog(@"after runloop:%d",_recorderType);
     });
-
+    
 }
 -(void)stopRecord{
-    CFRunLoopStop(_captureRunLoop);
+    if (_captureRunLoop) {
+        CFRunLoopStop(_captureRunLoop);
+        _captureRunLoop = NULL;
+    }
     [_fpsTimer invalidate];
     _fpsTimer=nil;
     _status = screenRecorderStopStatus;
@@ -171,9 +238,8 @@
         [[NSFileManager defaultManager] removeItemAtPath:self.destFileUrl error:nil];
     }
     
-    NSLog(@"startRecord targetView frame %@", NSStringFromCGRect(self.captureView.frame));
     
-    CGSize size = self.captureView.frame.size;
+    CGSize size = _captureSize;
     NSError *error = nil;
     
     unlink([_destFileUrl UTF8String]);
