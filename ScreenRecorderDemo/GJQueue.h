@@ -14,7 +14,7 @@
 #include <assert.h>
 #include <sys/time.h>
 #ifdef DEBUG
-#define GJQueueLOG(format, ...) printf(format,##__VA_ARGS__)
+#define GJQueueLOG(format, ...) NSLog(format,##__VA_ARGS__)
 #else
 #define GJQueueLOG(format, ...)
 #endif

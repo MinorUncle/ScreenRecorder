@@ -47,6 +47,8 @@
     
     
     UIImageView* _iconShow;
+    UIImageView* _glOverShow;
+
     
 }
 @property(nonatomic,strong)AVPlayer* player;
@@ -63,7 +65,7 @@
 //        NSLog(@"play success");
 //    }];
 //    return;
-    [myScreenRecorder startWithView:_drawView fps:15 fileUrl:_fileUrl];
+    [myScreenRecorder startWithView:_drawView fps:23 fileUrl:_fileUrl];
     _drawButton.selected = YES;
 }
 
@@ -148,6 +150,9 @@
     _movieShow = [[FilePlayerView alloc]init];
     _movieShow.frame = _displayView.bounds;
     _yuvShowView = [[OpenGLView20 alloc]initWithFrame:_displayView.bounds];
+    _glOverShow = [[UIImageView alloc]initWithFrame:CGRectMake(100, 10, 150, 150)];
+    _glOverShow.image = [UIImage imageNamed:@"13031I1XF-14H6"];
+    [_yuvShowView addSubview:_glOverShow];
     [_displayView addSubview:_movieShow];
     
     _drawView = [[DrawBoard alloc] initWithFrame:_produceView.bounds];
@@ -158,6 +163,8 @@
 
     rect = CGRectMake(0, 0, 100, 80);
     _iconShow = [[UIImageView alloc]initWithFrame:rect];
+    _iconShow.layer.borderColor = [UIColor blackColor].CGColor;
+    _iconShow.layer.borderWidth = 1.0;
     _iconShow.contentMode = UIViewContentModeScaleAspectFit;
  
 

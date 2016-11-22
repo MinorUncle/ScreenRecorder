@@ -74,17 +74,17 @@ static id placeholder = @"NULL";//数组中占位符
     [_lock lock];
     if (_inPointer <= _outPointer) {
         [_lock unlock];
-        GJQueueLOG("begin Wait in ----------\n");
+        GJQueueLOG(@"begin Wait in  %@----------\n",[NSThread currentThread]);
         NSDate* fireDate = [NSDate dateWithTimeIntervalSinceNow:limitDuration];
         [_outCond lock];
         BOOL result = [_outCond waitUntilDate:fireDate];
         [_outCond unlock];
         if (!result) {
-            GJQueueLOG("fail Wait in ----------\n");
+            GJQueueLOG(@"fail Wait in ----------\n");
             return false;
         }
         [_lock lock];
-        GJQueueLOG("after Wait in.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
+        GJQueueLOG(@"after Wait in.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     }
     
     
@@ -94,7 +94,7 @@ static id placeholder = @"NULL";//数组中占位符
     [_inCond lock];
     [_inCond signal];
     [_inCond unlock];
-    GJQueueLOG("after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
+    GJQueueLOG(@"after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     [_lock unlock];
     return true;
 }
@@ -110,28 +110,27 @@ static id placeholder = @"NULL";//数组中占位符
         }else{
             [_lock unlock];
             
-            GJQueueLOG("begin Wait out ----------\n");
+            GJQueueLOG(@"begin Wait out,%@ ----------\n",[NSThread currentThread]);
             NSDate* fireDate = [NSDate dateWithTimeIntervalSinceNow:limitDuration];
             [_inCond lock];
             BOOL result = [_inCond waitUntilDate:fireDate];
             [_inCond unlock];
             if (!result) {
-                GJQueueLOG("fail begin Wait out ----------\n");
+                GJQueueLOG(@"fail begin Wait out ----------\n");
                 return false;
             }
             [_lock lock];
-            GJQueueLOG("after Wait out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
+            GJQueueLOG(@"after Wait out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
         }
     }
     
-    NSLog(@"tembuffer:%ld %@",_inPointer%_allocSize,temBuffer);
     buffer[_inPointer%_allocSize] = temBuffer;
     
     _inPointer++;
     [_outCond lock];
     [_outCond signal];
     [_outCond unlock];
-    GJQueueLOG("after signal in. incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
+    GJQueueLOG(@"after signal in. incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     [_lock unlock];
     return true;
 }

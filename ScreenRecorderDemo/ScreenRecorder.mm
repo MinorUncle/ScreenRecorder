@@ -20,6 +20,7 @@
     CVPixelBufferRef _pixelBuffer ;//cache
     NSInteger* _totalCount;
     CFRunLoopRef _captureRunLoop;
+    BOOL _mixtureRecorder;
 //    NSMutableArray* _cacheArry;//效率很低，待改善
 }
 @property(strong,nonatomic)NSTimer* fpsTimer;
@@ -112,7 +113,9 @@
     }
     return image;
 }
+-(void)startMixtureWithAboveView:(UIView*)aboveView belowView:(UIView*)belowView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
 
+}
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
     _status = screenRecorderRecorderingStatus;
     _fps = fps;
