@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0426197C1DE412ED001C6E05 /* GJQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0426197B1DE412ED001C6E05 /* GJQueue.m */; };
 		043226571DDECE430012A0C0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226561DDECE430012A0C0 /* MediaPlayer.framework */; };
 		0432265A1DDED5EE0012A0C0 /* ImageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226591DDED5D00012A0C0 /* ImageTool.m */; };
 		0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */ = {isa = PBXBuildFile; fileRef = 0432265C1DDEE6320012A0C0 /* OpenGLView20.m */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0426197B1DE412ED001C6E05 /* GJQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJQueue.m; sourceTree = "<group>"; };
 		043226561DDECE430012A0C0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		043226581DDED59A0012A0C0 /* ImageTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageTool.h; sourceTree = "<group>"; };
 		043226591DDED5D00012A0C0 /* ImageTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageTool.m; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
 				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
 				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
+				0426197B1DE412ED001C6E05 /* GJQueue.m */,
 				04DDD4BF1DDDA8BA0072230C /* ScreenRecorder.h */,
 				04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */,
 				043226581DDED59A0012A0C0 /* ImageTool.h */,
@@ -332,6 +335,7 @@
 				0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */,
 				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,
 				AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */,
+				0426197C1DE412ED001C6E05 /* GJQueue.m in Sources */,
 				AE5B9EC21DE1E9F6003FA8F5 /* GJH264Decoder.m in Sources */,
 				046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */,
 				AE5B9E961DE1B12E003FA8F5 /* DrawBoard.m in Sources */,

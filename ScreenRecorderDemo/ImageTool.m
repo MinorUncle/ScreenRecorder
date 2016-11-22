@@ -18,22 +18,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     // allocate array and read pixels into it.
     GLubyte *buffer = (GLubyte *) malloc(myDataLength);
     glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    
-    // gl renders "upside down" so swap top to bottom into new array.
-    // there's gotta be a better way, but this works.
-    GLubyte tem;
-    int height = rect.size.height,width = rect.size.width;
-//    for(int y = 0; y <(height >> 1); y++)
-//    {
-//        for(int x = 0; x <rect.size.width * 4; x++)
-//        {
-//            tem = buffer[(height - y) * width * 4 + x];
-//            buffer[(height - y) * width * 4 + x]=buffer[y * 4 * width + x];
-//            buffer[y * 4 * width + x] = tem;
-//        }
-//    }
-//    
-    // make data provider with data.
+
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients
@@ -101,66 +86,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     return data;
 }
 
-bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned long *len)
-{
-    int i, j;
-    unsigned char*bufY, *bufU, *bufV, *bufRGB,*bufYuv;
-    memset(yuvBuf,0,(unsigned int )*len);
-    bufY = yuvBuf;
-    bufV = yuvBuf + nWidth * nHeight;
-    bufU = bufV + (nWidth * nHeight* 1/4);
-    *len = 0;
-    unsigned char y, u, v, r, g, b,testu,testv;
-    unsigned int ylen = nWidth * nHeight;
-    unsigned int ulen = (nWidth * nHeight)/4;
-    unsigned int vlen = (nWidth * nHeight)/4;
-    for (j = 0; j<nHeight;j++)
-    {
-        bufRGB = RgbBuf + nWidth * (nHeight - 1 - j) * 3 ;
-        for (i = 0;i<nWidth;i++)
-        {
-            int pos = nWidth * i + j;
-            r = *(bufRGB++);
-            g = *(bufRGB++);
-            b = *(bufRGB++);
-            y = (unsigned char)( ( 66 * r + 129 * g +  25 * b + 128) >> 8) + 16  ;
-            u = (unsigned char)( ( -38 * r -  74 * g + 112 * b + 128) >> 8) + 128 ;
-            v = (unsigned char)( ( 112 * r -  94 * g -  18 * b + 128) >> 8) + 128 ;
-            *(bufY++) = MAX( 0, MIN(y, 255 ));
-            if (j%2==0&&i%2 ==0)
-            {
-                if (u>255)
-                {
-                    u=255;
-                }
-                if (u<0)
-                {
-                    u = 0;
-                }
-                *(bufU++) =u;
-                //存u分量
-            }
-            else
-            {
-                //存v分量
-                if (i%2==0)
-                {
-                    if (v>255)
-                    {
-                        v = 255;
-                    }
-                    if (v<0)
-                    {
-                        v = 0;
-                    }
-                    *(bufV++) =v;
-                }
-            }
-        }
-    }
-    *len = nWidth * nHeight+(nWidth * nHeight)/2;
-    return true;
-}
+
 
 + (NSData *) convertUIImageToBitmapYUV240P:(UIImage *)image{
     NSData* rgba8 = [self convertUIImageToBitmapRGBA8:image];
@@ -169,23 +95,31 @@ bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned lo
     uint8_t* rgba = (uint8_t*)[rgba8 bytes];
     CGSize size = image.size;
     int total = size.height * size.width;
-
+    int uvw = size.width,uvh = size.height;
+#if 0
+    if (uvw % 2 == 1)uvw++;
+    if (uvh % 2 == 1)uvh++;
+    uint8_t* blockData = (uint8_t*)malloc(total+uvw*uvh*0.5);
+    uint8_t* v = blockData+ (int)(total+uvh*uvw*0.25);
+#else
+    //forbid singular height or width
+    NSAssert(uvw % 2 == 0 && uvh % 2 == 0, @"图像宽或者高不能为奇数");
     uint8_t* blockData = (uint8_t*)malloc(total*1.5);
-
+    uint8_t* v = blockData+ (int)(total*1.25);
+#endif
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
-    
-    uint8_t* v = blockData+ (int)(total*1.25);
     int uvindex=0;
     int yindex=0;
+    
     for (int i = 0; i < size.height; i++) {
         for (int j=0; j < size.width; j++) {
             uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
             int yy =0.25578515625*r + 0.50216015625*g + 0.0975234375*b+16 ;
-
             yy = MIN(yy, 255);
             y[yindex] = yy;
             yindex++;
+            
             if (j%2==0 && i%2==0 ) {
                 int uu = -0.147644*r - 0.289856*g + 0.4375*b + 128;
                 uu= MAX(0, MIN(uu , 255));
@@ -216,7 +150,7 @@ bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned lo
     size_t height = CGImageGetHeight(image);
     
     size_t bytesPerRow = width * bytesPerPixel;
-    size_t bufferLength = bytesPerRow * height;
+//    size_t bufferLength = bytesPerRow * height;
     
     colorSpace = CGColorSpaceCreateDeviceRGB();
     

@@ -71,9 +71,11 @@
 {
     button.selected = !button.selected;
     if (button.selected) {
-//        [myScreenRecorder startWithView:_drawView fps:15 fileUrl:VideoPath];
-
-        [myScreenRecorder resume];
+        if (_displayType.currentTag == screenRecorderFileType) {
+            [myScreenRecorder startWithView:_drawView fps:15 fileUrl:VideoPath];
+        }else{
+            [myScreenRecorder resume];
+        }
     }else{
         if (_displayType.currentTag == screenRecorderFileType) {
             [myScreenRecorder stopRecord];
@@ -178,9 +180,9 @@
     [_produceView addSubview:_iconShow];
     _iconShow.image = image;
     
-    UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
-    imageView.frame = CGRectMake(100, 30, 100, 100);
-    [_yuvShowView addSubview:imageView];
+//    UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
+//    imageView.frame = CGRectMake(100, 30, 100, 100);
+//    [_yuvShowView addSubview:imageView];
 }
 
 -(void)GJPullDownView:(GJPullDownView *)pulldownView selectIndex:(NSInteger)index{
@@ -251,6 +253,7 @@
             [_displayView addSubview:showView];
             myScreenRecorder = [[ScreenRecorder alloc]initWithType:type];
             myScreenRecorder.delegate = self;
+            usleep(100);
             [myScreenRecorder startWithView:_produceView fps:15 fileUrl:_fileUrl];
             _drawButton.selected = YES;
         }
@@ -292,10 +295,9 @@
         _imageShowView.image = image;
     });
 }
-static void* data;
 void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const void * CV_NULLABLE baseAddress ){
-    NSLog(@"rec:%p",releaseRefCon);
-    free(baseAddress);
+    NSLog(@"pixelBufferReleaseBytesCallback:%p",releaseRefCon);
+    free((void*)baseAddress);
 }
 -(void)ScreenRecorder:(ScreenRecorder *)recorder recorderYUVData:(NSData *)yuvData FinishWithError:(NSError *)error{
     

@@ -52,7 +52,7 @@ uint8_t *sps = NULL;
                                                     (__bridge CFDictionaryRef)(destinationImageBufferAttributes),
                                                     &callBackRecord,
                                                     &_decompressionSession);
-    NSLog(@"Video Decompression Session Create: %@  code:%d  thread:%@", (status == noErr) ? @"successful!" : @"failed...",status,[NSThread currentThread]);
+    NSLog(@"Video Decompression Session Create: %@  code:%d  thread:%@", (status == noErr) ? @"successful!" : @"failed...",(int)status,[NSThread currentThread]);
 }
 
 
