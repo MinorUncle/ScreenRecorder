@@ -132,13 +132,8 @@
         [wkSelf.fpsTimer fire];
         _captureRunLoop = [NSRunLoop currentRunLoop];
         [_captureRunLoop run];
-        [_captureRunLoop run];
-
         NSLog(@"after runloop");
-
     });
-
-    
 }
 -(void)stopRecord{
     [_fpsTimer invalidate];

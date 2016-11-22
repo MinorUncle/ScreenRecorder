@@ -165,30 +165,13 @@ bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned lo
 + (NSData *) convertUIImageToBitmapYUV240P:(UIImage *)image{
     NSData* rgba8 = [self convertUIImageToBitmapRGBA8:image];
 
-    int ch = image.size.height;
-    int cw = image.size.width;
-
-    if (ch%2 ==1) {
-        NSLog(@"警告，高为单数");
-        ch++;
-    }
-    if (cw%2 == 1) {
-        cw ++;
-    }
-    //     NSLog(@"data:%@",rgba8);
+   
     uint8_t* rgba = (uint8_t*)[rgba8 bytes];
     CGSize size = image.size;
     int total = size.height * size.width;
-//    int memTotal = total* total*1.5;
-//    if (h%2 == 1) {//最后一排两个共用一个
-//        memTotal += size.width/2.0;
-//    }
-    
+
     uint8_t* blockData = (uint8_t*)malloc(total*1.5);
-    
-    //    RGB2YUV(rgba, size.width, size.height, blockData);
-    
-    
+
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
     
@@ -197,30 +180,24 @@ bool  RGB2YUV(uint8_t* RgbBuf,int nWidth,int nHeight,uint8_t* yuvBuf,unsigned lo
     int yindex=0;
     for (int i = 0; i < size.height; i++) {
         for (int j=0; j < size.width; j++) {
-            uint8_t r = rgba[yindex*0],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
-//            int yy =0.257*r + 0.504*g + 0.098*b + 16 ;
-            int yy =0.299*r + 0.587*g + 0.114*b ;
+            uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
+            int yy =0.25578515625*r + 0.50216015625*g + 0.0975234375*b+16 ;
 
             yy = MIN(yy, 255);
             y[yindex] = yy;
             yindex++;
             if (j%2==0 && i%2==0 ) {
-//                int uu = 0.148*r - 0.291*g + 0.439*b + 128 ;
-                int uu = 0.492*(b-yy);
+                int uu = -0.147644*r - 0.289856*g + 0.4375*b + 128;
                 uu= MAX(0, MIN(uu , 255));
                 u[uvindex]=uu;
                 
-//                int vv =  0.439*r - 0.368*g - 0.071*b + 128 ;
-                int vv = 0.877*(r-yy);
+                int vv = 0.4375*r - 0.366352*g - 0.071148*b + 128;
                 vv= MAX(0, MIN(vv , 255));
                 v[uvindex]=vv;
                 uvindex++;
-//                NSLog(@"yindex:%d ,uvindex:%d i:%d,j:%d ，yy:%d uu:%d vv:%d",yindex,uvindex,i,j,yy,uu,vv);
             }
         }
-    }
-    
-    
+    }    
     
     NSData* data = [NSData dataWithBytesNoCopy:blockData length:total*1.5];
     return data;

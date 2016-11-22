@@ -173,10 +173,10 @@
     
     rect.size.width*=[UIScreen mainScreen].scale;
     rect.size.height*= [UIScreen mainScreen].scale;
-//    UIImage* glimage = [ImageTool glToUIImageWithRect:rect];
-//    UIImage* image = [ImageTool mergerImage:kitImage fristPoint:CGPointZero secodImage:glimage secondPoint:_displayView.frame.origin destSize:kitImage.size];
+    UIImage* glimage = [ImageTool glToUIImageWithRect:rect];
+    UIImage* image = [ImageTool mergerImage:kitImage fristPoint:CGPointZero secodImage:glimage secondPoint:_displayView.frame.origin destSize:kitImage.size];
     [_produceView addSubview:_iconShow];
-    _iconShow.image = kitImage;
+    _iconShow.image = image;
     
     UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
     imageView.frame = CGRectMake(100, 30, 100, 100);
