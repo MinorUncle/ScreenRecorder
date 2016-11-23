@@ -9,7 +9,9 @@
 #import "ScreenRecorder.h"
 #import "GJQueue.h"
 #import <AVFoundation/AVFoundation.h>
+#import <OpenGLES/ES2/gl.h>
 #import "ImageTool.h"
+
 
 @interface ScreenRecorder()<GJH264EncoderDelegate>
 {
@@ -22,6 +24,8 @@
     CFRunLoopRef _captureRunLoop;
     CGRect _glRect;
     BOOL _mixtureRecorder;
+    
+
 //    NSMutableArray* _cacheArry;//效率很低，待改善
 }
 @property(strong,nonatomic)NSTimer* fpsTimer;
@@ -37,9 +41,10 @@
         
         _recorderType = recorderType;
         _imageCache = [[GJQueue alloc]init];
-        _imageCache.shouldWait = YES;
-        _imageCache.shouldNonatomic = YES;
         _imageCache.autoResize = false;
+        
+   
+    
         
         _options = [NSDictionary dictionaryWithObjectsAndKeys:
                     [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
@@ -53,6 +58,7 @@
 
 -(void)_captureCurrentView{
     @synchronized (self) {
+        
         UIGraphicsBeginImageContext(self.captureSize);
         UIImage *image;
         CGContextRef ctx = UIGraphicsGetCurrentContext();
@@ -316,6 +322,7 @@
     return _pixelBuffer;
 }
 
+
 -(void)GJH264Encoder:(GJH264Encoder *)encoder encodeCompleteBuffer:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
     if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderH264Data:withLenth:keyFrame:dts:)]) {
         [self.delegate ScreenRecorder:self recorderH264Data:buffer withLenth:totalLenth keyFrame:keyFrame dts:dts];
@@ -324,5 +331,4 @@
 -(void)dealloc{
     NSLog(@"screenrecorder delloc:%@",self);
 }
-
 @end

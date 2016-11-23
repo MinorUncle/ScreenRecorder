@@ -38,9 +38,7 @@
 }
 -(void)_init{
     _fps = 20;
-//    _updateTimer = [NSTimer timerWithTimeInterval:1.0/_fps target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
-//    [[NSRunLoop currentRunLoop]addTimer:_updateTimer forMode:NSRunLoopCommonModes];
-//    _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/_fps target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
+    _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/_fps target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
 }
 
 -(void)updateUI{
@@ -64,17 +62,17 @@
 
 -(void)drawLineFromPoint:(CGPoint)fPoint ToPoint:(CGPoint)tPoint
 {
-    UIGraphicsBeginImageContext(self.frame.size);
-    [self.image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextSetLineCap(ctx, kCGLineCapRound);
-    CGContextSetLineWidth(ctx, 7);
-    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
-    CGContextMoveToPoint(ctx, fPoint.x, fPoint.y);
-    CGContextAddLineToPoint(ctx, tPoint.x, tPoint.y);
-    CGContextStrokePath(ctx);
-    self.image = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+//    UIGraphicsBeginImageContext(self.frame.size);
+//    [self.image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+//    CGContextRef ctx = UIGraphicsGetCurrentContext();
+//    CGContextSetLineCap(ctx, kCGLineCapRound);
+//    CGContextSetLineWidth(ctx, 7);
+//    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
+//    CGContextMoveToPoint(ctx, fPoint.x, fPoint.y);
+//    CGContextAddLineToPoint(ctx, tPoint.x, tPoint.y);
+//    CGContextStrokePath(ctx);
+//    self.image = UIGraphicsGetImageFromCurrentImageContext();
+//    UIGraphicsEndImageContext();
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -87,7 +85,7 @@
     
     CGPoint point = [touch locationInView:self];
     _previousPoint = point;
-//    CGPathMoveToPoint(_path, NULL, point.x, point.y);
+    CGPathMoveToPoint(_path, NULL, point.x, point.y);
     
 }
 -(void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -96,15 +94,19 @@
         NSLog(@"touch moved");
         CGPathRelease(_path);
         _path = NULL;
-        [self setNeedsDisplay];
+        _needUpdate = YES;
         return;
     }
     
     CGPoint point = [touch locationInView:self];
-    [self drawLineFromPoint:_previousPoint ToPoint:point];
+//    [self drawLineFromPoint:_previousPoint ToPoint:point];
     _previousPoint = point;
-//    CGPathAddLineToPoint(_path, NULL, point.x, point.y);
+    CGPathAddLineToPoint(_path, NULL, point.x, point.y);
 //    [self setNeedsDisplay];
     _needUpdate = YES;
+}
+-(void)dealloc{
+    [_updateTimer invalidate];
+    _updateTimer = NULL;
 }
 @end

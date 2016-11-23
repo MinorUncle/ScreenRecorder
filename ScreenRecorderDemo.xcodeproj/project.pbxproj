@@ -90,15 +90,6 @@
 		AE5B9EC01DE1E9F6003FA8F5 /* GJH264Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJH264Decoder.h; sourceTree = "<group>"; };
 		AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJH264Decoder.m; sourceTree = "<group>"; };
 		AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
-		AE5B9EC71DE1FE67003FA8F5 /* basic_concept.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = basic_concept.hxx; sourceTree = "<group>"; };
-		AE5B9EC81DE1FE67003FA8F5 /* buffer_creator.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = buffer_creator.hxx; sourceTree = "<group>"; };
-		AE5B9EC91DE1FE67003FA8F5 /* pixel_convertor.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_convertor.hxx; sourceTree = "<group>"; };
-		AE5B9ECA1DE1FE67003FA8F5 /* pixel_iterator.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_iterator.hxx; sourceTree = "<group>"; };
-		AE5B9ECB1DE1FE67003FA8F5 /* pixel_walker.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = pixel_walker.hxx; sourceTree = "<group>"; };
-		AE5B9ECC1DE1FE67003FA8F5 /* predefine.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = predefine.hxx; sourceTree = "<group>"; };
-		AE5B9ECD1DE1FE67003FA8F5 /* scope_block.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = scope_block.hxx; sourceTree = "<group>"; };
-		AE5B9ECE1DE1FE67003FA8F5 /* undefine.hxx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = undefine.hxx; sourceTree = "<group>"; };
-		AE5B9ECF1DE1FE67003FA8F5 /* rgb2yuv.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = rgb2yuv.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -212,7 +203,6 @@
 		629A11A417A12C4E002DE046 /* DrawView */ = {
 			isa = PBXGroup;
 			children = (
-				AE5B9EC51DE1FE67003FA8F5 /* include */,
 				AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */,
 				AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */,
 				AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */,
@@ -225,30 +215,6 @@
 				046080F31DE2DF9900FD1E6F /* FilePlayerView.m */,
 			);
 			name = DrawView;
-			sourceTree = "<group>";
-		};
-		AE5B9EC51DE1FE67003FA8F5 /* include */ = {
-			isa = PBXGroup;
-			children = (
-				AE5B9EC61DE1FE67003FA8F5 /* detail */,
-				AE5B9ECF1DE1FE67003FA8F5 /* rgb2yuv.hpp */,
-			);
-			path = include;
-			sourceTree = "<group>";
-		};
-		AE5B9EC61DE1FE67003FA8F5 /* detail */ = {
-			isa = PBXGroup;
-			children = (
-				AE5B9EC71DE1FE67003FA8F5 /* basic_concept.hxx */,
-				AE5B9EC81DE1FE67003FA8F5 /* buffer_creator.hxx */,
-				AE5B9EC91DE1FE67003FA8F5 /* pixel_convertor.hxx */,
-				AE5B9ECA1DE1FE67003FA8F5 /* pixel_iterator.hxx */,
-				AE5B9ECB1DE1FE67003FA8F5 /* pixel_walker.hxx */,
-				AE5B9ECC1DE1FE67003FA8F5 /* predefine.hxx */,
-				AE5B9ECD1DE1FE67003FA8F5 /* scope_block.hxx */,
-				AE5B9ECE1DE1FE67003FA8F5 /* undefine.hxx */,
-			);
-			path = detail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -411,6 +377,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = X33DX68294;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ScreenRecorderDemo/ScreenRecorderDemo-Prefix.pch";

@@ -17,33 +17,25 @@ static id placeholder = @"NULL";//数组中占位符
         if (capacity <=0) {
             _capacity = DEFAULT_MAX_COUNT;
         }
+        [self _init];
     }
     return self;
 }
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        _capacity = DEFAULT_MAX_COUNT;
-        [self _init];
-    }
-    return self;
+    return [self initWithCapacity:DEFAULT_MAX_COUNT];
 }
 
 -(void)_init
 {
     buffer = [NSMutableArray arrayWithCapacity:_capacity];
-    
     _lock = [[NSLock alloc]init];
     _inCond = [[NSCondition alloc]init];
     _outCond = [[NSCondition alloc]init];
     _allocSize = _capacity;
     _autoResize = false;
-    _shouldWait = false;
-    _shouldNonatomic = false;
     _inPointer = 0;
     _outPointer = 0;
-    
 }
 
 
@@ -96,6 +88,7 @@ static id placeholder = @"NULL";//数组中占位符
     [_inCond unlock];
     GJQueueLOG(@"after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     [_lock unlock];
+    assert(*temBuffer);
     return true;
 }
 

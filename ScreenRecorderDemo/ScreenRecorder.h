@@ -52,18 +52,20 @@ typedef enum ScreenRecorderStatus{
 
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl;
+
+-(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                      aboveRect:(NSArray<NSValue*>*)aboveRect
+                      belowView:(NSArray<UIView*>*)belowView
+                      belowRect:(NSArray<NSValue*>*)belowRect
+                       hostSize:(CGSize)hostSize
+                            fps:(NSInteger)fps
+                        fileUrl:(NSString*)fileUrl;
+
 -(void)stopRecord;
 -(void)pause;
 -(void)resume;
 -(UIImage*)captureImageWithView:(UIView*)view;
 
--(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
-                       aboveRect:(NSArray<NSValue*>*)aboveRect
-                       belowView:(NSArray<UIView*>*)belowView
-                       belowRect:(NSArray<NSValue*>*)belowRect
-                        hostSize:(CGSize)hostSize
-                             fps:(NSInteger)fps
-                         fileUrl:(NSString*)fileUrl;
 
 -(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
                       aboveRect:(NSArray<NSValue*>*)aboveRect

@@ -6,10 +6,13 @@
 
 @implementation ImageTool
 
+static void* _pixCacheData;
+static long _pixCacheSize;
+
 void dataProviderReleaseDataCallback(void * __nullable info,
                                      const void *  data, size_t size){
-    free((void*)data);
-    NSLog(@"free dataProviderReleaseDataCallback");
+//    free((void*)data);
+//    NSLog(@"free dataProviderReleaseDataCallback");
 }
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect {
@@ -18,7 +21,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
     // allocate array and read pixels into it.
-    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
+    GLubyte *buffer = (GLubyte *) [self getCachePixDataWithSize:myDataLength];
     glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
     CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
@@ -213,7 +216,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                                     YES,			// should interpolate
                                     renderingIntent);
     
-    uint32_t* pixels = (uint32_t*)malloc(bufferLength);
+    uint32_t* pixels = (uint32_t*)[self getCachePixDataWithSize:bufferLength];
     
     if(pixels == NULL) {
         NSLog(@"Error: Memory not allocated for bitmap");
@@ -258,10 +261,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGColorSpaceRelease(colorSpaceRef);
     CGImageRelease(iref);
     CGDataProviderRelease(provider);
-    
-    if(pixels) {
-        free(pixels);
-    }
+
     return image;
 }
 + (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image
@@ -289,5 +289,19 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGContextRelease(context);
     CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
     return pxbuffer;
+}
++(void*)getCachePixDataWithSize:(long)size{
+    if(_pixCacheData){
+        if (size > _pixCacheSize) {
+            free(_pixCacheData);
+            _pixCacheSize = size;
+            _pixCacheData = (GLubyte*)malloc(_pixCacheSize);
+        }
+    }else{
+        _pixCacheSize = size;
+        _pixCacheData = (GLubyte*)malloc(_pixCacheSize);
+        _pixCacheSize = _pixCacheSize;
+    }
+    return _pixCacheData;
 }
 @end

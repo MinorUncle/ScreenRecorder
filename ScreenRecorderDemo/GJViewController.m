@@ -25,7 +25,7 @@
 #define DOCSFOLDER [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"]
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 
-#define FPS 20
+#define FPS 25
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
 {
@@ -260,8 +260,8 @@
     myScreenRecorder = [[ScreenRecorder alloc]initWithType:recodeType];
     myScreenRecorder.delegate = self;
     usleep(100);
-    if (0) {
-        [myScreenRecorder startGLMixtureWithGLRect:_yuvShowView.frame AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:self.view.bounds]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:_glOverShow.frame]] hostSize:self.view.bounds.size fps:FPS fileUrl:_fileUrl];
+    if (1) {
+        [myScreenRecorder startGLMixtureWithGLRect:_yuvShowView.frame AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl:_fileUrl];
     }else{
         [myScreenRecorder startWithView:_drawView fps:FPS fileUrl:_fileUrl];
     }
@@ -323,18 +323,17 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
 //        _imageShowView.image = uimage;
 //        CVPixelBufferRelease(pixelBuffer);
 //    });
+    static int count = 0;
+    if (count++>10) {
+        return;
+    }
     OpenGLView20* iv = _yuvShowView;
     dispatch_async(dispatch_get_main_queue(), ^{
         [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureView.bounds.size.width height:recorder.captureView.bounds.size.height];
+//        [self glCapture];
     });
-    static int c = 0;
-    if (c<50) {
-        c++;
-        return;
 
-    }else{
-        [self glCapture];
-}
+    
 
 
 
