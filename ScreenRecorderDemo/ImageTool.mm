@@ -3,15 +3,17 @@
 
 #import "ImageTool.h"
 #import <OpenGLES/ES2/gl.h>
+#import "GJQueue+CPlus.h"
 
 @implementation ImageTool
 
-static void* _pixCacheData;
-static long _pixCacheSize;
+static GJQueue<GJBuffer*> _pixPool;
+
 
 void dataProviderReleaseDataCallback(void * __nullable info,
                                      const void *  data, size_t size){
 //    free((void*)data);
+    _pixPool.queuePush((GJBuffer*)info);
 //    NSLog(@"free dataProviderReleaseDataCallback");
 }
 
@@ -21,10 +23,12 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
     // allocate array and read pixels into it.
-    GLubyte *buffer = (GLubyte *) [self getCachePixDataWithSize:myDataLength];
+    GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
+//    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
+    GLubyte *buffer = (GLubyte*)(cachebuffer->data);
     glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
+    CGDataProviderRef provider = CGDataProviderCreateWithData(cachebuffer, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients
     int bitsPerComponent = 8;
@@ -120,10 +124,9 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     for (int i = 0; i < size.height; i++) {
         for (int j=0; j < size.width; j++) {
             uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
-            int yy =0.25578515625*r + 0.50216015625*g + 0.0975234375*b+16 ;
+            int yy =0.2558*r + 0.502*g + 0.097*b+16 ;
             yy = MIN(yy, 255);
-            y[yindex] = yy;
-            yindex++;
+            y[yindex++] = yy;
             
             if (j%2==0 && i%2==0 ) {
                 int uu = -0.147644*r - 0.289856*g + 0.4375*b + 128;
@@ -132,8 +135,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                 
                 int vv = 0.4375*r - 0.366352*g - 0.071148*b + 128;
                 vv= MAX(0, MIN(vv , 255));
-                v[uvindex]=vv;
-                uvindex++;
+                v[uvindex++]=vv;
             }
         }
     }    
@@ -216,7 +218,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                                     YES,			// should interpolate
                                     renderingIntent);
     
-    uint32_t* pixels = (uint32_t*)[self getCachePixDataWithSize:bufferLength];
+    GJBuffer* pixels = (GJBuffer*)[self getCachePixDataWithSize:(int)bufferLength];
     
     if(pixels == NULL) {
         NSLog(@"Error: Memory not allocated for bitmap");
@@ -226,7 +228,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
         return nil;
     }
     
-    CGContextRef context = CGBitmapContextCreate(pixels,
+    CGContextRef context = CGBitmapContextCreate(pixels->data,
                                                  width,
                                                  height,
                                                  bitsPerComponent,
@@ -236,7 +238,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     
     if(context == NULL) {
         NSLog(@"Error context not created");
-        free(pixels);
+        _pixPool.queuePush(pixels);
     }
     
     UIImage *image = nil;
@@ -261,7 +263,8 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGColorSpaceRelease(colorSpaceRef);
     CGImageRelease(iref);
     CGDataProviderRelease(provider);
-
+    free(pixels->data);
+    free(pixels);
     return image;
 }
 + (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image
@@ -290,18 +293,29 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
     return pxbuffer;
 }
-+(void*)getCachePixDataWithSize:(long)size{
-    if(_pixCacheData){
-        if (size > _pixCacheSize) {
-            free(_pixCacheData);
-            _pixCacheSize = size;
-            _pixCacheData = (GLubyte*)malloc(_pixCacheSize);
++(GJBuffer*)getCachePixDataWithSize:(int)size{
+    GJBuffer* buffer = NULL;
+    if(_pixPool.queuePop(&buffer)){
+        if (size > buffer->size) {
+            free(buffer->data);
+            void* data = (void*)malloc(size);
+            buffer->data = data;
+            buffer->size = size;
         }
     }else{
-        _pixCacheSize = size;
-        _pixCacheData = (GLubyte*)malloc(_pixCacheSize);
-        _pixCacheSize = _pixCacheSize;
+        buffer = new GJBuffer();
+        void* data = (void*)malloc(size);
+        buffer->data = data;
+        buffer->size = size;
     }
-    return _pixCacheData;
+    return buffer;
+}
++(void)cleanPixCache{
+    
+    GJBuffer * buffer = NULL;
+    while (_pixPool.queuePop(&buffer)) {
+        free(buffer->data);
+        free(buffer);
+    }
 }
 @end

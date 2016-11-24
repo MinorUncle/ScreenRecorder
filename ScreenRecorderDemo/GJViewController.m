@@ -25,11 +25,14 @@
 #define DOCSFOLDER [NSHomeDirectory() stringByAppendingPathComponent:@"Documents/"]
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 
-#define FPS 25
+#define FPS 20
+#define DEFAULT_PRODUCT 1
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
 {
     DrawBoard *_drawView;
+    OpenGLView20* _yuvProduceView;
+
     ScreenRecorder *myScreenRecorder;
     FilePlayerView *_movieShow;
     UIButton* _drawButton;
@@ -50,6 +53,7 @@
     UIImageView* _iconShow;
     UIImageView* _glOverShow;
 
+    NSFileHandle* _yuvFileHandle;
     
 }
 @property(nonatomic,strong)AVPlayer* player;
@@ -58,6 +62,7 @@
 
 @end
 
+static int yuvHeight=320,yuvWidth=568;
 @implementation GJViewController
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
@@ -86,7 +91,30 @@
         }else{
             [myScreenRecorder pause];
         }
+        if (_yuvFileHandle) {
+            [_yuvFileHandle closeFile];
+        }
     }
+}
+
+-(void)yuvWrite:(NSData*)data{
+    if (!_yuvFileHandle) {
+        _yuvFileHandle = [NSFileHandle fileHandleForWritingAtPath:_fileUrl];
+        if (_yuvFileHandle == nil) {
+            [[NSFileManager defaultManager]createFileAtPath:_fileUrl contents:nil attributes:nil];
+            _yuvFileHandle = [NSFileHandle fileHandleForWritingAtPath:_fileUrl];
+            [_yuvFileHandle seekToFileOffset:0];
+        }
+    }
+    [_yuvFileHandle writeData:data];
+    
+}
+-(NSData*)yuvRead{
+    if (!_yuvFileHandle) {
+        _yuvFileHandle = [NSFileHandle fileHandleForReadingAtPath:_fileUrl];
+    }
+    NSData* data = [_yuvFileHandle readDataOfLength:yuvWidth*yuvHeight*1.5];
+    return data;
 }
 
 -(void)readyInit
@@ -113,6 +141,7 @@
     rect.origin.x=padding;
     rect.size.width = midW;
     _produceType = [[GJPullDownView alloc]initWithItems:@[@"手绘",@"视频"]];
+    _produceType.currentTag = DEFAULT_PRODUCT;
     _produceType.frame = rect;
     [_produceView addSubview:_produceType];
     _produceType.PullDownViewDelegate = self;
@@ -160,7 +189,13 @@
 //    _drawView.image = [UIImage imageNamed:@"13031I1XF-14H6"];
     _drawView.backgroundColor = [UIColor redColor];
     _drawView.userInteractionEnabled = YES;
-    [_produceView addSubview:_drawView];
+    _yuvProduceView = [[OpenGLView20 alloc]initWithFrame:_produceView.bounds];
+    if (_produceType.currentTag == 0) {
+        [_produceView addSubview:_drawView];
+    }else{
+        [_produceView addSubview:_yuvProduceView];
+        [self produceYuv];
+    }
 
     rect = CGRectMake(0, 0, 100, 80);
     _iconShow = [[UIImageView alloc]initWithFrame:rect];
@@ -178,9 +213,12 @@
 }
 
 -(void)glCapture{
-  
     [_produceView addSubview:_iconShow];
-    _iconShow.image = [myScreenRecorder captureGLMixtureWithGLRect:_displayView.frame AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.frame]] hostSize:self.view.bounds.size];;
+    CGRect rect = _produceView.frame;
+    if (_produceType.currentTag == 0) {
+        rect =[self getRootFrameWithView:_yuvShowView];
+    }
+    _iconShow.image = [myScreenRecorder captureGLMixtureWithGLRect:rect AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.frame]] hostSize:self.view.bounds.size];;
     
 //    UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
 //    imageView.frame = CGRectMake(100, 30, 100, 100);
@@ -199,19 +237,39 @@
 
 -(void)GJPullDownView:(GJPullDownView *)pulldownView selectIndex:(NSInteger)index{
     if (pulldownView == _produceType) {
+        [_produceView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
         if ([pulldownView.itemNames[index] isEqualToString:@"手绘"]) {
-            if (_drawView == nil) {
-                _drawView = [[DrawBoard alloc]initWithFrame:_produceView.bounds];
-
-            }
-            [_produceView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
             [_produceView addSubview:_drawView];
+        }else{
+            [_produceView addSubview:_yuvProduceView];
+                [self produceYuv];
         }
     }else{
             [myScreenRecorder stopRecord];
             [self startWithType:(ScreenRecorderType)pulldownView.currentTag];
     }
-    
+}
+-(void)produceYuv{
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSData* data= [self yuvRead];
+        while (data.length > 0) {
+//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            void* yd = malloc(data.length);
+//            memcpy(yd, data.bytes, data.length);
+                [_yuvProduceView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
+//            free(yd);
+//                [self glCapture];
+//            });
+//            dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//                [self glCapture];
+//
+//            });
+            data= [self yuvRead];
+            NSLog(@"data:%lu",(unsigned long)data.length);
+            usleep((1.0/FPS)*1000*1000);
+        }
+    });
 }
 -(void)startWithType:(ScreenRecorderType)recodeType{
     
@@ -260,11 +318,16 @@
     myScreenRecorder = [[ScreenRecorder alloc]initWithType:recodeType];
     myScreenRecorder.delegate = self;
     usleep(100);
-    if (1) {
-        [myScreenRecorder startGLMixtureWithGLRect:_yuvShowView.frame AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl:_fileUrl];
-    }else{
-        [myScreenRecorder startWithView:_drawView fps:FPS fileUrl:_fileUrl];
-    }
+    [_glOverShow removeFromSuperview];
+//        if (_produceType.currentTag == 0) {
+            [_yuvProduceView addSubview:_glOverShow];
+            [myScreenRecorder startGLMixtureWithGLRect:_yuvProduceView.frame AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl:_fileUrl];
+//        }else{
+//            [myScreenRecorder startWithView:_drawView fps:FPS fileUrl:_fileUrl];
+//        }
+////    }else{
+////        [_yuvProduceView addSubview:_glOverShow];
+////    }
     _drawButton.selected = YES;
 } - (void)viewDidLoad
  {
@@ -316,28 +379,26 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
 //    NSDictionary* dic = @{(id)kCVPixelBufferOpenGLESCompatibilityKey:@(YES),(id)kCVPixelBufferHeightKey:@(size.height)};
 //    CVPixelBufferCreateWithBytes(NULL, size.width, size.height, kCVPixelFormatType_420YpCbCr8BiPlanarFullRange, (void*)data, size.width*size.height, pixelBufferReleaseBytesCallback, nil,(__bridge CFDictionaryRef _Nullable)(dic), &pixelBuffer);
 //    
-//
 //    CIImage* image = [CIImage imageWithCVPixelBuffer:pixelBuffer];
 //    UIImage* uimage = [UIImage imageWithCIImage:image];
 //    dispatch_async(dispatch_get_main_queue(), ^{
 //        _imageShowView.image = uimage;
 //        CVPixelBufferRelease(pixelBuffer);
 //    });
-    static int count = 0;
-    if (count++>10) {
-        return;
-    }
+//    static int count = 0;
+//    if (count++>10) {
+//        return;
+//    }
+//    if (_produceType.currentTag == 0) {
+//        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//            [self yuvWrite:yuvData];
+//        });
+//    }
     OpenGLView20* iv = _yuvShowView;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureView.bounds.size.width height:recorder.captureView.bounds.size.height];
-//        [self glCapture];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureSize.width height:recorder.captureSize.height];
+//                [self glCapture];
     });
-
-    
-
-
-
-
 }
 -(void)ScreenRecorder:(ScreenRecorder *)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
     if (keyFrame) {

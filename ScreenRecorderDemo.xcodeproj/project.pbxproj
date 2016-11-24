@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		0426197C1DE412ED001C6E05 /* GJQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0426197B1DE412ED001C6E05 /* GJQueue.m */; };
 		043226571DDECE430012A0C0 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226561DDECE430012A0C0 /* MediaPlayer.framework */; };
-		0432265A1DDED5EE0012A0C0 /* ImageTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226591DDED5D00012A0C0 /* ImageTool.m */; };
+		0432265A1DDED5EE0012A0C0 /* ImageTool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 043226591DDED5D00012A0C0 /* ImageTool.mm */; };
 		0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */ = {isa = PBXBuildFile; fileRef = 0432265C1DDEE6320012A0C0 /* OpenGLView20.m */; };
 		0432265F1DDEE7200012A0C0 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0432265E1DDEE7200012A0C0 /* OpenGLES.framework */; };
 		043226611DDEE7660012A0C0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226601DDEE7660012A0C0 /* QuartzCore.framework */; };
@@ -44,7 +44,7 @@
 		0426197B1DE412ED001C6E05 /* GJQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJQueue.m; sourceTree = "<group>"; };
 		043226561DDECE430012A0C0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		043226581DDED59A0012A0C0 /* ImageTool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageTool.h; sourceTree = "<group>"; };
-		043226591DDED5D00012A0C0 /* ImageTool.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageTool.m; sourceTree = "<group>"; };
+		043226591DDED5D00012A0C0 /* ImageTool.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ImageTool.mm; sourceTree = "<group>"; };
 		0432265B1DDEE6320012A0C0 /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
 		0432265C1DDEE6320012A0C0 /* OpenGLView20.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OpenGLView20.m; sourceTree = "<group>"; };
 		0432265E1DDEE7200012A0C0 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -83,6 +83,7 @@
 		629A119A17A12B4D002DE046 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		629A119C17A12B58002DE046 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		629A119E17A12B66002DE046 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		AE067D681DE6BAE000B83E13 /* GJQueue+CPlus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "GJQueue+CPlus.h"; sourceTree = "<group>"; };
 		AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrawBoard.h; sourceTree = "<group>"; };
 		AE5B9E951DE1B12E003FA8F5 /* DrawBoard.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrawBoard.m; sourceTree = "<group>"; };
 		AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJPullDownView.h; sourceTree = "<group>"; };
@@ -190,12 +191,13 @@
 				043226631DDEEE990012A0C0 /* GJH264Encoder.m */,
 				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
 				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
+				AE067D681DE6BAE000B83E13 /* GJQueue+CPlus.h */,
 				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
 				0426197B1DE412ED001C6E05 /* GJQueue.m */,
 				04DDD4BF1DDDA8BA0072230C /* ScreenRecorder.h */,
 				04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */,
 				043226581DDED59A0012A0C0 /* ImageTool.h */,
-				043226591DDED5D00012A0C0 /* ImageTool.m */,
+				043226591DDED5D00012A0C0 /* ImageTool.mm */,
 			);
 			name = ScreenRecorder;
 			sourceTree = "<group>";
@@ -292,7 +294,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				629A118017A12B17002DE046 /* main.m in Sources */,
-				0432265A1DDED5EE0012A0C0 /* ImageTool.m in Sources */,
+				0432265A1DDED5EE0012A0C0 /* ImageTool.mm in Sources */,
 				629A118417A12B17002DE046 /* GJAppDelegate.m in Sources */,
 				046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */,
 				046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */,

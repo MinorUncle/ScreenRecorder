@@ -38,7 +38,6 @@
     self = [super init];
     if (self) {
         _captureQueue = dispatch_queue_create("captureQueue", DISPATCH_QUEUE_SERIAL);
-        
         _recorderType = recorderType;
         _imageCache = [[GJQueue alloc]init];
         _imageCache.autoResize = false;
@@ -50,7 +49,6 @@
                     [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
                     [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey, nil];
 
-//        _cacheArry = [NSMutableArray arrayWithCapacity:20];
  
     }
     return self;
@@ -67,12 +65,19 @@
             image = UIGraphicsGetImageFromCurrentImageContext();
         }else{
             for (int i = 0; i< _mixtureCaptureBelowView.count; i++) {
+                CGRect rect = [_mixtureCaptureBelowViewFrame[i] CGRectValue];
+                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
                 [_mixtureCaptureBelowView[i].layer renderInContext:ctx];
+                CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
+
             }
             UIImage* glImage = [ImageTool glToUIImageWithRect:CGRectMake(0, 0, _glRect.size.width, _glRect.size.height)];
             [glImage drawInRect:_glRect];
             for (int i = 0; i< _mixtureCaptureAboveView.count; i++) {
+                CGRect rect = [_mixtureCaptureAboveViewFrame[i] CGRectValue];
+                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
                 [_mixtureCaptureAboveView[i].layer renderInContext:ctx];
+                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
             }
             image = UIGraphicsGetImageFromCurrentImageContext();
         }
@@ -80,7 +85,6 @@
         if (image) {
             switch (self.recorderType) {
                 case screenRecorderFileType:
-//                    [_cacheArry addObject:image];
                     [_imageCache queuePush:image limit:INT_MAX];
                     break;
                 case screenRecorderRealImageType:
@@ -161,7 +165,6 @@
             CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
         }
         image = UIGraphicsGetImageFromCurrentImageContext();
-        
         UIGraphicsEndImageContext();
     }
     return image;
@@ -177,6 +180,8 @@
     _mixtureRecorder = YES;
     _mixtureCaptureAboveView = aboveView;
     _mixtureCaptureBelowView = belowView;
+    _mixtureCaptureAboveViewFrame = aboveRect;
+    _mixtureCaptureBelowViewFrame = belowRect;
     _glRect = glRect;
     _captureSize = hostSize;
     [self _startWithFps:fps fileUrl:fileUrl];
@@ -215,7 +220,6 @@
         CFRunLoopRunInMode(kCFRunLoopDefaultMode,DBL_MAX, NO);
         NSLog(@"after runloop:%d",_recorderType);
     });
-    
 }
 -(void)stopRecord{
     if (_captureRunLoop) {

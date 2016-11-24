@@ -45,9 +45,9 @@ typedef enum ScreenRecorderStatus{
 @property(weak,nonatomic,readonly)UIView* captureView;
 
 @property(strong,nonatomic,readonly)NSArray<UIView*>* mixtureCaptureAboveView;
-@property(assign,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureAboveViewFrame;
+@property(strong,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureAboveViewFrame;
 @property(strong,nonatomic,readonly)NSArray<UIView*>* mixtureCaptureBelowView;
-@property(assign,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureBelowViewFrame;
+@property(strong,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureBelowViewFrame;
 
 
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
