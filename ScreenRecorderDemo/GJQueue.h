@@ -13,7 +13,7 @@
 #include <pthread.h>
 #include <assert.h>
 #include <sys/time.h>
-#ifdef DEBUG
+#ifndef DEBUG
 #define GJQueueLOG(format, ...) NSLog(format,##__VA_ARGS__)
 #else
 #define GJQueueLOG(format, ...)

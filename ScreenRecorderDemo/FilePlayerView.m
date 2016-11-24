@@ -72,6 +72,7 @@
 
 -(void)playEnd{
     self.status = basePlayerStatusStop;
+    NSLog(@"play end");
 }
 -(void)playWithFinish:(FinishBlock)finishBlock{
     if (self.status == basePlayerStatusPlay || self.status == basePlayerStatusWaitting) {

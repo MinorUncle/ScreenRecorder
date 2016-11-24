@@ -17,7 +17,7 @@
 {
     GJQueue* _imageCache;//有问题
     dispatch_queue_t _writeQueue;
-    dispatch_queue_t _captureQueue;
+    
     NSDictionary* _options;//cache
     CVPixelBufferRef _pixelBuffer ;//cache
     NSInteger* _totalCount;
@@ -37,7 +37,8 @@
 {
     self = [super init];
     if (self) {
-        _captureQueue = dispatch_queue_create("captureQueue", DISPATCH_QUEUE_SERIAL);
+        _captureQueue = dispatch_queue_create("captureQueue", DISPATCH_QUEUE_CONCURRENT);
+//        _captureQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         _recorderType = recorderType;
         _imageCache = [[GJQueue alloc]init];
         _imageCache.autoResize = false;
@@ -200,7 +201,6 @@
         CFRelease(_pixelBuffer);
         _pixelBuffer=NULL;
     }
-    
     if (_recorderType == screenRecorderFileType || _recorderType == screenRecorderRealH264Type){
         //cache buffer
         CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, _captureSize.width, _captureSize.height, kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) _options, &_pixelBuffer);
@@ -221,6 +221,7 @@
         NSLog(@"after runloop:%d",_recorderType);
     });
 }
+
 -(void)stopRecord{
     if (_captureRunLoop) {
         CFRunLoopStop(_captureRunLoop);
@@ -278,15 +279,21 @@
     [videoWriter startWriting];
     [videoWriter startSessionAtSourceTime:kCMTimeZero];
     
-    dispatch_queue_t dispatchQueue = dispatch_queue_create("ScreenRecorderWriteQueue", NULL);
+    dispatch_queue_t dispatchQueue = dispatch_queue_create("ScreenRecorderWriteQueue", DISPATCH_QUEUE_SERIAL);
     
     CFAbsoluteTime startTime = CFAbsoluteTimeGetCurrent();
     
     [writerInput requestMediaDataWhenReadyOnQueue:dispatchQueue usingBlock:^{
+        static int queueCount = 0;
+        NSLog(@"requestMediaDataWhenReadyOnQueue:%d",queueCount++);
         while ([writerInput isReadyForMoreMediaData])
         {
+            static int ReadyCount = 0;
+            NSLog(@"isReadyForMoreMediaData:%d",ReadyCount++);
             if(_status == screenRecorderStopStatus)
             {
+                NSLog(@"markAsFinished");
+
                 //clean cache
                 [_imageCache clean];
                 [writerInput markAsFinished];
@@ -300,13 +307,18 @@
                 break;
             }else{
                 UIImage* image ;
+                NSLog(@"begin waitPop");
                 if ([_imageCache queuePop:&image limit:0.2]) {
                     CVPixelBufferRef buffer = [self pixelBufferFromCGImage:[image CGImage] size:size];
                     CFAbsoluteTime interval = (CFAbsoluteTimeGetCurrent() - startTime) * 1000;
                     CMTime currentSampleTime = CMTimeMake((int)interval, 1000);
-                    if(![adaptor appendPixelBuffer:buffer withPresentationTime:currentSampleTime])
+                    if(![adaptor appendPixelBuffer:buffer withPresentationTime:currentSampleTime]){
                         NSLog(@"appendPixelBuffer error");
-                }                
+                    }else{
+                        NSLog(@"appendPixelBuffer time:%f",interval);
+
+                    }
+                }
             }
         }
     }];

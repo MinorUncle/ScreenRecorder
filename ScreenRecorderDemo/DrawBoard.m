@@ -38,7 +38,7 @@
 }
 -(void)_init{
     _fps = 20;
-    _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/_fps target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
+//    _updateTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/_fps target:self selector:@selector(updateUI) userInfo:nil repeats:YES];
 }
 
 -(void)updateUI{
@@ -49,30 +49,30 @@
 
     }
 }
--(void)drawRect:(CGRect)rect{
-    [super drawRect:rect];
-    CGContextRef ctx = UIGraphicsGetCurrentContext();
-    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
-    CGContextSetFillColorWithColor(ctx, [UIColor clearColor].CGColor);
-    CGContextSetLineWidth(ctx, 5.0);
-    CGContextAddPath(ctx, _path);
-    CGContextStrokePath(ctx);
-    
-}
+//-(void)drawRect:(CGRect)rect{
+//    [super drawRect:rect];
+//    CGContextRef ctx = UIGraphicsGetCurrentContext();
+//    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
+//    CGContextSetFillColorWithColor(ctx, [UIColor clearColor].CGColor);
+//    CGContextSetLineWidth(ctx, 5.0);
+//    CGContextAddPath(ctx, _path);
+//    CGContextStrokePath(ctx);
+//    
+//}
 
 -(void)drawLineFromPoint:(CGPoint)fPoint ToPoint:(CGPoint)tPoint
 {
-//    UIGraphicsBeginImageContext(self.frame.size);
-//    [self.image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
-//    CGContextRef ctx = UIGraphicsGetCurrentContext();
-//    CGContextSetLineCap(ctx, kCGLineCapRound);
-//    CGContextSetLineWidth(ctx, 7);
-//    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
-//    CGContextMoveToPoint(ctx, fPoint.x, fPoint.y);
-//    CGContextAddLineToPoint(ctx, tPoint.x, tPoint.y);
-//    CGContextStrokePath(ctx);
-//    self.image = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
+    UIGraphicsBeginImageContext(self.frame.size);
+    [self.image drawInRect:CGRectMake(0, 0, self.frame.size.width, self.frame.size.height)];
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    CGContextSetLineCap(ctx, kCGLineCapRound);
+    CGContextSetLineWidth(ctx, 7);
+    CGContextSetStrokeColorWithColor(ctx, [UIColor yellowColor].CGColor);
+    CGContextMoveToPoint(ctx, fPoint.x, fPoint.y);
+    CGContextAddLineToPoint(ctx, tPoint.x, tPoint.y);
+    CGContextStrokePath(ctx);
+    self.image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
 }
 
 -(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
@@ -95,13 +95,14 @@
         CGPathRelease(_path);
         _path = NULL;
         _needUpdate = YES;
+        self.image = nil;
         return;
     }
     
     CGPoint point = [touch locationInView:self];
-//    [self drawLineFromPoint:_previousPoint ToPoint:point];
+    [self drawLineFromPoint:_previousPoint ToPoint:point];
     _previousPoint = point;
-    CGPathAddLineToPoint(_path, NULL, point.x, point.y);
+//    CGPathAddLineToPoint(_path, NULL, point.x, point.y);
 //    [self setNeedsDisplay];
     _needUpdate = YES;
 }

@@ -50,6 +50,9 @@ typedef enum ScreenRecorderStatus{
 @property(strong,nonatomic,readonly)NSArray<NSValue*>* mixtureCaptureBelowViewFrame;
 
 
+@property(strong,nonatomic)dispatch_queue_t captureQueue;///mast same with rander queue_t.,assign before start
+
+
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl;
 

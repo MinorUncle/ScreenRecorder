@@ -12,8 +12,8 @@ static GJQueue<GJBuffer*> _pixPool;
 
 void dataProviderReleaseDataCallback(void * __nullable info,
                                      const void *  data, size_t size){
-//    free((void*)data);
-    _pixPool.queuePush((GJBuffer*)info);
+    free((void*)data);
+//    _pixPool.queuePush((GJBuffer*)info);
 //    NSLog(@"free dataProviderReleaseDataCallback");
 }
 
@@ -23,12 +23,12 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
     // allocate array and read pixels into it.
-    GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
-//    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
-    GLubyte *buffer = (GLubyte*)(cachebuffer->data);
+//    GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
+    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
+//    GLubyte *buffer = (GLubyte*)(cachebuffer->data);
     glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
-    CGDataProviderRef provider = CGDataProviderCreateWithData(cachebuffer, buffer, myDataLength, dataProviderReleaseDataCallback);
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients
     int bitsPerComponent = 8;

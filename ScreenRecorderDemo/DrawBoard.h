@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DrawBoard : UIView
+@interface DrawBoard : UIImageView
 
 @end

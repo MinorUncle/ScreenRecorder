@@ -39,6 +39,6 @@
 -(void)stop;
 @end
 
-void praseVideoParamet(uint8_t* inparameterSet,uint8_t** inoutSetArry,int* inoutArryCount){
-    
-}
+//void praseVideoParamet(uint8_t* inparameterSet,uint8_t** inoutSetArry,int* inoutArryCount){
+//    
+//}
