@@ -16,6 +16,7 @@
 		043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */; };
 		043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226631DDEEE990012A0C0 /* GJH264Encoder.m */; };
 		043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226741DDF03110012A0C0 /* VideoToolbox.framework */; };
+		0449148E1DE7D03200A21FD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0449148D1DE7D03200A21FD6 /* ReplayKit.framework */; };
 		046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F31DE2DF9900FD1E6F /* FilePlayerView.m */; };
 		046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F61DE2DFAB00FD1E6F /* PlayerView.m */; };
 		046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */; };
@@ -55,6 +56,7 @@
 		0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "13031I1XF-14H6.png"; sourceTree = "<group>"; };
 		043226721DDF03070012A0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		043226741DDF03110012A0C0 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		0449148D1DE7D03200A21FD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		046080F21DE2DF9900FD1E6F /* FilePlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePlayerView.h; sourceTree = "<group>"; };
 		046080F31DE2DF9900FD1E6F /* FilePlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePlayerView.m; sourceTree = "<group>"; };
 		046080F51DE2DFAB00FD1E6F /* PlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerView.h; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0449148E1DE7D03200A21FD6 /* ReplayKit.framework in Frameworks */,
 				AE5B9EC41DE1F482003FA8F5 /* CoreImage.framework in Frameworks */,
 				043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */,
 				043226611DDEE7660012A0C0 /* QuartzCore.framework in Frameworks */,
@@ -138,6 +141,7 @@
 		629A117217A12B17002DE046 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0449148D1DE7D03200A21FD6 /* ReplayKit.framework */,
 				AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */,
 				043226741DDF03110012A0C0 /* VideoToolbox.framework */,
 				043226721DDF03070012A0C0 /* AudioToolbox.framework */,

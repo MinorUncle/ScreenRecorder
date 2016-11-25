@@ -61,10 +61,7 @@ public:
     bool shouldNonatomic; //是否多线程，
     //是否支持自动增长，当为YES时，push永远不会等待，只会重新申请内存,默认为false
     bool autoResize;
-    /**
-     *  //自定义深复制，比如需要复制结构体里面的指针需要复制，为空时则直接赋值指针；
-     *dest 为目标地址，soc是赋值源
-     */
+
     
     bool queuePop(T* temBuffer);
     bool queuePush(T temBuffer);
@@ -148,11 +145,12 @@ bool GJQueue<T>::queuePop(T* temBuffer){
     _mutexSignal(&_outCond);
     GJQueueLOG("after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     _unLock(&_uniqueLock);
+    assert(* temBuffer);
     return true;
 }
 template<class T>
 bool GJQueue<T>::queuePush(T temBuffer){
-    
+    assert(temBuffer);
     _lock(&_uniqueLock);
     if ((_inPointer % _allocSize == _outPointer % _allocSize && _inPointer > _outPointer)) {
         if (autoResize) {

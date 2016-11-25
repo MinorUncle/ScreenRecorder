@@ -210,7 +210,6 @@ static const GLfloat coordVertices[] = {
     [EAGLContext setCurrentContext:_glContext];
     CGSize size = self.bounds.size;
     glViewport(1, 1, size.width*_viewScale-2, size.height*_viewScale-2);
-
 	
 	
 	// Update attribute values
@@ -223,9 +222,12 @@ static const GLfloat coordVertices[] = {
     
     
     // Draw
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
-    [_glContext presentRenderbuffer:GL_RENDERBUFFER];
+    @synchronized ([UIScreen mainScreen]) {
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+        [_glContext presentRenderbuffer:GL_RENDERBUFFER];
+    }
+  
 }
 
 #pragma mark - 设置openGL

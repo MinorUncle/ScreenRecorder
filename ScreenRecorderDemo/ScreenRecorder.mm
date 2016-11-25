@@ -11,9 +11,13 @@
 #import <AVFoundation/AVFoundation.h>
 #import <OpenGLES/ES2/gl.h>
 #import "ImageTool.h"
+#import <ReplayKit/ReplayKit.h>
 
+@interface RPPreviewViewController()
+@property(nonatomic,strong)NSURL*movieURL;
+@end
 
-@interface ScreenRecorder()<GJH264EncoderDelegate>
+@interface ScreenRecorder()<GJH264EncoderDelegate,RPScreenRecorderDelegate>
 {
     GJQueue* _imageCache;//有问题
     dispatch_queue_t _writeQueue;
@@ -24,12 +28,9 @@
     CFRunLoopRef _captureRunLoop;
     CGRect _glRect;
     BOOL _mixtureRecorder;
-    
-
-//    NSMutableArray* _cacheArry;//效率很低，待改善
+    //    NSMutableArray* _cacheArry;//效率很低，待改善
 }
 @property(strong,nonatomic)NSTimer* fpsTimer;
-
 @end
 
 @implementation ScreenRecorder
@@ -37,50 +38,60 @@
 {
     self = [super init];
     if (self) {
+        _syncToken = [UIApplication sharedApplication];
         _captureQueue = dispatch_queue_create("captureQueue", DISPATCH_QUEUE_CONCURRENT);
 //        _captureQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0);
         _recorderType = recorderType;
         _imageCache = [[GJQueue alloc]init];
         _imageCache.autoResize = false;
         
-   
-    
-        
         _options = [NSDictionary dictionaryWithObjectsAndKeys:
                     [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
                     [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey, nil];
-
- 
     }
     return self;
 }
 
+
+-(UIImage*)_mixtureCaptureWithGLImage:(UIImage*)glimage{
+    UIGraphicsBeginImageContextWithOptions(self.captureSize, YES, 1.0);
+    UIImage *image;
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+    for (int i = 0; i< _mixtureCaptureBelowView.count; i++) {
+        CGRect rect = [_mixtureCaptureBelowViewFrame[i] CGRectValue];
+        CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
+        [_mixtureCaptureBelowView[i].layer renderInContext:ctx];
+        CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
+    }
+    [glimage drawInRect:_glRect];
+    for (int i = 0; i< _mixtureCaptureAboveView.count; i++) {
+        CGRect rect = [_mixtureCaptureAboveViewFrame[i] CGRectValue];
+        CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
+        [_mixtureCaptureAboveView[i].layer renderInContext:ctx];
+        CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
+    }
+    image = UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+    return image;
+}
 -(void)_captureCurrentView{
     @synchronized (self) {
         
-        UIGraphicsBeginImageContext(self.captureSize);
+
         UIImage *image;
-        CGContextRef ctx = UIGraphicsGetCurrentContext();
         if (!_mixtureRecorder) {
+            UIGraphicsBeginImageContextWithOptions(self.captureSize, YES, 1.0);
+            CGContextRef ctx = UIGraphicsGetCurrentContext();
+
             [self.captureView.layer renderInContext:ctx];
             image = UIGraphicsGetImageFromCurrentImageContext();
-        }else{
-            for (int i = 0; i< _mixtureCaptureBelowView.count; i++) {
-                CGRect rect = [_mixtureCaptureBelowViewFrame[i] CGRectValue];
-                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
-                [_mixtureCaptureBelowView[i].layer renderInContext:ctx];
-                CGContextTranslateCTM(ctx, -rect.origin.x, -rect.origin.y);
+            UIGraphicsEndImageContext();
 
-            }
+        }else{
+          
             UIImage* glImage = [ImageTool glToUIImageWithRect:CGRectMake(0, 0, _glRect.size.width, _glRect.size.height)];
-            [glImage drawInRect:_glRect];
-            for (int i = 0; i< _mixtureCaptureAboveView.count; i++) {
-                CGRect rect = [_mixtureCaptureAboveViewFrame[i] CGRectValue];
-                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
-                [_mixtureCaptureAboveView[i].layer renderInContext:ctx];
-                CGContextTranslateCTM(ctx, rect.origin.x, rect.origin.y);
-            }
-            image = UIGraphicsGetImageFromCurrentImageContext();
+            image = [self _mixtureCaptureWithGLImage:glImage];
         }
   
         if (image) {
@@ -89,23 +100,23 @@
                     [_imageCache queuePush:image limit:INT_MAX];
                     break;
                 case screenRecorderRealImageType:
-                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderImage:FinishWithError:)]) {
-                            [self.delegate ScreenRecorder:self recorderImage:image FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderImage:FinishWithError:)]) {
+                            [self.delegate screenRecorder:self recorderImage:image FinishWithError:nil];
                     }
                     break;
                 case screenRecorderRealRGBA8Type:
                 {
                     NSData* data = [ImageTool convertUIImageToBitmapRGBA8:image];
-                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderRGBA8Data:FinishWithError:)]) {
-                        [self.delegate ScreenRecorder:self recorderRGBA8Data:data FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderRGBA8Data:FinishWithError:)]) {
+                        [self.delegate screenRecorder:self recorderRGBA8Data:data FinishWithError:nil];
                     }
                 }
                     break;
                 case screenRecorderRealYUVType:
                 {
                     NSData* data = [ImageTool convertUIImageToBitmapYUV240P:image];
-                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderYUVData:FinishWithError:)]) {
-                        [self.delegate ScreenRecorder:self recorderYUVData:data FinishWithError:nil];
+                    if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderYUVData:FinishWithError:)]) {
+                        [self.delegate screenRecorder:self recorderYUVData:data FinishWithError:nil];
                     }
                 }
                     break;
@@ -126,7 +137,6 @@
             }
             _totalCount++;
         }
-        UIGraphicsEndImageContext();
     }
 }
 
@@ -148,6 +158,7 @@
                          hostSize:(CGSize)hostSize{
     UIImage *image ;
     @synchronized (self) {
+        
         UIGraphicsBeginImageContext(hostSize);
         CGContextRef ctx = UIGraphicsGetCurrentContext();
 
@@ -170,6 +181,42 @@
     }
     return image;
 }
+-(void)startSerialGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
+                            aboveRect:(NSArray<NSValue*>*)aboveRect
+                            belowView:(NSArray<UIView*>*)belowView
+                            belowRect:(NSArray<NSValue*>*)belowRect
+                             hostSize:(CGSize)hostSize
+                              fileUrl:(NSURL *)fileUrl{
+    _mixtureRecorder = YES;
+    _mixtureCaptureAboveView = aboveView;
+    _mixtureCaptureBelowView = belowView;
+    _mixtureCaptureAboveViewFrame = aboveRect;
+    _mixtureCaptureBelowViewFrame = belowRect;
+    _glRect = glRect;
+    _captureSize = hostSize;
+    [self _startWithFps:0 fileUrl:fileUrl];
+}
+ void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, const void * CV_NULLABLE dataPtr, size_t dataSize, size_t numberOfPlanes, const void * CV_NULLABLE planeAddresses[] ){
+
+}
+-(void)serialCaptureWithGLBuffer:(UIImage*)glImage{
+//    _captureSize = CGSizeMake(320, 274);
+//    size_t planeW[3] = {(size_t)(_captureSize.width), (size_t)(_captureSize.width*0.5), (size_t)(_captureSize.width*0.5)};
+//    size_t planeH[3] = {(size_t)(_captureSize.height), (size_t)(_captureSize.height*0.5), (size_t)(_captureSize.height*0.5)};
+//    size_t w = self.captureSize.width;
+//    size_t h = self.captureSize.height;
+//    uint8_t* planeBaseAddress[3] = {(uint8_t*)data,(uint8_t*)data+w*h,(uint8_t*)data+(int)(w*h*1.25)};
+//    CVPixelBufferRef pixbuffer;
+//    CVPixelBufferCreateWithPlanarBytes(kCFAllocatorDefault, w, h, pixelFormatType, data, (size_t)(w*h*1.5), 3, (void**)planeBaseAddress, (size_t*)planeW, (size_t*)planeH, planeW, NULL, NULL, (__bridge CFDictionaryRef)_options, &pixbuffer);
+//    
+//    CIImage* cimage = [CIImage imageWithCVPixelBuffer:pixbuffer];
+//    UIImage* image = [UIImage imageWithCIImage:cimage];
+//    return image;
+    
+    
+    UIImage* image = [self _mixtureCaptureWithGLImage:glImage];
+    [_imageCache queuePush:image limit:INT_MAX];
+}
 
 -(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
                       aboveRect:(NSArray<NSValue*>*)aboveRect
@@ -177,7 +224,7 @@
                       belowRect:(NSArray<NSValue*>*)belowRect
                        hostSize:(CGSize)hostSize
                             fps:(NSInteger)fps
-                        fileUrl:(NSString*)fileUrl{
+                        fileUrl:(NSURL*)fileUrl{
     _mixtureRecorder = YES;
     _mixtureCaptureAboveView = aboveView;
     _mixtureCaptureBelowView = belowView;
@@ -186,17 +233,29 @@
     _glRect = glRect;
     _captureSize = hostSize;
     [self _startWithFps:fps fileUrl:fileUrl];
+    
 }
--(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
+
+-(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSURL*)fileUrl{
     _mixtureRecorder = NO;
     _captureView=targetView;
     _captureSize = targetView.bounds.size;
     [self _startWithFps:fps fileUrl:fileUrl];
 }
--(void)_startWithFps:(NSInteger)fps fileUrl:(NSString*)fileUrl{
+
+-(void)_startWithFps:(NSInteger)fps fileUrl:(NSURL*)fileUrl{
+    if (USE_REPLAYKIT && [[UIDevice currentDevice].systemVersion doubleValue] >= 9.0 && _recorderType == screenRecorderFileType) {
+        [self _startReplayKitWithFile:fileUrl];
+    }else{
+        [self _startReanderWithFps:fps fileUrl:fileUrl];
+    }
+}
+
+-(void)_startReanderWithFps:(NSInteger)fps fileUrl:(NSURL*)fileUrl{
     _status = screenRecorderRecorderingStatus;
     _fps = fps;
     _destFileUrl = fileUrl;
+    
     if(_pixelBuffer){
         CFRelease(_pixelBuffer);
         _pixelBuffer=NULL;
@@ -211,25 +270,58 @@
         }
     }
     __weak ScreenRecorder* wkSelf = self;
-    dispatch_async(_captureQueue, ^{
-        wkSelf.fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/fps target:self selector:@selector(_captureCurrentView) userInfo:nil repeats:YES];
-        [wkSelf.fpsTimer fire];
-        _captureRunLoop = CFRunLoopGetCurrent();
-        
-        //        NSDate* date = [NSDate distantFuture];
-        CFRunLoopRunInMode(kCFRunLoopDefaultMode,DBL_MAX, NO);
-        NSLog(@"after runloop:%d",_recorderType);
-    });
+    if(fps>0){
+        dispatch_async(_captureQueue, ^{
+            wkSelf.fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/fps target:self selector:@selector(_captureCurrentView) userInfo:nil repeats:YES];
+            [wkSelf.fpsTimer fire];
+            _captureRunLoop = CFRunLoopGetCurrent();
+            
+            //        NSDate* date = [NSDate distantFuture];
+            CFRunLoopRunInMode(kCFRunLoopDefaultMode,DBL_MAX, NO);
+            NSLog(@"after runloop:%d",_recorderType);
+        });
+    }
+}
+
+-(void)_startReplayKitWithFile:(NSURL*)fileUrl{
+    _destFileUrl = fileUrl;
+
+    
+    [RPScreenRecorder sharedRecorder].delegate = self;
+    __weak ScreenRecorder* wkSelf = self;
+    
+    [[RPScreenRecorder sharedRecorder] startRecordingWithMicrophoneEnabled:NO handler:^(NSError * _Nullable error) {
+        if (error) {
+            if ([wkSelf.delegate respondsToSelector:@selector(screenRecorder:recorderFile:FinishWithError:)]) {
+                [wkSelf.delegate screenRecorder:wkSelf recorderFile:nil FinishWithError:error];
+            }
+        }
+    }];
 }
 
 -(void)stopRecord{
-    if (_captureRunLoop) {
-        CFRunLoopStop(_captureRunLoop);
-        _captureRunLoop = NULL;
-    }
-    [_fpsTimer invalidate];
-    _fpsTimer=nil;
-    _status = screenRecorderStopStatus;
+    if (USE_REPLAYKIT && [[UIDevice currentDevice].systemVersion doubleValue] >= 9.0 && _recorderType == screenRecorderFileType) {
+        __weak ScreenRecorder* wkSelf = self;
+
+        [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+            if (!error) {
+                NSError* copyError = nil;
+                [[NSFileManager defaultManager]copyItemAtURL:previewViewController.movieURL toURL:wkSelf.destFileUrl error:&copyError];
+                error = copyError;
+                
+            }
+            if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderFile:FinishWithError:)]) {
+                [self.delegate screenRecorder:wkSelf recorderFile:previewViewController.movieURL FinishWithError:error];
+            }
+        }];
+    }else{
+        if (_captureRunLoop) {
+            CFRunLoopStop(_captureRunLoop);
+            _captureRunLoop = NULL;
+        }
+        [_fpsTimer invalidate];
+        _fpsTimer=nil;
+        _status = screenRecorderStopStatus;    }
     NSLog(@"recode stop");
 }
 -(void)pause{
@@ -243,18 +335,18 @@
 
 -(void)_writeFile{
     
-    if([[NSFileManager defaultManager] fileExistsAtPath:self.destFileUrl])
+    if([[NSFileManager defaultManager] fileExistsAtPath:self.destFileUrl.path])
     {
         //remove the old one
-        [[NSFileManager defaultManager] removeItemAtPath:self.destFileUrl error:nil];
+        [[NSFileManager defaultManager] removeItemAtPath:self.destFileUrl.path error:nil];
     }
     
     
     CGSize size = _captureSize;
     NSError *error = nil;
     
-    unlink([_destFileUrl UTF8String]);
-    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_destFileUrl]
+    unlink([_destFileUrl path].UTF8String);
+    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_destFileUrl.path]
                                                            fileType:AVFileTypeQuickTimeMovie
                                                               error:&error];
     NSParameterAssert(videoWriter);
@@ -298,16 +390,15 @@
                 [_imageCache clean];
                 [writerInput markAsFinished];
                 [videoWriter finishWritingWithCompletionHandler:^{
-                    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderFile:FinishWithError:)]) {
+                    if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderFile:FinishWithError:)]) {
                         dispatch_async(dispatch_get_main_queue(), ^{
-                            [self.delegate ScreenRecorder:self recorderFile:self.destFileUrl FinishWithError:nil];
+                            [self.delegate screenRecorder:self recorderFile:self.destFileUrl FinishWithError:nil];
                         });
                     }
                 }];
                 break;
             }else{
                 UIImage* image ;
-                NSLog(@"begin waitPop");
                 if ([_imageCache queuePop:&image limit:0.2]) {
                     CVPixelBufferRef buffer = [self pixelBufferFromCGImage:[image CGImage] size:size];
                     CFAbsoluteTime interval = (CFAbsoluteTimeGetCurrent() - startTime) * 1000;
@@ -316,7 +407,6 @@
                         NSLog(@"appendPixelBuffer error");
                     }else{
                         NSLog(@"appendPixelBuffer time:%f",interval);
-
                     }
                 }
             }
@@ -340,8 +430,8 @@
 
 
 -(void)GJH264Encoder:(GJH264Encoder *)encoder encodeCompleteBuffer:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
-    if ([self.delegate respondsToSelector:@selector(ScreenRecorder:recorderH264Data:withLenth:keyFrame:dts:)]) {
-        [self.delegate ScreenRecorder:self recorderH264Data:buffer withLenth:totalLenth keyFrame:keyFrame dts:dts];
+    if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderH264Data:withLenth:keyFrame:dts:)]) {
+        [self.delegate screenRecorder:self recorderH264Data:buffer withLenth:totalLenth keyFrame:keyFrame dts:dts];
     }
 }
 -(void)dealloc{

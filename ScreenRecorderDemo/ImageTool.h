@@ -24,7 +24,7 @@
 /** A helper routine used to convert a RGBA8 to UIImage
  @return a new context that is owned by the caller
  */
-+ (CGContextRef) newBitmapRGBA8ContextFromImage:(CGImageRef)image;
+//+ (CGContextRef) newBitmapRGBA8ContextFromImage:(CGImageRef)image;
 
 
 /** Converts a RGBA8 bitmap to a UIImage.
@@ -36,6 +36,7 @@
 + (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *)buffer
                                 withWidth:(int)width
                                withHeight:(int)height;
++ (UIImage *) convertBitmapYUV420PToUIImage:(uint8_t*)yuvData width:(int)width height:(int)height;
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect ;
 +(UIImage *)mergerImage:(UIImage *)firstImage fristPoint:(CGPoint)fristPoint secodImage:(UIImage *)secondImage secondPoint:(CGPoint)secondPoint destSize:(CGSize)destSize;

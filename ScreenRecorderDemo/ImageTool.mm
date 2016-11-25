@@ -12,8 +12,8 @@ static GJQueue<GJBuffer*> _pixPool;
 
 void dataProviderReleaseDataCallback(void * __nullable info,
                                      const void *  data, size_t size){
-    free((void*)data);
-//    _pixPool.queuePush((GJBuffer*)info);
+//    free((void*)data);
+    _pixPool.queuePush((GJBuffer*)info);
 //    NSLog(@"free dataProviderReleaseDataCallback");
 }
 
@@ -23,12 +23,16 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
     // allocate array and read pixels into it.
-//    GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
-    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
-//    GLubyte *buffer = (GLubyte*)(cachebuffer->data);
-    glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-
-    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, myDataLength, dataProviderReleaseDataCallback);
+    GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
+//    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
+    GLubyte *buffer = (GLubyte*)(cachebuffer->data);
+    @synchronized ([UIScreen mainScreen]) {
+        glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+    }
+//    UIImage* image = [self convertBitmapRGBA8ToUIImage:buffer withWidth:rect.size.width withHeight:rect.size.height];
+//    _pixPool.queuePush(cachebuffer);
+//    return image;
+    CGDataProviderRef provider = CGDataProviderCreateWithData(cachebuffer, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients
     int bitsPerComponent = 8;
@@ -44,6 +48,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     UIImage *myImage = [UIImage imageWithCGImage:imageRef scale:[UIScreen mainScreen].scale orientation:UIImageOrientationDownMirrored];
     CGImageRelease(imageRef);
     CGDataProviderRelease(provider);
+
     return myImage;
 }
 //合并图片
@@ -69,19 +74,15 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGImageRef imageRef = image.CGImage;
     NSData* data;
     // Create a bitmap context to draw the uiimage into
-    CGContextRef context = [self newBitmapRGBA8ContextFromImage:imageRef];
-    
-    if(!context) {
-        return NULL;
-    }
-    
     size_t width = CGImageGetWidth(imageRef);
     size_t height = CGImageGetHeight(imageRef);
     
     CGRect rect = CGRectMake(0, 0, width, height);
-    
+    CGContextRef context = [self newBitmapRGBA8ContextWithSize:rect.size];
+    if(!context) {
+        return NULL;
+    }
     CGContextDrawImage(context, rect, imageRef);
-    
     unsigned char *bitmapData = (unsigned char *)CGBitmapContextGetData(context);
     
     size_t bytesPerRow = CGBitmapContextGetBytesPerRow(context);
@@ -99,12 +100,8 @@ void dataProviderReleaseDataCallback(void * __nullable info,
 
 + (NSData *) convertUIImageToBitmapYUV240P:(UIImage *)image{
     NSData* rgba8 = [self convertUIImageToBitmapRGBA8:image];
-
-   
-    uint8_t* rgba = (uint8_t*)[rgba8 bytes];
-    CGSize size = image.size;
-    int total = size.height * size.width;
-    int uvw = size.width,uvh = size.height;
+    int total = image.size.height * image.size.width;
+    int uvw = image.size.width,uvh = image.size.height;
 #if 0
     if (uvw % 2 == 1)uvw++;
     if (uvh % 2 == 1)uvh++;
@@ -114,20 +111,26 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     //forbid singular height or width
     NSAssert(uvw % 2 == 0 && uvh % 2 == 0, @"图像宽或者高不能为奇数");
     uint8_t* blockData = (uint8_t*)malloc(total*1.5);
-    uint8_t* v = blockData+ (int)(total*1.25);
 #endif
+    [self rgba2yuvWithBuffer:(uint8_t *)rgba8.bytes width:uvw height:uvh yuvOut:&blockData];
+    NSData* data = [NSData dataWithBytesNoCopy:blockData length:total*1.5];
+    return data;
+}
++(void)rgba2yuvWithBuffer:(uint8_t*)rgba width:(int)width height:(int)height yuvOut:(uint8_t**)yuvOut{
+    uint8_t* blockData = *yuvOut;
+    int total = width* height;
+    uint8_t* v = blockData+ (int)(total*1.25);
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
     int uvindex=0;
     int yindex=0;
     
-    for (int i = 0; i < size.height; i++) {
-        for (int j=0; j < size.width; j++) {
+    for (int i = 0; i < height; i++) {
+        for (int j=0; j < width; j++) {
             uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
-            int yy =0.2558*r + 0.502*g + 0.097*b+16 ;
+            int yy =0.25578515625*r + 0.50216015625*g + 0.0975234375*b+16 ;
             yy = MIN(yy, 255);
             y[yindex++] = yy;
-            
             if (j%2==0 && i%2==0 ) {
                 int uu = -0.147644*r - 0.289856*g + 0.4375*b + 128;
                 uu= MAX(0, MIN(uu , 255));
@@ -138,39 +141,64 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                 v[uvindex++]=vv;
             }
         }
-    }    
-    
-    NSData* data = [NSData dataWithBytesNoCopy:blockData length:total*1.5];
-    return data;
+    }
 }
 
-+ (CGContextRef) newBitmapRGBA8ContextFromImage:(CGImageRef) image {
++(void)yuv2rgba8WithBuffer:(uint8_t*)yuv width:(int)width height:(int)height rgbOut:(uint8_t**)rgbaOut{
+    uint8_t* blockData = yuv;
+    uint8_t* rgba = *rgbaOut;
+    int total = width* height;
+    uint8_t* y = blockData;
+    uint8_t* u = blockData+ (int)total;
+    uint8_t* v = blockData+ (int)(total*1.25);
+
+    int uvsingleindex=0;
+    int uvdoubleindex=0;
+
+    int yindex=0;
+    
+    int uu,vv;
+    for (int i = 0; i < height; i++) {
+        for (int j=0; j < width; j++) {
+            int yy = y[yindex++];
+           
+            if (i%2 == 0) {
+                if (j%2==0) {
+                    uu=u[uvdoubleindex];
+                    vv=v[uvdoubleindex++];
+                }
+            }else{
+                if (j%2==0) {
+                    uu=u[uvsingleindex];
+                    vv=v[uvsingleindex++];
+                }
+            }
+            rgba[yindex*4] = 1.168949*(yy-16) + 1.602885*(vv-128);
+            rgba[yindex*4+1] = 1.168949*(yy-16) - 0.393531*(uu -128) - 0.816461*(vv -128);
+            rgba[yindex*4+2] = 1.168949*(yy-16) + 2.026342*(uu-128);
+            rgba[yindex*4+3] = 1;
+        }
+    }
+}
+
++ (CGContextRef) newBitmapRGBA8ContextWithSize:(CGSize)size {
     CGContextRef context = NULL;
     CGColorSpaceRef colorSpace;
 //    uint32_t *bitmapData;
-    
     size_t bitsPerPixel = 32;
     size_t bitsPerComponent = 8;
     size_t bytesPerPixel = bitsPerPixel / bitsPerComponent;
     
-    size_t width = CGImageGetWidth(image);
-    size_t height = CGImageGetHeight(image);
-    
-    size_t bytesPerRow = width * bytesPerPixel;
+    size_t bytesPerRow = size.width * bytesPerPixel;
 //    size_t bufferLength = bytesPerRow * height;
-    
     colorSpace = CGColorSpaceCreateDeviceRGB();
-    
     if(!colorSpace) {
         NSLog(@"Error allocating color space RGB\n");
         return NULL;
     }
-    
-
-    
     context = CGBitmapContextCreate(NULL,
-                                    width,
-                                    height,
+                                    size.width,
+                                    size.height,
                                     bitsPerComponent,
                                     bytesPerRow,
                                     colorSpace,
@@ -183,6 +211,60 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGColorSpaceRelease(colorSpace);
     
     return context;
+}
+
+//+ (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *) buffer
+//                                withWidth:(int) width
+//                               withHeight:(int) height {
+//    
+//    
+//    size_t bufferLength = width * height * 4;
+//    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, bufferLength, NULL);
+//    size_t bitsPerComponent = 8;
+//    size_t bitsPerPixel = 32;
+//    size_t bytesPerRow = 4 * width;
+//    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+//    if(colorSpaceRef == NULL) {
+//        NSLog(@"Error allocating color space");
+//        CGDataProviderRelease(provider);
+//        return nil;
+//    }
+//    
+//    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+//    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+//    
+//    CGImageRef iref = CGImageCreate(width,
+//                                    height,
+//                                    bitsPerComponent,
+//                                    bitsPerPixel,
+//                                    bytesPerRow,
+//                                    colorSpaceRef,
+//                                    bitmapInfo,
+//                                    provider,	// data provider
+//                                    NULL,		// decode
+//                                    YES,			// should interpolate
+//                                    renderingIntent);
+//    UIImage* image;
+//    // Support both iPad 3.2 and iPhone 4 Retina displays with the correct scale
+//    if([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)]) {
+//        float scale = [[UIScreen mainScreen] scale];
+//        image = [UIImage imageWithCGImage:iref scale:scale orientation:UIImageOrientationUp];
+//    } else {
+//        image = [UIImage imageWithCGImage:iref];
+//    }
+//    CGColorSpaceRelease(colorSpaceRef);
+//    CGImageRelease(iref);
+//    CGDataProviderRelease(provider);
+//    assert(image);
+//    return image;
+//}
+
++ (UIImage *) convertBitmapYUV420PToUIImage:(uint8_t*)yuvData width:(int)width height:(int)height{
+    int total = height * width;
+    uint8_t* rgbOut = (uint8_t*)malloc(total*4);
+    [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:&rgbOut];
+    return [self convertBitmapRGBA8ToUIImage:rgbOut withWidth:width withHeight:height];
+    
 }
 
 + (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *) buffer
@@ -205,7 +287,6 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     
     CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
     CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
-    
     CGImageRef iref = CGImageCreate(width,
                                     height,
                                     bitsPerComponent,
@@ -217,9 +298,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                                     NULL,		// decode
                                     YES,			// should interpolate
                                     renderingIntent);
-    
-    GJBuffer* pixels = (GJBuffer*)[self getCachePixDataWithSize:(int)bufferLength];
-    
+    uint32_t* pixels = (uint32_t*)malloc(bufferLength);
     if(pixels == NULL) {
         NSLog(@"Error: Memory not allocated for bitmap");
         CGDataProviderRelease(provider);
@@ -228,7 +307,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
         return nil;
     }
     
-    CGContextRef context = CGBitmapContextCreate(pixels->data,
+    CGContextRef context = CGBitmapContextCreate(pixels,
                                                  width,
                                                  height,
                                                  bitsPerComponent,
@@ -238,7 +317,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     
     if(context == NULL) {
         NSLog(@"Error context not created");
-        _pixPool.queuePush(pixels);
+        free(pixels);
     }
     
     UIImage *image = nil;
@@ -263,10 +342,14 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     CGColorSpaceRelease(colorSpaceRef);
     CGImageRelease(iref);
     CGDataProviderRelease(provider);
-    free(pixels->data);
-    free(pixels);
+    
+    if(pixels) {
+        free(pixels);
+    }
     return image;
 }
+
+
 + (CVPixelBufferRef) pixelBufferFromCGImage: (CGImageRef) image
 {
     CGSize frameSize = CGSizeMake(CGImageGetWidth(image), CGImageGetHeight(image));
