@@ -37,6 +37,12 @@
     }
     return self;
 }
+-(void)playWithFinish:(FinishBlock)finishBlock{}
+-(void)stop{}
+-(void)pause{}
+-(void)seekToValue:(long)value finished:(FinishBlock)finishBlock{}
+-(void)thumbnailImageWithName:(NSString *)name resultBlock:(void (^)(UIImage *))resultBlock{}
+
 -(void)setFrame:(CGRect)frame{
     [super setFrame:frame];
     _contentView.frame = self.bounds;

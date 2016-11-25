@@ -22,9 +22,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     rect.size.width *= [UIScreen mainScreen].scale;
     NSInteger myDataLength = rect.size.width * rect.size.height * 4;  //1024-width，768-height
     
-    // allocate array and read pixels into it.
     GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
-//    GLubyte *buffer = (GLubyte *) malloc(myDataLength);
     GLubyte *buffer = (GLubyte*)(cachebuffer->data);
     @synchronized ([UIScreen mainScreen]) {
         glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
@@ -128,7 +126,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     for (int i = 0; i < height; i++) {
         for (int j=0; j < width; j++) {
             uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
-            int yy =0.25578515625*r + 0.50216015625*g + 0.0975234375*b+16 ;
+            int yy =0.255785*r + 0.50216*g + 0.09752*b+16 ;
             yy = MIN(yy, 255);
             y[yindex++] = yy;
             if (j%2==0 && i%2==0 ) {
@@ -151,7 +149,6 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
     uint8_t* v = blockData+ (int)(total*1.25);
-
     int uvsingleindex=0;
     int uvdoubleindex=0;
 
@@ -263,13 +260,13 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     int total = height * width;
     uint8_t* rgbOut = (uint8_t*)malloc(total*4);
     [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:&rgbOut];
-    return [self convertBitmapRGBA8ToUIImage:rgbOut withWidth:width withHeight:height];
+    return [self convertBitmapRGBA8ToUIImage:rgbOut width:width height:height];
     
 }
 
 + (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *) buffer
-                                withWidth:(int) width
-                               withHeight:(int) height {
+                                width:(int) width
+                               height:(int) height {
     
     
     size_t bufferLength = width * height * 4;

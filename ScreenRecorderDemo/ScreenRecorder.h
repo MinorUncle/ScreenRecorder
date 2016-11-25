@@ -10,7 +10,7 @@
 #import <UIKit/UIView.h>
 #import "GJH264Encoder.h"
 
-#define USE_REPLAYKIT NO
+#define USE_REPLAYKIT 1
 
 @class ScreenRecorder;
 @protocol ScreenRecorderDelegate <NSObject>
@@ -46,7 +46,7 @@ typedef enum ScreenRecorderStatus{
 
 @property(assign,nonatomic,readonly)CGSize captureSize;
 @property(weak,nonatomic,readonly)UIView* captureView;
-@property(strong,nonatomic,readonly)id syncToken;//一直不变，用于gl截图同步
+@property(strong,nonatomic,readonly)id syncToken;//暂时没用
 
 
 @property(strong,nonatomic,readonly)NSArray<UIView*>* mixtureCaptureAboveView;
@@ -61,7 +61,7 @@ typedef enum ScreenRecorderStatus{
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
 -(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSURL*)fileUrl;
 
-//可能崩溃,截屏效果差
+//可能崩溃,截屏效果差,容易黑屏
 -(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
                       aboveRect:(NSArray<NSValue*>*)aboveRect
                       belowView:(NSArray<UIView*>*)belowView
@@ -69,12 +69,7 @@ typedef enum ScreenRecorderStatus{
                        hostSize:(CGSize)hostSize
                             fps:(NSInteger)fps
                         fileUrl:(NSURL*)fileUrl;
--(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect//gl层的frame，相对hostSize gl视图宽高一定要偶数数;
-                            AboveView:(NSArray<UIView*>*)aboveView//gl层上面视图,数组尽量少，最好是一个
-                            aboveRect:(NSArray<NSValue*>*)aboveRect//gl层上面视图frame
-                            belowView:(NSArray<UIView*>*)belowView//gl层下层视图,数组尽量少，最好是一个
-                            belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图
-                             hostSize:(CGSize)hostSize;//图片大小
+
 
 //请OPGL渲染一帧后调用，同步截屏
 -(void)startSerialGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
@@ -83,15 +78,23 @@ typedef enum ScreenRecorderStatus{
                             belowRect:(NSArray<NSValue*>*)belowRect
                              hostSize:(CGSize)hostSize
                               fileUrl:(NSURL*)fileUrl;
-//kCVPixelFormatType_32ARGB
 -(void)serialCaptureWithGLBuffer:(UIImage*)data;//gl层视图数据数据
+
+-(BOOL)canCaptureFullScreenFileFast;
+-(void)startCaptureFullScreenFileFast;
 
 
 -(void)stopRecord;
 -(void)pause;
 -(void)resume;
--(UIImage*)captureImageWithView:(UIView*)view;
 
+-(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect//gl层的frame，相对hostSize gl视图宽高一定要偶数数;
+                            AboveView:(NSArray<UIView*>*)aboveView//gl层上面视图,数组尽量少，最好是一个
+                            aboveRect:(NSArray<NSValue*>*)aboveRect//gl层上面视图frame
+                            belowView:(NSArray<UIView*>*)belowView//gl层下层视图,数组尽量少，最好是一个
+                            belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图
+                             hostSize:(CGSize)hostSize;//图片大小
+-(UIImage*)captureImageWithView:(UIView*)view;
 
 
 @end

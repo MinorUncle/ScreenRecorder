@@ -26,7 +26,9 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 //screenRecorderRealYUVType
 //screenRecorderFileType
-#define FPS 15
+#define SYNCH_CAPTURE 1
+
+#define FPS 30
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
@@ -66,14 +68,9 @@ static int yuvHeight=320,yuvWidth=568;
 @implementation GJViewController
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-//    [_movieShow setFileURL:[NSURL URLWithString:_fileUrl]];
-//    [_movieShow playWithFinish:^(BOOL finished) {
-//        NSLog(@"play success");
-//    }];
-//    return;
+
     [self startWithType:(ScreenRecorderType)_displayType.currentTag];
-//    [myScreenRecorder startWithView:_drawView fps:15 fileUrl:_fileUrl];
-//    _drawButton.selected = YES;
+
 }
 
 -(void)drawClick:(UIButton*)button
@@ -233,22 +230,21 @@ static int yuvHeight=320,yuvWidth=568;
         
         NSData* data= [self yuvRead];
         while (data.length > 0 && myScreenRecorder.status == screenRecorderRecorderingStatus) {
-
             [_yuvShowView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
-            UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:data.bytes width:yuvWidth height:yuvHeight];
+#if SYNCH_CAPTURE
+            UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:(uint8_t*)data.bytes width:yuvWidth height:yuvHeight];
             [myScreenRecorder serialCaptureWithGLBuffer:gl];
+#endif
             data= [self yuvRead];
             usleep((1.0/FPS)*1000*1000);
         }
     });
 }
 -(void)startWithType:(ScreenRecorderType)recodeType{
-    
     UIView* showView;
     switch (recodeType) {
         case screenRecorderRealYUVType:
         {
-            
             showView = _yuvShowView;
         }
             break;
@@ -261,16 +257,13 @@ static int yuvHeight=320,yuvWidth=568;
         {
             showView = _imageShowView;
         }
-            
             break;
         case screenRecorderRealH264Type:
         {
-
             if (_h264Decoder == nil) {
                 _h264Decoder = [[GJH264Decoder alloc]init];
                 _h264Decoder.delegate = self;
             }
-            
             showView = _imageShowView;
         }
             break;
@@ -294,8 +287,12 @@ static int yuvHeight=320,yuvWidth=568;
     if (recodeType == screenRecorderFileType) {
         [_yuvShowView addSubview:_glOverShow];
         [self produceYuv];
-//        [myScreenRecorder startGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl: _fileUrl];
-        [myScreenRecorder startSerialGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fileUrl: _fileUrl];
+
+#if SYNCH_CAPTURE
+         [myScreenRecorder startSerialGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fileUrl: _fileUrl];
+#else
+         [myScreenRecorder startGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl: _fileUrl];
+#endif
     }else{
             yuvWidth = _drawView.bounds.size.width;
             yuvHeight = _drawView.bounds.size.height;
@@ -313,9 +310,7 @@ static int yuvHeight=320,yuvWidth=568;
 
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderFile:(NSURL *)fileUrl FinishWithError:(NSError *)error{
     
-//    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:[fileUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]];
-//    [_movieShow loadRequest:request];
-//    return;
+
     dispatch_async(dispatch_get_main_queue(), ^{
         [_yuvShowView removeFromSuperview];
         [_displayView addSubview:_movieShow];
@@ -327,8 +322,7 @@ static int yuvHeight=320,yuvWidth=568;
         }];
     });
 
-//    [self.player play];
-//    NSLog(@"did play");
+
 }
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderImage:(UIImage *)image FinishWithError:(NSError *)error{
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -339,7 +333,7 @@ static int yuvHeight=320,yuvWidth=568;
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderRGBA8Data:(NSData *)RGBA8Data FinishWithError:(NSError *)error{
     unsigned char* data = malloc(RGBA8Data.length);
     memcpy(data, RGBA8Data.bytes, RGBA8Data.length);
-    UIImage* image = [ImageTool convertBitmapRGBA8ToUIImage:data withWidth:recorder.captureSize.width withHeight:recorder.captureSize.height];
+    UIImage* image = [ImageTool convertBitmapRGBA8ToUIImage:data width:recorder.captureSize.width height:recorder.captureSize.height];
     dispatch_async(dispatch_get_main_queue(), ^{
         _imageShowView.image = image;
         free(data);
@@ -372,14 +366,12 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
 //    }
     if (_displayType.currentTag == screenRecorderRealYUVType) {
         dispatch_async(dispatch_get_global_queue(0, 0), ^{
-     
             [self yuvWrite:yuvData];
         });
     }
     OpenGLView20* iv = _yuvShowView;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureSize.width height:recorder.captureSize.height];
-//                [self glCapture];
     });
 }
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{
@@ -387,7 +379,6 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
         unsigned char * spsppsData = (unsigned char*)malloc(recorder.h264Encoder.parameterSet.length);
         memcpy(spsppsData, (unsigned char *)recorder.h264Encoder.parameterSet.bytes, recorder.h264Encoder.parameterSet.length);
         size_t spsSize = (size_t)spsppsData[0];
-//        size_t ppsSize = (size_t)spsppsData[4+ spsSize];
         memcpy(spsppsData, "\x00\x00\x00\x01", 4);
         memcpy(spsppsData+4+spsSize, "\x00\x00\x00\x01", 4);
         [_h264Decoder decodeBuffer:(uint8_t*)spsppsData withLenth:(uint32_t)recorder.h264Encoder.parameterSet.length];
