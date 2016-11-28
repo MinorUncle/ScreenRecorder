@@ -6,12 +6,24 @@
 	<dict>
 		<key>ScreenRecorderDemo.xcscheme</key>
 		<dict>
+			<key>isShown</key>
+			<true/>
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>043B794D1DEBD5EA00DA07D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>043B795B1DEBD5EB00DA07D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>629A116E17A12B17002DE046</key>
 		<dict>
 			<key>primary</key>

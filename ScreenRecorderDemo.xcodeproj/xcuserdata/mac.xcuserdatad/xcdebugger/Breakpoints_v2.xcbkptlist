@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501989425.924118"
+            timestampString = "502011712.772208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "340"
-            endingLineNumber = "340"
+            startingLineNumber = "358"
+            endingLineNumber = "358"
             landmarkName = "-screenRecorder:recorderRGBA8Data:FinishWithError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501989425.924118"
+            timestampString = "502011712.772208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "341"
-            endingLineNumber = "341"
+            startingLineNumber = "359"
+            endingLineNumber = "359"
             landmarkName = "-screenRecorder:recorderRGBA8Data:FinishWithError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -105,8 +105,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "255"
             endingLineNumber = "255"
-            landmarkName = "@implementation ImageTool"
-            landmarkType = "3">
+            landmarkName = "+convertBitmapYUV420PToUIImage:width:height:"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -148,11 +148,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501758168.507335"
+            timestampString = "502011712.772208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "233"
-            endingLineNumber = "233"
+            startingLineNumber = "251"
+            endingLineNumber = "251"
             landmarkName = "-produceYuv"
             landmarkType = "7">
          </BreakpointContent>
@@ -164,11 +164,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501758199.283309"
+            timestampString = "502011712.772208"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "249"
+            endingLineNumber = "249"
             landmarkName = "-produceYuv"
             landmarkType = "7">
          </BreakpointContent>
@@ -186,6 +186,166 @@
             startingLineNumber = "320"
             endingLineNumber = "320"
             landmarkName = "-destFileUrl"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "477"
+            endingLineNumber = "477"
+            landmarkName = "-broadcastActivityViewController:didFinishWithBroadcastController:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "455"
+            endingLineNumber = "455"
+            landmarkName = "-boardCast:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "494"
+            endingLineNumber = "494"
+            landmarkName = "-broadcastController:didFinishWithError:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "496"
+            endingLineNumber = "496"
+            landmarkName = "-broadcastController:didUpdateServiceInfo:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "497"
+            endingLineNumber = "497"
+            landmarkName = "-broadcastController:didUpdateServiceInfo:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011828.54446"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "468"
+            endingLineNumber = "468"
+            landmarkName = "-boardCast:"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "-[GJViewController boardCast:]"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/develop/ScreenRecorderDemo/ScreenRecorderDemo/GJViewController.m"
+                  timestampString = "502008055.300422"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "477"
+                  endingLineNumber = "477"
+                  offsetFromSymbolStart = "628">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "__30-[GJViewController boardCast:]_block_invoke.277"
+                  moduleName = "ScreenRecorderDemo"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/mac/develop/ScreenRecorderDemo/ScreenRecorderDemo/GJViewController.m"
+                  timestampString = "502008055.301496"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "478"
+                  endingLineNumber = "478"
+                  offsetFromSymbolStart = "48">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "484"
+            endingLineNumber = "484"
+            landmarkName = "-broadcastActivityViewController:didFinishWithBroadcastController:error:"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/GJViewController.m"
+            timestampString = "502011712.772208"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "486"
+            endingLineNumber = "486"
+            landmarkName = "-broadcastActivityViewController:didFinishWithBroadcastController:error:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

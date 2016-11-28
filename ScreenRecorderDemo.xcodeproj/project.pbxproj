@@ -17,6 +17,7 @@
 		043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226631DDEEE990012A0C0 /* GJH264Encoder.m */; };
 		043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226741DDF03110012A0C0 /* VideoToolbox.framework */; };
 		043B79491DEBC1CE00DA07D0 /* BufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 043B79481DEBC1CE00DA07D0 /* BufferPool.m */; };
+		043B79E21DEBD7AB00DA07D0 /* RecoderOutApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */; };
 		0449148E1DE7D03200A21FD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0449148D1DE7D03200A21FD6 /* ReplayKit.framework */; };
 		046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F31DE2DF9900FD1E6F /* FilePlayerView.m */; };
 		046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F61DE2DFAB00FD1E6F /* PlayerView.m */; };
@@ -41,6 +42,19 @@
 		AE5B9EC41DE1F482003FA8F5 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE5B9EC31DE1F482003FA8F5 /* CoreImage.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		043B79731DEBD5EB00DA07D0 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0426197B1DE412ED001C6E05 /* GJQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GJQueue.m; sourceTree = "<group>"; };
 		043226561DDECE430012A0C0 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
@@ -58,6 +72,8 @@
 		043226741DDF03110012A0C0 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
 		043B79471DEBC1CE00DA07D0 /* BufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferPool.h; sourceTree = "<group>"; };
 		043B79481DEBC1CE00DA07D0 /* BufferPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferPool.m; sourceTree = "<group>"; };
+		043B79E01DEBD7AB00DA07D0 /* RecoderOutApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderOutApp.h; sourceTree = "<group>"; };
+		043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecoderOutApp.m; sourceTree = "<group>"; };
 		0449148D1DE7D03200A21FD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		046080F21DE2DF9900FD1E6F /* FilePlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePlayerView.h; sourceTree = "<group>"; };
 		046080F31DE2DF9900FD1E6F /* FilePlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePlayerView.m; sourceTree = "<group>"; };
@@ -196,6 +212,8 @@
 				0426197B1DE412ED001C6E05 /* GJQueue.m */,
 				04DDD4BF1DDDA8BA0072230C /* ScreenRecorder.h */,
 				04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */,
+				043B79E01DEBD7AB00DA07D0 /* RecoderOutApp.h */,
+				043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */,
 				043226581DDED59A0012A0C0 /* ImageTool.h */,
 				043226591DDED5D00012A0C0 /* ImageTool.mm */,
 			);
@@ -235,6 +253,7 @@
 				629A116B17A12B17002DE046 /* Sources */,
 				629A116C17A12B17002DE046 /* Frameworks */,
 				629A116D17A12B17002DE046 /* Resources */,
+				043B79731DEBD5EB00DA07D0 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
@@ -267,6 +286,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 629A116417A12B17002DE046;
 			productRefGroup = 629A117017A12B17002DE046 /* Products */;
@@ -305,6 +325,7 @@
 				046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */,
 				629A118D17A12B17002DE046 /* GJViewController.m in Sources */,
 				04DDD4C11DDDA8BA0072230C /* ScreenRecorder.mm in Sources */,
+				043B79E21DEBD7AB00DA07D0 /* RecoderOutApp.m in Sources */,
 				0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */,
 				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,
 				AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */,

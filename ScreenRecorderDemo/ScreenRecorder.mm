@@ -110,7 +110,7 @@
     _captureSize = hostSize;
     [self _startReanderWithFps:0];
 }
- void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, const void * CV_NULLABLE dataPtr, size_t dataSize, size_t numberOfPlanes, const void * CV_NULLABLE planeAddresses[] ){
+void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, const void * CV_NULLABLE dataPtr, size_t dataSize, size_t numberOfPlanes, const void * CV_NULLABLE planeAddresses[] ){
 
 }
 -(void)serialCaptureWithGLBuffer:(UIImage*)glImage{

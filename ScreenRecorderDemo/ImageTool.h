@@ -22,8 +22,10 @@
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect ;
 
+//yuv 转 rgba 8
 +(void)yuv2rgba8WithBuffer:(uint8_t*)yuv width:(int)width height:(int)height rgbOut:(uint8_t*)rgbaOut;
-+(void)rgba2yuvWithBuffer:(uint8_t*)rgba width:(int)width height:(int)height yuvOut:(uint8_t**)yuvOut;
+//rgb 转 yuv
++(void)rgba2yuvWithBuffer:(uint8_t*)rgba width:(int)width height:(int)height yuvOut:(uint8_t*)yuvOut;
 @end
 
 

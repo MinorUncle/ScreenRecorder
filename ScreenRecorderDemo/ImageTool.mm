@@ -106,32 +106,31 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     NSAssert(uvw % 2 == 0 && uvh % 2 == 0, @"图像宽或者高不能为奇数");
     uint8_t* blockData = (uint8_t*)malloc(total*1.5);
 #endif
-    [self rgba2yuvWithBuffer:(uint8_t *)rgba8.bytes width:uvw height:uvh yuvOut:&blockData];
+    [self rgba2yuvWithBuffer:(uint8_t *)rgba8.bytes width:uvw height:uvh yuvOut:blockData];
     NSData* data = [NSData dataWithBytesNoCopy:blockData length:total*1.5];
     return data;
 }
-+(void)rgba2yuvWithBuffer:(uint8_t*)rgba width:(int)width height:(int)height yuvOut:(uint8_t**)yuvOut{
-    uint8_t* blockData = *yuvOut;
++(void)rgba2yuvWithBuffer:(uint8_t*)rgba width:(int)width height:(int)height yuvOut:(uint8_t*)yuvOut{
+    uint8_t* blockData = yuvOut;
     int total = width* height;
     uint8_t* v = blockData+ (int)(total*1.25);
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
     int uvindex=0;
     int yindex=0;
-    
     for (int i = 0; i < height; i++) {
         for (int j=0; j < width; j++) {
             uint8_t r = rgba[yindex*4],g=rgba[yindex*4+1],b=rgba[yindex*4+2];
             int yy =0.255785*r + 0.50216*g + 0.09752*b+16 ;
-            yy = MIN(yy, 255);
+            yy = MIN(yy, 219);
             y[yindex++] = yy;
             if (j%2==0 && i%2==0 ) {
                 int uu = -0.147644*r - 0.289856*g + 0.4375*b + 128;
-                uu= MAX(0, MIN(uu , 255));
+                uu= MAX(0, MIN(uu , 224));
                 u[uvindex]=uu;
                 
                 int vv = 0.4375*r - 0.366352*g - 0.071148*b + 128;
-                vv= MAX(0, MIN(vv , 255));
+                vv= MAX(0, MIN(vv , 224));
                 v[uvindex++]=vv;
             }
         }
@@ -145,9 +144,9 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
     uint8_t* v = blockData+ (int)(total*1.25);
+    
     int uvsingleindex=0;
     int uvdoubleindex=0;
-
     int yindex=0;
     
     int uu,vv;
@@ -166,9 +165,9 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                     vv=v[uvsingleindex++];
                 }
             }
-            rgba[yindex*4] = 1.168949*(yy-16) + 1.602885*(vv-128);
-            rgba[yindex*4+1] = 1.168949*(yy-16) - 0.393531*(uu -128) - 0.816461*(vv -128);
-            rgba[yindex*4+2] = 1.168949*(yy-16) + 2.026342*(uu-128);
+            rgba[yindex*4] = MIN(255,MAX(0, 1.168949*(yy-16) + 1.602885*(vv-128)));
+            rgba[yindex*4+1] = MIN(255, MAX(0, 1.168949*(yy-16) - 0.393531*(uu -128) - 0.816461*(vv -128)));
+            rgba[yindex*4+2] = MIN(255, MAX(0, 1.168949*(yy-16) + 2.026342*(uu-128)));
             rgba[yindex*4+3] = 1;
             yindex++;
         }

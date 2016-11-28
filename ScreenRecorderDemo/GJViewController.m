@@ -6,6 +6,8 @@
 //  Copyright (c) 2016年 . All rights reserved.
 //
 
+#import <ReplayKit/ReplayKit.h>
+
 #import "GJViewController.h"
 #import "FilePlayerView.h"
 #import "OpenGLView20.h"
@@ -31,7 +33,7 @@
 #define FPS 15
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
 
-@interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
+@interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate,RPBroadcastActivityViewControllerDelegate,RPScreenRecorderDelegate,RPBroadcastControllerDelegate>
 {
     DrawBoard *_drawView;//手绘
 
@@ -56,12 +58,15 @@
 
     NSMutableData* _yuvMutDaba;
     
+    UIButton* _replayPush;
+    
+    
 }
 @property(nonatomic,strong)AVPlayer* player;
 @property(atomic,strong)NSFileHandle* yuvFileHandle;
+@property(atomic,strong)RPBroadcastController* broadcast;
 
 -(void)readyInit;
-
 @end
 
 static int yuvHeight=320,yuvWidth=568;
@@ -110,6 +115,10 @@ static int yuvHeight=320,yuvWidth=568;
 
 -(void)readyInit
 {
+    
+    [RPScreenRecorder sharedRecorder].microphoneEnabled = YES;
+    [RPScreenRecorder sharedRecorder].cameraEnabled = YES;
+    
     _yuvMutDaba = [[NSMutableData alloc]initWithCapacity:800000];
     NSString* path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
     _fileUrl = [NSURL fileURLWithPath:[path stringByAppendingPathComponent:@"test.mp4"]];
@@ -123,7 +132,7 @@ static int yuvHeight=320,yuvWidth=568;
     }
     
     CGFloat midH = 20.0,midW = 50.0,padding = 5.0;
-    int itemCount = 3;
+    int itemCount = 4;
     CGFloat margin = (self.view.bounds.size.width - 2*padding -itemCount*midW)/(itemCount-1);
 
     
@@ -163,6 +172,14 @@ static int yuvHeight=320,yuvWidth=568;
     _glCaptureButton.titleLabel.font = [UIFont systemFontOfSize:10];
     [_glCaptureButton setBackgroundColor:[UIColor grayColor]];
     
+    rect.origin.x = CGRectGetMaxX(rect) + margin;
+    _replayPush = [[UIButton alloc]initWithFrame:rect];
+    [_replayPush addTarget:self action:@selector(boardCast:) forControlEvents:UIControlEventTouchUpInside];
+    [_replayPush setTitle:@"replay开始" forState:UIControlStateNormal];
+    [_replayPush setTitle:@"replay停止" forState:UIControlStateSelected];
+
+    _replayPush.titleLabel.font = [UIFont systemFontOfSize:10];
+    [_replayPush setBackgroundColor:[UIColor grayColor]];
 
     rect.origin.y=CGRectGetMaxY(rect)+1;
     rect.size = _produceView.bounds.size;
@@ -186,8 +203,6 @@ static int yuvHeight=320,yuvWidth=568;
 
     rect = CGRectMake(0, 0, 100, 80);
     _iconShow = [[UIImageView alloc]initWithFrame:rect];
-    _iconShow.layer.borderColor = [UIColor blackColor].CGColor;
-    _iconShow.layer.borderWidth = 1.0;
     _iconShow.contentMode = UIViewContentModeScaleAspectFit;
     [_produceView addSubview:_iconShow];
 
@@ -196,6 +211,8 @@ static int yuvHeight=320,yuvWidth=568;
     [self.view addSubview:_drawButton];
     [self.view addSubview:_displayType];
     [self.view addSubview:_glCaptureButton];
+    [self.view addSubview:_replayPush];
+
 }
 
 -(void)glCapture{
@@ -429,9 +446,53 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
     dispatch_async(dispatch_get_main_queue(), ^{
         _imageShowView.image = uimage;
     });
-    
- 
+}
 
+
+#pragma mark replay
+-(void)boardCast:(UIButton*)btn{
+    if (![RPScreenRecorder sharedRecorder].isRecording) {
+        btn.selected = YES;
+        __weak GJViewController* wk = self;
+        [RPBroadcastActivityViewController loadBroadcastActivityViewControllerWithHandler:^(RPBroadcastActivityViewController * _Nullable broadcastActivityViewController, NSError * _Nullable error) {
+            if (error) {
+                NSLog(@"loadBroadcast error:%@",error);
+            }else{
+                broadcastActivityViewController.delegate = wk;
+                [wk presentViewController:broadcastActivityViewController animated:YES completion:nil];
+            }
+        }];
+    }else{
+        btn.selected = NO;
+       [self.broadcast finishBroadcastWithHandler:^(NSError * _Nullable error) {
+           NSLog(@"finishBroadcast  error:%@",error);
+       }];
+        [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+        }];
+    }
+}
+- (void)broadcastActivityViewController:(RPBroadcastActivityViewController *)broadcastActivityViewController didFinishWithBroadcastController:(nullable RPBroadcastController *)broadcastController error:(nullable NSError *)error{
+    [broadcastActivityViewController dismissViewControllerAnimated:YES completion:nil];
+    if (error) {
+        NSLog(@"loadBroadcast error:%@",error);
+    }else{
+        [broadcastController startBroadcastWithHandler:^(NSError * _Nullable error) {
+            NSLog(@"startBroadcast  error:%@",error);
+            self.broadcast = broadcastController;
+            broadcastController.delegate = self;
+            UIView* view = [[RPScreenRecorder sharedRecorder] cameraPreviewView];
+            view.contentMode = UIViewContentModeCenter;
+            view.frame = _iconShow.bounds;
+            view.center = _iconShow.center;
+            [_iconShow addSubview:view];
+        }];
+    }}
+
+- (void)broadcastController:(RPBroadcastController *)broadcastController didFinishWithError:(NSError * __nullable)error{
+    NSLog(@"didFinishWithError error :%@",error);
+}
+- (void)broadcastController:(RPBroadcastController *)broadcastController didUpdateServiceInfo:(NSDictionary <NSString *, NSObject <NSCoding> *> *)serviceInfo{
+    NSLog(@"error:%@",serviceInfo);
 }
 
 @end
