@@ -13,7 +13,7 @@
 #include <pthread.h>
 #include <assert.h>
 #include <sys/time.h>
-#ifndef DEBUG
+#ifdef DEBUG
 #define GJQueueLOG(format, ...) NSLog(format,##__VA_ARGS__)
 #else
 #define GJQueueLOG(format, ...)
@@ -43,14 +43,6 @@
 
 #pragma mark DELEGATE
 
-
-    /**
-     *  //自定义深复制，比如需要复制结构体里面的指针需要复制，为空时则直接赋值指针；
-     *dest 为目标地址，soc是赋值源
-     */
-
-//@property(nonatomic,assign)BOOL shouldWait;  //没有数据时是否支持等待，当为autoResize 为YES时，push永远不会等待
-//@property(nonatomic,assign)BOOL shouldNonatomic; //是否多线程，
 @property(nonatomic,assign)BOOL autoResize;    //是否支持自动增长，当为YES时，push永远不会等待，只会重新申请内存,默认为false
 
     //根据index获得value,当超过_inPointer和_outPointer范围则失败，用于遍历数组，不会产生进出队列作用

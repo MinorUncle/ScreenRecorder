@@ -222,12 +222,9 @@ static const GLfloat coordVertices[] = {
     
     
     // Draw
-    @synchronized ([UIScreen mainScreen]) {
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
-        [_glContext presentRenderbuffer:GL_RENDERBUFFER];
-    }
-  
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    glBindRenderbuffer(GL_RENDERBUFFER, _renderBuffer);
+    [_glContext presentRenderbuffer:GL_RENDERBUFFER];
 }
 
 #pragma mark - 设置openGL

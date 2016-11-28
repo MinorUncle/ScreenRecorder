@@ -24,9 +24,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     
     GJBuffer *cachebuffer = (GJBuffer *) [self getCachePixDataWithSize:(int)myDataLength];
     GLubyte *buffer = (GLubyte*)(cachebuffer->data);
-    @synchronized ([UIScreen mainScreen]) {
-        glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
-    }
+    glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
     CGDataProviderRef provider = CGDataProviderCreateWithData(cachebuffer, buffer, myDataLength, dataProviderReleaseDataCallback);
     
@@ -140,9 +138,9 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     }
 }
 
-+(void)yuv2rgba8WithBuffer:(uint8_t*)yuv width:(int)width height:(int)height rgbOut:(uint8_t**)rgbaOut{
++(void)yuv2rgba8WithBuffer:(uint8_t*)yuv width:(int)width height:(int)height rgbOut:(uint8_t*)rgbaOut{
     uint8_t* blockData = yuv;
-    uint8_t* rgba = *rgbaOut;
+    uint8_t* rgba = rgbaOut;
     int total = width* height;
     uint8_t* y = blockData;
     uint8_t* u = blockData+ (int)total;
@@ -256,10 +254,10 @@ void dataProviderReleaseDataCallback(void * __nullable info,
 
 + (UIImage *) convertBitmapYUV420PToUIImage:(uint8_t*)yuvData width:(int)width height:(int)height{
     int total = height * width;
-    uint8_t* rgbOut = (uint8_t*)malloc(total*4);
-    [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:&rgbOut];
-    UIImage* image = [self convertBitmapRGBA8ToUIImage:rgbOut width:width height:height];
-    free(rgbOut);
+    GJBuffer* cache = [self getCachePixDataWithSize:total*4];
+    [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:(uint8_t*)(cache->data)];
+    UIImage* image = [self convertBitmapRGBA8ToUIImage:(unsigned char*)cache->data width:width height:height];
+    _pixPool.queuePush(cache);
 
     return image;
 }
@@ -391,7 +389,6 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     return buffer;
 }
 +(void)cleanPixCache{
-    
     GJBuffer * buffer = NULL;
     while (_pixPool.queuePop(&buffer)) {
         free(buffer->data);

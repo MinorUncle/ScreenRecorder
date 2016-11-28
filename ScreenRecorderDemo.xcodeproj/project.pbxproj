@@ -159,7 +159,7 @@
 		629A117917A12B17002DE046 /* ScreenRecorderDemo */ = {
 			isa = PBXGroup;
 			children = (
-				629A11A417A12C4E002DE046 /* DrawView */,
+				629A11A417A12C4E002DE046 /* tool */,
 				629A11A017A12BDB002DE046 /* ScreenRecorder */,
 				629A118217A12B17002DE046 /* GJAppDelegate.h */,
 				629A118317A12B17002DE046 /* GJAppDelegate.m */,
@@ -191,7 +191,6 @@
 				043226651DDEEEA30012A0C0 /* GJFormats.h */,
 				043226621DDEEE990012A0C0 /* GJH264Encoder.h */,
 				043226631DDEEE990012A0C0 /* GJH264Encoder.m */,
-				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
 				AE067D681DE6BAE000B83E13 /* GJQueue+CPlus.h */,
 				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
 				0426197B1DE412ED001C6E05 /* GJQueue.m */,
@@ -203,9 +202,10 @@
 			name = ScreenRecorder;
 			sourceTree = "<group>";
 		};
-		629A11A417A12C4E002DE046 /* DrawView */ = {
+		629A11A417A12C4E002DE046 /* tool */ = {
 			isa = PBXGroup;
 			children = (
+				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
 				AE5B9E971DE1B9CD003FA8F5 /* GJPullDownView.h */,
 				AE5B9E981DE1B9CD003FA8F5 /* GJPullDownView.m */,
 				AE5B9E941DE1B12E003FA8F5 /* DrawBoard.h */,
@@ -222,7 +222,7 @@
 				043B79471DEBC1CE00DA07D0 /* BufferPool.h */,
 				043B79481DEBC1CE00DA07D0 /* BufferPool.m */,
 			);
-			name = DrawView;
+			name = tool;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

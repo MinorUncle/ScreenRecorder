@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include <assert.h>
-#ifndef DEBUG
+#ifdef DEBUG
 #define GJQueueLOG(format, ...) printf(format,##__VA_ARGS__)
 #else
 #define GJQueueLOG(format, ...)

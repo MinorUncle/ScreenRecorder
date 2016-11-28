@@ -181,13 +181,16 @@
 
 
 -(void)stopRecord{
-        if (_captureRunLoop) {
-            CFRunLoopStop(_captureRunLoop);
-            _captureRunLoop = NULL;
-        }
+    _status = screenRecorderStopStatus;
+
+    if (_captureRunLoop) {
+        CFRunLoopStop(_captureRunLoop);
+        _captureRunLoop = NULL;
+    }
+    if (_fpsTimer) {
         [_fpsTimer invalidate];
         _fpsTimer=nil;
-        _status = screenRecorderStopStatus;
+    }
     
     if ([RPScreenRecorder sharedRecorder].isRecording) {
         __weak ScreenRecorder* wkSelf = self;
@@ -196,7 +199,6 @@
                 NSError* copyError = nil;
                 [[NSFileManager defaultManager]copyItemAtURL:previewViewController.movieURL toURL:wkSelf.destFileUrl error:&copyError];
                 error = copyError;
-                
             }
             if ([self.delegate respondsToSelector:@selector(screenRecorder:recorderFile:FinishWithError:)]) {
                 [self.delegate screenRecorder:wkSelf recorderFile:previewViewController.movieURL FinishWithError:error];
@@ -204,8 +206,6 @@
         }];
     }
 
-
-    NSLog(@"recode stop");
 }
 -(void)pause{
     _status = screenRecorderPauseStatus;
@@ -345,7 +345,6 @@
             wkSelf.fpsTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/fps target:self selector:@selector(_captureCurrentView) userInfo:nil repeats:YES];
             [wkSelf.fpsTimer fire];
             _captureRunLoop = CFRunLoopGetCurrent();
-            
             //        NSDate* date = [NSDate distantFuture];
             CFRunLoopRunInMode(kCFRunLoopDefaultMode,DBL_MAX, NO);
             NSLog(@"after runloop:%d",_recorderType);
