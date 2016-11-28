@@ -462,6 +462,10 @@
     }
 }
 -(void)dealloc{
+    if(_pixelBuffer){
+        CFRelease(_pixelBuffer);
+        _pixelBuffer=NULL;
+    }
     NSLog(@"screenrecorder delloc:%@",self);
 }
 @end

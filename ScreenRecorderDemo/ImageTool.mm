@@ -258,8 +258,10 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     int total = height * width;
     uint8_t* rgbOut = (uint8_t*)malloc(total*4);
     [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:&rgbOut];
-    return [self convertBitmapRGBA8ToUIImage:rgbOut width:width height:height];
-    
+    UIImage* image = [self convertBitmapRGBA8ToUIImage:rgbOut width:width height:height];
+    free(rgbOut);
+
+    return image;
 }
 
 + (UIImage *) convertBitmapRGBA8ToUIImage:(unsigned char *) buffer

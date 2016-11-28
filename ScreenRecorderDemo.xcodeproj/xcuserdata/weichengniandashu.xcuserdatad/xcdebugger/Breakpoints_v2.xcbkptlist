@@ -249,7 +249,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "141"
             endingLineNumber = "141"
-            landmarkName = "-captureImageWithView:"
+            landmarkName = "-startGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:fps:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -329,7 +329,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "108"
             endingLineNumber = "108"
-            landmarkName = "-_captureCurrentView"
+            landmarkName = "-startSerialGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -393,7 +393,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "240"
             endingLineNumber = "240"
-            landmarkName = "-GJPullDownView:selectIndex:"
+            landmarkName = "-produceYuv"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -409,7 +409,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "117"
             endingLineNumber = "117"
-            landmarkName = "-yuvRead"
+            landmarkName = "-readyInit"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -425,7 +425,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
             endingLineNumber = "101"
-            landmarkName = "-yuvWrite:"
+            landmarkName = "-yuvRead"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -441,7 +441,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "109"
             endingLineNumber = "109"
-            landmarkName = "-yuvWrite:"
+            landmarkName = "-yuvRead"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -457,7 +457,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
             endingLineNumber = "61"
-            landmarkName = "-_captureCurrentView"
+            landmarkName = "-captureImageWithView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -473,7 +473,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "180"
             endingLineNumber = "180"
-            landmarkName = "-startGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:fps:fileUrl:"
+            landmarkName = "-startCaptureFullScreenFileFast"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -489,7 +489,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
             endingLineNumber = "235"
-            landmarkName = "-getRootFrameWithView:"
+            landmarkName = "-produceYuv"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -505,7 +505,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "60"
             endingLineNumber = "60"
-            landmarkName = "-_captureCurrentView"
+            landmarkName = "-captureImageWithView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -521,7 +521,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "82"
             endingLineNumber = "82"
-            landmarkName = "-_captureCurrentView"
+            landmarkName = "-captureGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -537,7 +537,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "185"
             endingLineNumber = "185"
-            landmarkName = "-startGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:fps:fileUrl:"
+            landmarkName = "-stopRecord"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -553,14 +553,14 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "215"
             endingLineNumber = "215"
-            landmarkName = "-_startWithFps:fileUrl:"
+            landmarkName = "-resume"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
@@ -569,7 +569,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "221"
             endingLineNumber = "221"
-            landmarkName = "-glCapture"
+            landmarkName = "-getRootFrameWithView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -585,7 +585,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "170"
             endingLineNumber = "170"
-            landmarkName = "-captureGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:"
+            landmarkName = "-startCaptureFullScreenFileFast"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -601,8 +601,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "150"
             endingLineNumber = "150"
-            landmarkName = "-captureGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:"
-            landmarkType = "7">
+            landmarkName = "@implementation ScreenRecorder"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -617,7 +617,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-            landmarkName = "-captureGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:"
+            landmarkName = "-startGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:fps:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -633,7 +633,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "217"
             endingLineNumber = "217"
-            landmarkName = "-glCapture"
+            landmarkName = "-getRootFrameWithView:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -649,7 +649,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "324"
             endingLineNumber = "324"
-            landmarkName = "-startWithType:"
+            landmarkName = "-ScreenRecorder:recorderFile:FinishWithError:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -665,7 +665,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "262"
             endingLineNumber = "262"
-            landmarkName = "-produceYuv"
+            landmarkName = "-startWithType:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -681,7 +681,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "399"
             endingLineNumber = "399"
-            landmarkName = "-ScreenRecorder:recorderYUVData:FinishWithError:"
+            landmarkName = "-GJH264Decoder:decodeCompleteImageData:pts:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -697,7 +697,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "260"
             endingLineNumber = "260"
-            landmarkName = "-produceYuv"
+            landmarkName = "-startWithType:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -713,8 +713,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "242"
             endingLineNumber = "242"
-            landmarkName = "+convertBitmapRGBA8ToUIImage:withWidth:withHeight:"
-            landmarkType = "7">
+            landmarkName = "@implementation ImageTool"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -724,12 +724,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ImageTool.mm"
-            timestampString = "501661662.199962"
+            timestampString = "501991341.556956"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "266"
-            endingLineNumber = "266"
-            landmarkName = "+convertBitmapRGBA8ToUIImage:withWidth:withHeight:"
+            startingLineNumber = "268"
+            endingLineNumber = "268"
+            landmarkName = "+convertBitmapRGBA8ToUIImage:width:height:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
