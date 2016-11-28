@@ -16,11 +16,11 @@
 		043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */; };
 		043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226631DDEEE990012A0C0 /* GJH264Encoder.m */; };
 		043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226741DDF03110012A0C0 /* VideoToolbox.framework */; };
+		043B79491DEBC1CE00DA07D0 /* BufferPool.m in Sources */ = {isa = PBXBuildFile; fileRef = 043B79481DEBC1CE00DA07D0 /* BufferPool.m */; };
 		0449148E1DE7D03200A21FD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0449148D1DE7D03200A21FD6 /* ReplayKit.framework */; };
 		046080F41DE2DF9900FD1E6F /* FilePlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F31DE2DF9900FD1E6F /* FilePlayerView.m */; };
 		046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F61DE2DFAB00FD1E6F /* PlayerView.m */; };
 		046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */; };
-		046080FC1DE2E50A00FD1E6F /* 2016031903.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */; };
 		04DDD4C11DDDA8BA0072230C /* ScreenRecorder.mm in Sources */ = {isa = PBXBuildFile; fileRef = 04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */; };
 		629A117417A12B17002DE046 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A117317A12B17002DE046 /* UIKit.framework */; };
 		629A117617A12B17002DE046 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 629A117517A12B17002DE046 /* Foundation.framework */; };
@@ -56,6 +56,8 @@
 		0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "13031I1XF-14H6.png"; sourceTree = "<group>"; };
 		043226721DDF03070012A0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		043226741DDF03110012A0C0 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		043B79471DEBC1CE00DA07D0 /* BufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferPool.h; sourceTree = "<group>"; };
+		043B79481DEBC1CE00DA07D0 /* BufferPool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BufferPool.m; sourceTree = "<group>"; };
 		0449148D1DE7D03200A21FD6 /* ReplayKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ReplayKit.framework; path = System/Library/Frameworks/ReplayKit.framework; sourceTree = SDKROOT; };
 		046080F21DE2DF9900FD1E6F /* FilePlayerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilePlayerView.h; sourceTree = "<group>"; };
 		046080F31DE2DF9900FD1E6F /* FilePlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilePlayerView.m; sourceTree = "<group>"; };
@@ -63,7 +65,6 @@
 		046080F61DE2DFAB00FD1E6F /* PlayerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerView.m; sourceTree = "<group>"; };
 		046080F81DE2E03400FD1E6F /* TitleActivityIndicatorView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TitleActivityIndicatorView.h; sourceTree = "<group>"; };
 		046080F91DE2E03400FD1E6F /* TitleActivityIndicatorView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TitleActivityIndicatorView.m; sourceTree = "<group>"; };
-		046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = 2016031903.mp4; sourceTree = "<group>"; };
 		04DDD4BE1DDDA85B0072230C /* GJQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GJQueue.h; sourceTree = "<group>"; };
 		04DDD4BF1DDDA8BA0072230C /* ScreenRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScreenRecorder.h; sourceTree = "<group>"; };
 		04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ScreenRecorder.mm; sourceTree = "<group>"; };
@@ -187,14 +188,10 @@
 		629A11A017A12BDB002DE046 /* ScreenRecorder */ = {
 			isa = PBXGroup;
 			children = (
-				046080FB1DE2E50A00FD1E6F /* 2016031903.mp4 */,
-				AE5B9EC01DE1E9F6003FA8F5 /* GJH264Decoder.h */,
-				AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */,
 				043226651DDEEEA30012A0C0 /* GJFormats.h */,
 				043226621DDEEE990012A0C0 /* GJH264Encoder.h */,
 				043226631DDEEE990012A0C0 /* GJH264Encoder.m */,
 				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
-				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
 				AE067D681DE6BAE000B83E13 /* GJQueue+CPlus.h */,
 				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
 				0426197B1DE412ED001C6E05 /* GJQueue.m */,
@@ -219,6 +216,11 @@
 				046080F61DE2DFAB00FD1E6F /* PlayerView.m */,
 				046080F21DE2DF9900FD1E6F /* FilePlayerView.h */,
 				046080F31DE2DF9900FD1E6F /* FilePlayerView.m */,
+				AE5B9EC01DE1E9F6003FA8F5 /* GJH264Decoder.h */,
+				AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */,
+				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
+				043B79471DEBC1CE00DA07D0 /* BufferPool.h */,
+				043B79481DEBC1CE00DA07D0 /* BufferPool.m */,
 			);
 			name = DrawView;
 			sourceTree = "<group>";
@@ -249,9 +251,9 @@
 		629A116617A12B17002DE046 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				CLASSPREFIX = LZX;
+				CLASSPREFIX = "";
 				LastUpgradeCheck = 0810;
-				ORGANIZATIONNAME = lezhixing;
+				ORGANIZATIONNAME = zhouguangjin;
 				TargetAttributes = {
 					629A116E17A12B17002DE046 = {
 						DevelopmentTeam = X33DX68294;
@@ -283,7 +285,6 @@
 			files = (
 				629A117E17A12B17002DE046 /* InfoPlist.strings in Resources */,
 				629A118617A12B17002DE046 /* Default.png in Resources */,
-				046080FC1DE2E50A00FD1E6F /* 2016031903.mp4 in Resources */,
 				629A118817A12B17002DE046 /* Default@2x.png in Resources */,
 				629A118A17A12B17002DE046 /* Default-568h@2x.png in Resources */,
 				043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */,
@@ -308,6 +309,7 @@
 				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,
 				AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */,
 				0426197C1DE412ED001C6E05 /* GJQueue.m in Sources */,
+				043B79491DEBC1CE00DA07D0 /* BufferPool.m in Sources */,
 				AE5B9EC21DE1E9F6003FA8F5 /* GJH264Decoder.m in Sources */,
 				046080FA1DE2E03400FD1E6F /* TitleActivityIndicatorView.m in Sources */,
 				AE5B9E961DE1B12E003FA8F5 /* DrawBoard.m in Sources */,

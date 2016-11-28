@@ -2,7 +2,7 @@
 //  main.m
 //  ScreenRecorderDemo
 //
-//  Created by 白冰 on 13-7-25.
+//  Created by 未成年大叔 on 16-11-20.
 //  Copyright (c) 2013年 . All rights reserved.
 //
 

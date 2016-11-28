@@ -20,11 +20,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501759641.026906"
+            timestampString = "501989425.924118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "337"
-            endingLineNumber = "337"
+            startingLineNumber = "340"
+            endingLineNumber = "340"
             landmarkName = "-screenRecorder:recorderRGBA8Data:FinishWithError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -36,11 +36,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/GJViewController.m"
-            timestampString = "501759641.026906"
+            timestampString = "501989425.924118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "338"
-            endingLineNumber = "338"
+            startingLineNumber = "341"
+            endingLineNumber = "341"
             landmarkName = "-screenRecorder:recorderRGBA8Data:FinishWithError:"
             landmarkType = "7">
          </BreakpointContent>
@@ -116,12 +116,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ScreenRecorder.mm"
-            timestampString = "501759566.49645"
+            timestampString = "501988890.956203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "134"
-            endingLineNumber = "134"
-            landmarkName = "-serialCaptureWithGLBuffer:"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "-startGLMixtureWithGLRect:AboveView:aboveRect:belowView:belowRect:hostSize:fps:"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -132,11 +132,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "ScreenRecorderDemo/ScreenRecorder.mm"
-            timestampString = "501760543.877736"
+            timestampString = "501988890.956203"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
+            startingLineNumber = "184"
+            endingLineNumber = "184"
             landmarkName = "-stopRecord"
             landmarkType = "7">
          </BreakpointContent>
@@ -170,6 +170,22 @@
             startingLineNumber = "231"
             endingLineNumber = "231"
             landmarkName = "-produceYuv"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ScreenRecorderDemo/ScreenRecorder.mm"
+            timestampString = "501989052.030226"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "320"
+            endingLineNumber = "320"
+            landmarkName = "-destFileUrl"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -58,8 +58,6 @@ static CFStringRef getCFStrByEntropyMode(EntropyMode model){
     return ref;
 }
 
-
-
 #endif
 
 typedef struct GJVideoFormat{
@@ -76,7 +74,6 @@ typedef struct H264Format{
     ProfileLevel level;
     BOOL allowBframe;
     BOOL allowPframe;
-    
 }H264Format;
 
 typedef struct _GJAudioFormat{

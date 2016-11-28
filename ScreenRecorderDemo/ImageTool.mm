@@ -27,9 +27,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     @synchronized ([UIScreen mainScreen]) {
         glReadPixels(rect.origin.x,rect.origin.y,rect.size.width,rect.size.height, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
     }
-//    UIImage* image = [self convertBitmapRGBA8ToUIImage:buffer withWidth:rect.size.width withHeight:rect.size.height];
-//    _pixPool.queuePush(cachebuffer);
-//    return image;
+
     CGDataProviderRef provider = CGDataProviderCreateWithData(cachebuffer, buffer, myDataLength, dataProviderReleaseDataCallback);
     
     // prep the ingredients

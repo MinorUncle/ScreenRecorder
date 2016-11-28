@@ -100,8 +100,7 @@
                             aboveRect:(NSArray<NSValue*>*)aboveRect
                             belowView:(NSArray<UIView*>*)belowView
                             belowRect:(NSArray<NSValue*>*)belowRect
-                             hostSize:(CGSize)hostSize
-                              fileUrl:(NSURL *)fileUrl{
+                             hostSize:(CGSize)hostSize{
     _mixtureRecorder = YES;
     _mixtureCaptureAboveView = aboveView;
     _mixtureCaptureBelowView = belowView;
@@ -109,13 +108,12 @@
     _mixtureCaptureBelowViewFrame = belowRect;
     _glRect = glRect;
     _captureSize = hostSize;
-    [self _startReanderWithFps:0 fileUrl:fileUrl];
+    [self _startReanderWithFps:0];
 }
  void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, const void * CV_NULLABLE dataPtr, size_t dataSize, size_t numberOfPlanes, const void * CV_NULLABLE planeAddresses[] ){
 
 }
 -(void)serialCaptureWithGLBuffer:(UIImage*)glImage{
-//    _captureSize = CGSizeMake(320, 274);
 //    size_t planeW[3] = {(size_t)(_captureSize.width), (size_t)(_captureSize.width*0.5), (size_t)(_captureSize.width*0.5)};
 //    size_t planeH[3] = {(size_t)(_captureSize.height), (size_t)(_captureSize.height*0.5), (size_t)(_captureSize.height*0.5)};
 //    size_t w = self.captureSize.width;
@@ -126,7 +124,6 @@
 //    
 //    CIImage* cimage = [CIImage imageWithCVPixelBuffer:pixbuffer];
 //    UIImage* image = [UIImage imageWithCIImage:cimage];
-//    return image;
     
     
     UIImage* image = [self _mixtureCaptureWithGLImage:glImage];
@@ -138,8 +135,7 @@
                       belowView:(NSArray<UIView*>*)belowView
                       belowRect:(NSArray<NSValue*>*)belowRect
                        hostSize:(CGSize)hostSize
-                            fps:(NSInteger)fps
-                        fileUrl:(NSURL*)fileUrl{
+                            fps:(NSInteger)fps{
     _mixtureRecorder = YES;
     _mixtureCaptureAboveView = aboveView;
     _mixtureCaptureBelowView = belowView;
@@ -147,17 +143,17 @@
     _mixtureCaptureBelowViewFrame = belowRect;
     _glRect = glRect;
     _captureSize = hostSize;
-    [self _startReanderWithFps:fps fileUrl:fileUrl];
+    [self _startReanderWithFps:fps];
     
 }
 
 
 
--(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSURL*)fileUrl{
+-(void)startWithView:(UIView*)targetView fps:(NSInteger)fps{
     _mixtureRecorder = NO;
     _captureView=targetView;
     _captureSize = targetView.bounds.size;
-    [self _startReanderWithFps:fps fileUrl:fileUrl];
+    [self _startReanderWithFps:fps];
 }
 
 
@@ -310,12 +306,25 @@
     }
 }
 
+-(NSURL *)destFileUrl{
+    if (_destFileUrl == nil) {
+        NSDateFormatter* format = [[NSDateFormatter alloc]init];
+        [format setDateFormat:@"yyyy_MM_dd_HH_mm_ss"];
+        NSString* path = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES)[0];
+        path = [path stringByAppendingPathComponent:@"RecoderFile"];
+        if (![[NSFileManager defaultManager]fileExistsAtPath:path]) {
+            [[NSFileManager defaultManager]createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+        }
+        NSString* file = [format stringFromDate:[NSDate date]];
+        path = [path stringByAppendingPathComponent:[NSString stringWithFormat:@"%@.mp4",file]];
+        _destFileUrl = [NSURL fileURLWithPath:path];
+    }
+    return _destFileUrl;
+}
 
-
--(void)_startReanderWithFps:(NSInteger)fps fileUrl:(NSURL*)fileUrl{
+-(void)_startReanderWithFps:(NSInteger)fps{
     _status = screenRecorderRecorderingStatus;
     _fps = fps;
-    _destFileUrl = fileUrl;
     
     if(_pixelBuffer){
         CFRelease(_pixelBuffer);
@@ -359,8 +368,8 @@
     CGSize size = _captureSize;
     NSError *error = nil;
     
-    unlink([_destFileUrl path].UTF8String);
-    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:_destFileUrl.path]
+    unlink([self.destFileUrl path].UTF8String);
+    AVAssetWriter *videoWriter = [[AVAssetWriter alloc] initWithURL:[NSURL fileURLWithPath:self.destFileUrl.path]
                                                            fileType:AVFileTypeQuickTimeMovie
                                                               error:&error];
     NSParameterAssert(videoWriter);
@@ -399,7 +408,6 @@
             if(_status == screenRecorderStopStatus)
             {
                 NSLog(@"markAsFinished");
-                
                 //clean cache
                 [_imageCache clean];
                 [writerInput markAsFinished];

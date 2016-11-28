@@ -41,7 +41,7 @@ typedef enum ScreenRecorderStatus{
 @property(readonly,nonatomic,retain)GJH264Encoder* h264Encoder;
 @property(readonly,nonatomic,assign)NSInteger fps;
 @property(readonly,nonatomic,assign)ScreenRecorderStatus status;
-@property(readonly,nonatomic,copy)NSURL* destFileUrl;
+@property(nonatomic,copy)NSURL* destFileUrl;
 @property(nonatomic,weak)id<ScreenRecorderDelegate> delegate;
 
 @property(assign,nonatomic,readonly)CGSize captureSize;
@@ -59,27 +59,30 @@ typedef enum ScreenRecorderStatus{
 
 
 - (instancetype)initWithType:(ScreenRecorderType)recorderType;
--(void)startWithView:(UIView*)targetView fps:(NSInteger)fps fileUrl:(NSURL*)fileUrl;
+//普通截屏，fileUrl可为空，
+-(void)startWithView:(UIView*)targetView fps:(NSInteger)fps;
 
-//可能崩溃,截屏效果差,容易黑屏
--(void)startGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
-                      aboveRect:(NSArray<NSValue*>*)aboveRect
-                      belowView:(NSArray<UIView*>*)belowView
-                      belowRect:(NSArray<NSValue*>*)belowRect
-                       hostSize:(CGSize)hostSize
-                            fps:(NSInteger)fps
-                        fileUrl:(NSURL*)fileUrl;
+//GL混合截图需要截三部分，gl视图下面视图，gl视图，gl上面视图，然后混合
+//可能崩溃,截屏效果差,容易截到黑屏。自动控制fps,
+-(void)startGLMixtureWithGLRect:(CGRect)glRect//gl层的frame，相对hostSize gl视图宽高一定要偶数数;
+                      AboveView:(NSArray<UIView*>*)aboveView//gl层上面视图,数组尽量少，最好是一个
+                      aboveRect:(NSArray<NSValue*>*)aboveRect//gl层上面视图frame
+                      belowView:(NSArray<UIView*>*)belowView//gl层下层视图,数组尽量少，最好是一个
+                      belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图
+                       hostSize:(CGSize)hostSize//帧大小
+                            fps:(NSInteger)fps;
 
 
-//请OPGL渲染一帧后调用，同步截屏
+//请OPGL渲染一帧后调用，同步截屏,通过serialCaptureWithGLBuffer提供gl数据
 -(void)startSerialGLMixtureWithGLRect:(CGRect)glRect AboveView:(NSArray<UIView*>*)aboveView
                             aboveRect:(NSArray<NSValue*>*)aboveRect
                             belowView:(NSArray<UIView*>*)belowView
                             belowRect:(NSArray<NSValue*>*)belowRect
-                             hostSize:(CGSize)hostSize
-                              fileUrl:(NSURL*)fileUrl;
--(void)serialCaptureWithGLBuffer:(UIImage*)data;//gl层视图数据数据
+                             hostSize:(CGSize)hostSize;
 
+//gl层视图数据数据
+-(void)serialCaptureWithGLBuffer:(UIImage*)image;
+//replaykit截屏
 -(BOOL)canCaptureFullScreenFileFast;
 -(void)startCaptureFullScreenFileFast;
 
@@ -88,12 +91,12 @@ typedef enum ScreenRecorderStatus{
 -(void)pause;
 -(void)resume;
 
--(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect//gl层的frame，相对hostSize gl视图宽高一定要偶数数;
-                            AboveView:(NSArray<UIView*>*)aboveView//gl层上面视图,数组尽量少，最好是一个
-                            aboveRect:(NSArray<NSValue*>*)aboveRect//gl层上面视图frame
-                            belowView:(NSArray<UIView*>*)belowView//gl层下层视图,数组尽量少，最好是一个
-                            belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图
-                             hostSize:(CGSize)hostSize;//图片大小
+-(UIImage*)captureGLMixtureWithGLRect:(CGRect)glRect
+                            AboveView:(NSArray<UIView*>*)aboveView
+                            aboveRect:(NSArray<NSValue*>*)aboveRect
+                            belowView:(NSArray<UIView*>*)belowView
+                            belowRect:(NSArray<NSValue*>*)belowRect
+                             hostSize:(CGSize)hostSize;
 -(UIImage*)captureImageWithView:(UIView*)view;
 
 

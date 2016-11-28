@@ -35,10 +35,6 @@
     NSLock* _lock;
     NSCondition* _outCond;
     NSCondition* _inCond;
-
-
-  
-    
 }
 
     bool _unLock(pthread_mutex_t* mutex);
@@ -68,77 +64,5 @@
 -(int)currentLenth;
 @end
 
-
-
-//template<class T>
-//bool GJQueue<T>::_mutexWait(pthread_cond_t* _cond,int inTimeoutInMilSecs)
-//{
-//    if (!shouldWait) {
-//        return false;
-//    }
-//    pthread_mutex_lock(&_mutex);
-//    
-//    struct timespec ts;
-//    struct timeval tv;
-//    struct timezone tz;
-//    int sec, usec;
-//    
-//    //These platforms do refcounting manually, and wait will release the mutex,
-//    // so we need to update the counts here
-//    
-//    
-//    bool result = true;
-//    if (inTimeoutInMilSecs == 0)
-//        (void)pthread_cond_wait(_cond, &_mutex);
-//    else
-//    {
-//        gettimeofday(&tv, &tz);
-//        sec = inTimeoutInMilSecs / 1000;
-//        inTimeoutInMilSecs = inTimeoutInMilSecs - (sec * 1000);
-//        assert(inTimeoutInMilSecs < 1000);
-//        usec = inTimeoutInMilSecs * 1000;
-//        assert(tv.tv_usec < 1000000);
-//        ts.tv_sec = tv.tv_sec + sec;
-//        ts.tv_nsec = (tv.tv_usec + usec) * 1000;
-//        assert(ts.tv_nsec < 2000000000);
-//        if(ts.tv_nsec > 999999999)
-//        {
-//            ts.tv_sec++;
-//            ts.tv_nsec -= 1000000000;
-//        }
-//        int ret = pthread_cond_timedwait(_cond, &_mutex, &ts);
-//        result = !(ret == ETIMEDOUT);
-//
-//    }
-////    pthread_cond_wait(_cond, &_mutex);
-//    pthread_mutex_unlock(&_mutex);
-//    return result;
-//}
-//template<class T>
-//bool GJQueue<T>::_mutexSignal(pthread_cond_t* _cond)
-//{
-//    if (!shouldWait) {
-//        return false;
-//    }
-//    pthread_mutex_lock(&_mutex);
-//    pthread_cond_signal(_cond);
-//    pthread_mutex_unlock(&_mutex);
-//    return true;
-//}
-//template<class T>
-//bool GJQueue<T>::_lock(pthread_mutex_t* mutex){
-//    if (!shouldNonatomic) {
-//        return false;
-//    }
-//    return !pthread_mutex_lock(mutex);
-//}
-//template<class T>
-//bool GJQueue<T>::_unLock(pthread_mutex_t* mutex){
-//    if (!shouldNonatomic) {
-//        return false;
-//    }
-//    return !pthread_mutex_unlock(mutex);
-//}
-//template<class T>
 
 #endif /* GJQueue_h */

@@ -2,7 +2,7 @@
 //  GJViewController.m
 //  Demo
 //
-//  Created by 白冰 on 13-7-25.
+//  Created by 未成年大叔 on 16-11-20.
 //  Copyright (c) 2013年 . All rights reserved.
 //
 
@@ -234,6 +234,8 @@ static int yuvHeight=320,yuvWidth=568;
 #if SYNCH_CAPTURE
             UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:(uint8_t*)data.bytes width:yuvWidth height:yuvHeight];
             [myScreenRecorder serialCaptureWithGLBuffer:gl];
+            usleep((1.5/FPS)*1000*1000);
+
 #endif
             data= [self yuvRead];
             usleep((1.0/FPS)*1000*1000);
@@ -281,6 +283,7 @@ static int yuvHeight=320,yuvWidth=568;
     [_displayView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [_displayView addSubview:showView];
     myScreenRecorder = [[ScreenRecorder alloc]initWithType:recodeType];
+    [myScreenRecorder setDestFileUrl:_fileUrl];
     myScreenRecorder.delegate = self;
     usleep(100);
     [_glOverShow removeFromSuperview];
@@ -289,14 +292,14 @@ static int yuvHeight=320,yuvWidth=568;
         [self produceYuv];
 
 #if SYNCH_CAPTURE
-         [myScreenRecorder startSerialGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fileUrl: _fileUrl];
+         [myScreenRecorder startSerialGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size];
 #else
-         [myScreenRecorder startGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS fileUrl: _fileUrl];
+         [myScreenRecorder startGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS];
 #endif
     }else{
             yuvWidth = _drawView.bounds.size.width;
             yuvHeight = _drawView.bounds.size.height;
-        [myScreenRecorder startWithView:_drawView fps:FPS fileUrl:_fileUrl];
+        [myScreenRecorder startWithView:_drawView fps:FPS];
     }
 
     _drawButton.selected = YES;
