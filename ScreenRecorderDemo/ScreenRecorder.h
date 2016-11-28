@@ -3,7 +3,7 @@
 //  ScreenRecorderDemo
 //
 //  Created by mac on 16/11/17.
-//  Copyright © 2016年 lezhixing. All rights reserved.
+//  Copyright © 2016年 zhouguangjin. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
@@ -68,7 +68,7 @@ typedef enum ScreenRecorderStatus{
                       AboveView:(NSArray<UIView*>*)aboveView//gl层上面视图,数组尽量少，最好是一个
                       aboveRect:(NSArray<NSValue*>*)aboveRect//gl层上面视图frame
                       belowView:(NSArray<UIView*>*)belowView//gl层下层视图,数组尽量少，最好是一个
-                      belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图
+                      belowRect:(NSArray<NSValue*>*)belowRect//gl层下层视图frame
                        hostSize:(CGSize)hostSize//帧大小
                             fps:(NSInteger)fps;
 
@@ -82,6 +82,7 @@ typedef enum ScreenRecorderStatus{
 
 //gl层视图数据数据
 -(void)serialCaptureWithGLBuffer:(UIImage*)image;
+
 //replaykit截屏
 -(BOOL)canCaptureFullScreenFileFast;
 -(void)startCaptureFullScreenFileFast;

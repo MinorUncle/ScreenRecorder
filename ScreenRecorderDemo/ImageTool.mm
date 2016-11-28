@@ -153,7 +153,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     int uu,vv;
     for (int i = 0; i < height; i++) {
         for (int j=0; j < width; j++) {
-            int yy = y[yindex++];
+            int yy = y[yindex];
            
             if (i%2 == 0) {
                 if (j%2==0) {
@@ -170,6 +170,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
             rgba[yindex*4+1] = 1.168949*(yy-16) - 0.393531*(uu -128) - 0.816461*(vv -128);
             rgba[yindex*4+2] = 1.168949*(yy-16) + 2.026342*(uu-128);
             rgba[yindex*4+3] = 1;
+            yindex++;
         }
     }
 }

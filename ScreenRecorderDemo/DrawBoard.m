@@ -3,7 +3,7 @@
 //  ScreenRecorderDemo
 //
 //  Created by 未成年大叔 on 16/11/20.
-//  Copyright © 2016年 lezhixing. All rights reserved.
+//  Copyright © 2016年 zhouguangjin. All rights reserved.
 //
 
 #import "DrawBoard.h"

@@ -3,7 +3,7 @@
 //  ScreenRecorderDemo
 //
 //  Created by mac on 16/11/17.
-//  Copyright © 2016年 lezhixing. All rights reserved.
+//  Copyright © 2016年 zhouguangjin. All rights reserved.
 //
 
 #import "ScreenRecorder.h"
@@ -333,7 +333,9 @@
     if (_recorderType == screenRecorderFileType || _recorderType == screenRecorderRealH264Type){
         //cache buffer
         CVReturn status = CVPixelBufferCreate(kCFAllocatorDefault, _captureSize.width, _captureSize.height, kCVPixelFormatType_32ARGB, (__bridge CFDictionaryRef) _options, &_pixelBuffer);
-        NSParameterAssert(status == kCVReturnSuccess && _pixelBuffer != NULL);
+        if (status != kCVReturnSuccess) {
+            return;
+        }
         if(_recorderType == screenRecorderFileType){
             //start
             [self _writeFile];

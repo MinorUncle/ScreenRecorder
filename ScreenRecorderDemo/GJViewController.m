@@ -26,9 +26,9 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 //screenRecorderRealYUVType
 //screenRecorderFileType
-#define SYNCH_CAPTURE 1  //录屏方式，
+#define SYNCH_CAPTURE 1  //是否同步录屏，
 
-#define FPS 30
+#define FPS 15
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
@@ -92,7 +92,6 @@ static int yuvHeight=320,yuvWidth=568;
 }
 
 -(void)yuvWrite:(NSData*)data{
-
     [_yuvFileHandle writeData:data];
 }
 -(NSData*)yuvRead{
@@ -234,11 +233,11 @@ static int yuvHeight=320,yuvWidth=568;
 #if SYNCH_CAPTURE
             UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:(uint8_t*)data.bytes width:yuvWidth height:yuvHeight];
             [myScreenRecorder serialCaptureWithGLBuffer:gl];
-            usleep((1.5/FPS)*1000*1000);
-
+            usleep((1.0/(FPS*1.5))*1000*1000);
+#else
+            usleep((1.0/FPS)*1000*1000);
 #endif
             data= [self yuvRead];
-            usleep((1.0/FPS)*1000*1000);
         }
     });
 }
@@ -286,9 +285,7 @@ static int yuvHeight=320,yuvWidth=568;
     [myScreenRecorder setDestFileUrl:_fileUrl];
     myScreenRecorder.delegate = self;
     usleep(100);
-    [_glOverShow removeFromSuperview];
     if (recodeType == screenRecorderFileType) {
-        [_yuvShowView addSubview:_glOverShow];
         [self produceYuv];
 
 #if SYNCH_CAPTURE
@@ -312,7 +309,7 @@ static int yuvHeight=320,yuvWidth=568;
 
 
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderFile:(NSURL *)fileUrl FinishWithError:(NSError *)error{
-    
+    if(_displayType.currentTag != screenRecorderFileType)return;
 
     dispatch_async(dispatch_get_main_queue(), ^{
         [_yuvShowView removeFromSuperview];

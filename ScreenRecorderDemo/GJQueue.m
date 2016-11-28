@@ -3,7 +3,7 @@
 //  ScreenRecorderDemo
 //
 //  Created by mac on 16/11/22.
-//  Copyright © 2016年 lezhixing. All rights reserved.
+//  Copyright © 2016年 zhouguangjin. All rights reserved.
 //
 
 #import "GJQueue.h"
