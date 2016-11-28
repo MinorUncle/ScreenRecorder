@@ -3,7 +3,7 @@
 //  Demo
 //
 //  Created by 未成年大叔 on 16-11-20.
-//  Copyright (c) 2013年 . All rights reserved.
+//  Copyright (c) 2016年 . All rights reserved.
 //
 
 #import "GJViewController.h"
@@ -26,33 +26,33 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 //screenRecorderRealYUVType
 //screenRecorderFileType
-#define SYNCH_CAPTURE 1
+#define SYNCH_CAPTURE 1  //录屏方式，
 
 #define FPS 30
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate>
 {
-    DrawBoard *_drawView;
+    DrawBoard *_drawView;//手绘
 
-    ScreenRecorder *myScreenRecorder;
-    FilePlayerView *_movieShow;
+    ScreenRecorder *myScreenRecorder;//录屏
+    FilePlayerView *_movieShow; //文件播放显示
     UIButton* _drawButton;
     UIButton* _glCaptureButton;
 
     GJPullDownView* _displayType;
-    UIView* _produceView;
-    UIView* _displayView;
+    UIView* _produceView; //产生数据层
+    UIView* _displayView; //显示层
     
-    UIImageView* _imageShowView;
-    OpenGLView20* _yuvShowView;
+    UIImageView* _imageShowView; //图片显示
+    OpenGLView20* _yuvShowView; //yuv播放显示
     
-    GJH264Decoder* _h264Decoder;
+    GJH264Decoder* _h264Decoder; //编码器
     NSURL* _fileUrl;
     
     
-    UIImageView* _iconShow;
-    UIImageView* _glOverShow;
+    UIImageView* _iconShow; //gl截图显示
+    UIImageView* _glOverShow; //gl遮盖层
 
     NSMutableData* _yuvMutDaba;
     
