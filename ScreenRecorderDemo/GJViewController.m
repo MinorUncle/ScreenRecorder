@@ -28,7 +28,6 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 //screenRecorderRealYUVType
 //screenRecorderFileType
-#define SYNCH_CAPTURE 0  //是否同步录屏，
 
 #define FPS 15
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
@@ -217,22 +216,11 @@ static int yuvHeight=320,yuvWidth=568;
 
 -(void)glCapture{
     [_produceView addSubview:_iconShow];
-    CGRect rect = [self getRootFrameWithView:_displayView];
-    _iconShow.image = [myScreenRecorder captureGLMixtureWithGLRect:rect AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.frame]] hostSize:self.view.bounds.size];;
+    _iconShow.image = [myScreenRecorder captureImageWithView:self.view];
     
 //    UIImageView* imageView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"13031I1XF-14H6"]];
 //    imageView.frame = CGRectMake(100, 30, 100, 100);
 //    [_yuvShowView addSubview:imageView];
-}
--(CGRect)getRootFrameWithView:(UIView*)view{
-    CGRect rect = view.frame;
-    UIView* superView = view.superview;
-    while (superView) {
-        rect.origin.x += superView.frame.origin.x;
-        rect.origin.y += superView.frame.origin.y;
-        superView = superView.superview;
-    }
-    return rect;
 }
 
 -(void)GJPullDownView:(GJPullDownView *)pulldownView selectIndex:(NSInteger)index{
@@ -249,13 +237,8 @@ static int yuvHeight=320,yuvWidth=568;
             @synchronized ([UIScreen mainScreen]) {
                 [_yuvShowView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
             }
-#if SYNCH_CAPTURE
-            UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:(uint8_t*)data.bytes width:yuvWidth height:yuvHeight];
-            [myScreenRecorder serialCaptureWithGLBuffer:gl];
-            usleep((1.0/(FPS*1.5))*1000*1000);
-#else
+
             usleep((1.0/FPS)*1000*1000);
-#endif
             data= [self yuvRead];
         }
     });
@@ -306,12 +289,14 @@ static int yuvHeight=320,yuvWidth=568;
     usleep(100);
     if (recodeType == screenRecorderFileType) {
         [self produceYuv];
-
-#if SYNCH_CAPTURE
-         [myScreenRecorder startSerialGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size];
-#else
-         [myScreenRecorder startGLMixtureWithGLRect:[self getRootFrameWithView:_yuvShowView] AboveView:@[_glOverShow] aboveRect:@[[NSValue valueWithCGRect:[self getRootFrameWithView:_glOverShow]]] belowView:@[self.view] belowRect:@[[NSValue valueWithCGRect:self.view.bounds]] hostSize:self.view.bounds.size fps:FPS];
-#endif
+        [myScreenRecorder startWithView:self.view fps:FPS];
+        
+        [UIView animateWithDuration:3.0 animations:^{
+            _glOverShow.alpha= 0.0;
+        }completion:^(BOOL finished) {
+            _glOverShow.alpha=1.0;
+        }];
+        
     }else{
             yuvWidth = _drawView.bounds.size.width;
             yuvHeight = _drawView.bounds.size.height;
@@ -351,7 +336,7 @@ static int yuvHeight=320,yuvWidth=568;
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderRGBA8Data:(NSData *)RGBA8Data FinishWithError:(NSError *)error{
     unsigned char* data = malloc(RGBA8Data.length);
     memcpy(data, RGBA8Data.bytes, RGBA8Data.length);
-    UIImage* image = [ImageTool convertBitmapRGBA8ToUIImage:data width:recorder.captureSize.width height:recorder.captureSize.height];
+    UIImage* image = [ImageTool convertBitmapRGBA8ToUIImage:data width:recorder.captureFrame.size.width height:recorder.captureFrame.size.height];
     dispatch_async(dispatch_get_main_queue(), ^{
         _imageShowView.image = image;
         free(data);
@@ -389,7 +374,7 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
     }
     OpenGLView20* iv = _yuvShowView;
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureSize.width height:recorder.captureSize.height];
+        [iv displayYUV420pData:(void *)yuvData.bytes width:recorder.captureFrame.size.width height:recorder.captureFrame.size.height];
     });
 }
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderH264Data:(uint8_t *)buffer withLenth:(long)totalLenth keyFrame:(BOOL)keyFrame dts:(int64_t)dts{

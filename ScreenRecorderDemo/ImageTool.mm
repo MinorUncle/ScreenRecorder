@@ -3,7 +3,6 @@
 
 #import "ImageTool.h"
 #import <OpenGLES/ES2/gl.h>
-#import "GJQueue+CPlus.h"
 #import "BufferPool+CPlus.h"
 
 
@@ -17,14 +16,9 @@ void dataProviderReleaseDataCallback(void * __nullable info,
                                      const void *  data, size_t size){
 #if CACHE_MALLOC
     BufferPool::defaultBufferPool()->setBuffer((GJBuffer*)info);
-//    _pixPool.queuePush((GJBuffer*)info);
-//    GJBuffer buffer;
-//    buffer.data=(uint8_t*)data;buffer.size = size;
-//    [[BuffelPool shareBufferPool]setBufferWithBuffer:buffer];
 #else
     free((void*)data);
 #endif
-//    NSLog(@"free dataProviderReleaseDataCallback");
 }
 
 +(UIImage *) glToUIImageWithRect:(CGRect)rect {
@@ -288,9 +282,7 @@ void dataProviderReleaseDataCallback(void * __nullable info,
     GJBuffer* cache = BufferPool::defaultBufferPool()->getBuffer(total*4);
     [self yuv2rgba8WithBuffer:yuvData width:width height:height rgbOut:(uint8_t*)(cache->data)];
     UIImage* image = [self convertBitmapRGBA8ToUIImage:(unsigned char*)cache->data width:width height:height];
-//    _pixPool.queuePush(cache);
     BufferPool::defaultBufferPool()->setBuffer(cache);
-//    [[BuffelPool shareBufferPool]setBufferWithBuffer:cache];
 
     return image;
 }

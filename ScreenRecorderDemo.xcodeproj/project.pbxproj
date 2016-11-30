@@ -16,7 +16,6 @@
 		043226701DDEF5760012A0C0 /* 13031I1XF-14H6.png in Resources */ = {isa = PBXBuildFile; fileRef = 0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */; };
 		043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 043226631DDEEE990012A0C0 /* GJH264Encoder.m */; };
 		043226751DDF03110012A0C0 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 043226741DDF03110012A0C0 /* VideoToolbox.framework */; };
-		043B79E21DEBD7AB00DA07D0 /* RecoderOutApp.m in Sources */ = {isa = PBXBuildFile; fileRef = 043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */; };
 		043B79E61DED937700DA07D0 /* BufferPool.mm in Sources */ = {isa = PBXBuildFile; fileRef = 043B79E51DED937700DA07D0 /* BufferPool.mm */; };
 		043B79EB1DEE683B00DA07D0 /* BufferPool+CPlus.mm in Sources */ = {isa = PBXBuildFile; fileRef = 043B79EA1DEE683B00DA07D0 /* BufferPool+CPlus.mm */; };
 		0449148E1DE7D03200A21FD6 /* ReplayKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0449148D1DE7D03200A21FD6 /* ReplayKit.framework */; };
@@ -71,8 +70,6 @@
 		0432266F1DDEF5760012A0C0 /* 13031I1XF-14H6.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "13031I1XF-14H6.png"; sourceTree = "<group>"; };
 		043226721DDF03070012A0C0 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		043226741DDF03110012A0C0 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
-		043B79E01DEBD7AB00DA07D0 /* RecoderOutApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecoderOutApp.h; sourceTree = "<group>"; };
-		043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecoderOutApp.m; sourceTree = "<group>"; };
 		043B79E41DED937700DA07D0 /* BufferPool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BufferPool.h; sourceTree = "<group>"; };
 		043B79E51DED937700DA07D0 /* BufferPool.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = BufferPool.mm; sourceTree = "<group>"; };
 		043B79E71DEDA85600DA07D0 /* BufferPool+CPlus.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BufferPool+CPlus.h"; sourceTree = "<group>"; };
@@ -213,16 +210,10 @@
 				AE067D681DE6BAE000B83E13 /* GJQueue+CPlus.h */,
 				043B79E71DEDA85600DA07D0 /* BufferPool+CPlus.h */,
 				043B79EA1DEE683B00DA07D0 /* BufferPool+CPlus.mm */,
-				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
-				0426197B1DE412ED001C6E05 /* GJQueue.m */,
 				04DDD4BF1DDDA8BA0072230C /* ScreenRecorder.h */,
 				04DDD4C01DDDA8BA0072230C /* ScreenRecorder.mm */,
-				043B79E01DEBD7AB00DA07D0 /* RecoderOutApp.h */,
-				043B79E11DEBD7AB00DA07D0 /* RecoderOutApp.m */,
 				043226581DDED59A0012A0C0 /* ImageTool.h */,
 				043226591DDED5D00012A0C0 /* ImageTool.mm */,
-				043B79E41DED937700DA07D0 /* BufferPool.h */,
-				043B79E51DED937700DA07D0 /* BufferPool.mm */,
 			);
 			name = ScreenRecorder;
 			sourceTree = "<group>";
@@ -244,6 +235,10 @@
 				AE5B9EC11DE1E9F6003FA8F5 /* GJH264Decoder.m */,
 				0432265B1DDEE6320012A0C0 /* OpenGLView20.h */,
 				0432265C1DDEE6320012A0C0 /* OpenGLView20.m */,
+				043B79E41DED937700DA07D0 /* BufferPool.h */,
+				043B79E51DED937700DA07D0 /* BufferPool.mm */,
+				04DDD4BE1DDDA85B0072230C /* GJQueue.h */,
+				0426197B1DE412ED001C6E05 /* GJQueue.m */,
 			);
 			name = tool;
 			sourceTree = "<group>";
@@ -332,7 +327,6 @@
 				046080F71DE2DFAB00FD1E6F /* PlayerView.m in Sources */,
 				629A118D17A12B17002DE046 /* GJViewController.m in Sources */,
 				04DDD4C11DDDA8BA0072230C /* ScreenRecorder.mm in Sources */,
-				043B79E21DEBD7AB00DA07D0 /* RecoderOutApp.m in Sources */,
 				0432265D1DDEE6320012A0C0 /* OpenGLView20.m in Sources */,
 				043226711DDEFE890012A0C0 /* GJH264Encoder.m in Sources */,
 				AE5B9E991DE1B9CD003FA8F5 /* GJPullDownView.m in Sources */,

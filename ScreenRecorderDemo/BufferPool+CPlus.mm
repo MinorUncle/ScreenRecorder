@@ -7,8 +7,6 @@
 //
 
 #include "BufferPool+CPlus.h"
-
-
 GJBuffer::GJBuffer(int8_t* bufferData,int bufferSize){
     static int i = 0;
     printf("GJBuffer count:%d\n",++i);
@@ -53,7 +51,6 @@ GJBuffer* BufferPool::getBuffer(int size){
     if (!buffer) {
         buffer = new GJBuffer((int8_t*)malloc(size),size);
         printf("malloc GJBuffer count:%d\n",++mc);
-
     }
     return buffer;
 }
