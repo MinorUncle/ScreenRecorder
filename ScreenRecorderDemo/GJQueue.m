@@ -67,9 +67,8 @@ static id placeholder = @"NULL";//数组中占位符
     if (_inPointer <= _outPointer) {
         [_lock unlock];
         GJQueueLOG(@"begin Wait in  %@----------\n",[NSThread currentThread]);
-        NSDate* fireDate = [NSDate dateWithTimeIntervalSinceNow:limitDuration];
         [_outCond lock];
-        BOOL result = [_outCond waitUntilDate:fireDate];
+        BOOL result = [_outCond waitUntilDate: [NSDate dateWithTimeIntervalSinceNow:limitDuration]];
         [_outCond unlock];
         if (!result) {
             GJQueueLOG(@"fail Wait in ----------\n");
@@ -104,9 +103,8 @@ static id placeholder = @"NULL";//数组中占位符
             [_lock unlock];
             
             GJQueueLOG(@"begin Wait out,%@ ----------\n",[NSThread currentThread]);
-            NSDate* fireDate = [NSDate dateWithTimeIntervalSinceNow:limitDuration];
             [_inCond lock];
-            BOOL result = [_inCond waitUntilDate:fireDate];
+            BOOL result = [_inCond waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:limitDuration]];
             [_inCond unlock];
             if (!result) {
                 GJQueueLOG(@"fail begin Wait out ----------\n");
@@ -147,6 +145,9 @@ static id placeholder = @"NULL";//数组中占位符
         buffer[i%_allocSize] = placeholder;
     }
     _inPointer=_outPointer=0;
+    [_inCond lock];
+    [_inCond signal];
+    [_inCond unlock];
     [_lock unlock];
 }
 

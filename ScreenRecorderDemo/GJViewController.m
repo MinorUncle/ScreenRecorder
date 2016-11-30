@@ -28,7 +28,7 @@
 #define VideoPath [DOCSFOLDER stringByAppendingPathComponent:@"test.mp4"]
 //screenRecorderRealYUVType
 //screenRecorderFileType
-#define SYNCH_CAPTURE 1  //是否同步录屏，
+#define SYNCH_CAPTURE 0  //是否同步录屏，
 
 #define FPS 15
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
@@ -246,7 +246,9 @@ static int yuvHeight=320,yuvWidth=568;
         
         NSData* data= [self yuvRead];
         while (data.length > 0 && myScreenRecorder.status == screenRecorderRecorderingStatus) {
-            [_yuvShowView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
+            @synchronized ([UIScreen mainScreen]) {
+                [_yuvShowView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
+            }
 #if SYNCH_CAPTURE
             UIImage* gl = [ImageTool convertBitmapYUV420PToUIImage:(uint8_t*)data.bytes width:yuvWidth height:yuvHeight];
             [myScreenRecorder serialCaptureWithGLBuffer:gl];
@@ -327,7 +329,6 @@ static int yuvHeight=320,yuvWidth=568;
 
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderFile:(NSURL *)fileUrl FinishWithError:(NSError *)error{
     if(_displayType.currentTag != screenRecorderFileType)return;
-
     dispatch_async(dispatch_get_main_queue(), ^{
         [_yuvShowView removeFromSuperview];
         [_displayView addSubview:_movieShow];
@@ -382,7 +383,7 @@ void pixelBufferReleaseBytesCallback( void * CV_NULLABLE releaseRefCon, const vo
 //        return;
 //    }
     if (_displayType.currentTag == screenRecorderRealYUVType) {
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        dispatch_sync(dispatch_get_global_queue(0, 0), ^{
             [self yuvWrite:yuvData];
         });
     }

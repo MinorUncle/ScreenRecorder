@@ -36,6 +36,10 @@
 @end
 
 @implementation ScreenRecorder
+- (instancetype)init
+{
+    return [self initWithType:screenRecorderRealYUVType];
+}
 - (instancetype)initWithType:(ScreenRecorderType)recorderType
 {
     self = [super init];
@@ -242,8 +246,6 @@ void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, co
     return image;
 }
 -(void)_captureCurrentView{
-    @synchronized (self) {
-        
         
         UIImage *image;
         if (!_mixtureRecorder) {
@@ -303,7 +305,6 @@ void pixelBufferReleasePlanarBytesCallback( void * CV_NULLABLE releaseRefCon, co
             }
             _totalCount++;
         }
-    }
 }
 
 -(NSURL *)destFileUrl{

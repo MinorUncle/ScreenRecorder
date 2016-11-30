@@ -20,10 +20,6 @@
 
 #define DEFAULT_MAX_COUNT 10
 
-typedef struct GJBuffer{
-    void* data;
-    int size;
-} GJBuffer;
 
 
 template <class T> class GJQueue{
@@ -71,6 +67,7 @@ public:
     bool getValueWithIndex(const long *index,T* value);
     GJQueue(int capacity);
     GJQueue();
+    void clean();
 
 };
 
@@ -127,7 +124,6 @@ bool GJQueue<T>::getValueWithIndex(const long *index,T* value){
  */
 template<class T>
 bool GJQueue<T>::queuePop(T* temBuffer){
-    
     _lock(&_uniqueLock);
     if (_inPointer <= _outPointer) {
         _unLock(&_uniqueLock);
@@ -145,12 +141,10 @@ bool GJQueue<T>::queuePop(T* temBuffer){
     _mutexSignal(&_outCond);
     GJQueueLOG("after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     _unLock(&_uniqueLock);
-    assert(* temBuffer);
     return true;
 }
 template<class T>
 bool GJQueue<T>::queuePush(T temBuffer){
-    assert(temBuffer);
     _lock(&_uniqueLock);
     if ((_inPointer % _allocSize == _outPointer % _allocSize && _inPointer > _outPointer)) {
         if (autoResize) {
@@ -175,6 +169,13 @@ bool GJQueue<T>::queuePush(T temBuffer){
     return true;
 }
 
+template<class T>
+void GJQueue<T>::clean(){
+    _lock(&_uniqueLock);
+    _inPointer=_outPointer=0;
+    _mutexSignal(&_outCond);
+    _unLock(&_uniqueLock);
+}
 
 
 

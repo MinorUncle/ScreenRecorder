@@ -28,7 +28,7 @@
 
     NSMutableArray* buffer;
     long _inPointer;  //尾
-    long _outPointer; //头,出的位置,左出右进
+    long _outPointer; //头,出的位置,左出右进,所以头尾都增长
     int _capacity;
     int _allocSize;
     
