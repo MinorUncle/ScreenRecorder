@@ -27,8 +27,8 @@
 @interface  GJQueue:NSObject{
 
     NSMutableArray* buffer;
-    long _inPointer;  //尾
-    long _outPointer; //头,出的位置,左出右进,所以头尾都增长
+    long _inPointer;
+    long _outPointer;
     int _capacity;
     int _allocSize;
     
@@ -43,16 +43,15 @@
 
 #pragma mark DELEGATE
 
-@property(nonatomic,assign)BOOL autoResize;    //是否支持自动增长，当为YES时，push永远不会等待，只会重新申请内存,默认为false
+@property(nonatomic,assign)BOOL autoResize;
 
-    //根据index获得value,当超过_inPointer和_outPointer范围则失败，用于遍历数组，不会产生进出队列作用
+
 -(BOOL) getValueWithIndex:(const long)index vulue:(id*)value;
 
 - (instancetype)initWithCapacity:(int)capacity;
-//limit < 0 not wait;,unit /seconde
 -(BOOL)queuePop:(id*)temBuffer limit:(NSTimeInterval)limitDuration;
 -(BOOL)queuePush:(id)temBuffer limit:(NSTimeInterval)limitDuration;
--(void) clean;//主要用于线程等待时清除数据
+-(void) clean;
 -(int)currentLenth;
 @end
 

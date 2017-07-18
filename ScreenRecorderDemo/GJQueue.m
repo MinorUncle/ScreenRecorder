@@ -66,16 +66,13 @@ static id placeholder = @"NULL";//数组中占位符
     [_lock lock];
     if (_inPointer <= _outPointer) {
         [_lock unlock];
-        GJQueueLOG(@"begin Wait in  %@----------\n",[NSThread currentThread]);
         [_outCond lock];
         BOOL result = [_outCond waitUntilDate: [NSDate dateWithTimeIntervalSinceNow:limitDuration]];
         [_outCond unlock];
         if (!result) {
-            GJQueueLOG(@"fail Wait in ----------\n");
             return false;
         }
         [_lock lock];
-        GJQueueLOG(@"after Wait in.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     }
     
     
@@ -85,7 +82,6 @@ static id placeholder = @"NULL";//数组中占位符
     [_inCond lock];
     [_inCond signal];
     [_inCond unlock];
-    GJQueueLOG(@"after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     [_lock unlock];
     assert(*temBuffer);
     return true;
@@ -102,16 +98,13 @@ static id placeholder = @"NULL";//数组中占位符
         }else{
             [_lock unlock];
             
-            GJQueueLOG(@"begin Wait out,%@ ----------\n",[NSThread currentThread]);
             [_inCond lock];
             BOOL result = [_inCond waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:limitDuration]];
             [_inCond unlock];
             if (!result) {
-                GJQueueLOG(@"fail begin Wait out ----------\n");
                 return false;
             }
             [_lock lock];
-            GJQueueLOG(@"after Wait out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
         }
     }
     
@@ -121,7 +114,6 @@ static id placeholder = @"NULL";//数组中占位符
     [_outCond lock];
     [_outCond signal];
     [_outCond unlock];
-    GJQueueLOG(@"after signal in. incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     [_lock unlock];
     return true;
 }

@@ -321,10 +321,11 @@
 {
 
     CVPixelBufferLockBaseAddress(_pixelBuffer, 0);
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(_pixelBuffer);
     void *pxdata = CVPixelBufferGetBaseAddress(_pixelBuffer);
     NSParameterAssert(pxdata != NULL);
     CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
-    CGContextRef context = CGBitmapContextCreate(pxdata, size.width, size.height, 8, 4*size.width, rgbColorSpace, kCGImageAlphaPremultipliedFirst);
+    CGContextRef context = CGBitmapContextCreate(pxdata, size.width, size.height, 8, bytesPerRow, rgbColorSpace, kCGImageAlphaPremultipliedFirst);
     NSParameterAssert(context);
     CGContextDrawImage(context, CGRectMake(0, 0, CGImageGetWidth(image), CGImageGetHeight(image)), image);
     CGColorSpaceRelease(rgbColorSpace);

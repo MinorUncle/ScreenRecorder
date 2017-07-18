@@ -20,6 +20,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "ScreenRecorder.h"
 #import "GJPullDownView.h"
+#import <Photos/Photos.h>
 
 #import "GJH264Decoder.h"
 #define MainFrame [[UIScreen mainScreen] applicationFrame]
@@ -29,7 +30,7 @@
 //screenRecorderRealYUVType
 //screenRecorderFileType
 
-#define FPS 15
+#define FPS 31
 #define DEFAULT_PRODUCT screenRecorderRealYUVType
 
 @interface GJViewController ()<ScreenRecorderDelegate,GJPullDownViewDelegate,GJH264DecoderDelegate,RPBroadcastActivityViewControllerDelegate,RPScreenRecorderDelegate,RPBroadcastControllerDelegate>
@@ -233,11 +234,8 @@ static int yuvHeight=320,yuvWidth=568;
     dispatch_async(myScreenRecorder.captureQueue, ^{
         
         NSData* data= [self yuvRead];
-        while (data.length > 0 && myScreenRecorder.status == screenRecorderRecorderingStatus) {
-            @synchronized ([UIScreen mainScreen]) {
+        while (data.length > 0 ) {
                 [_yuvShowView displayYUV420pData:(void*)data.bytes width:yuvWidth height:yuvHeight];
-            }
-
             usleep((1.0/FPS)*1000*1000);
             data= [self yuvRead];
         }
@@ -288,9 +286,10 @@ static int yuvHeight=320,yuvWidth=568;
     myScreenRecorder.delegate = self;
     usleep(100);
     if (recodeType == screenRecorderFileType) {
-        [self produceYuv];
+//        [self produceYuv];
         [myScreenRecorder startWithView:self.view fps:FPS];
-        
+//
+//        [myScreenRecorder startCaptureFullScreenFileFast];
         [UIView animateWithDuration:3.0 animations:^{
             _glOverShow.alpha= 0.0;
         }completion:^(BOOL finished) {
@@ -310,10 +309,16 @@ static int yuvHeight=320,yuvWidth=568;
      [self readyInit];
  }
 
-
-
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
+    
+    NSLog(@"%@",videoPath);
+    
+    NSLog(@"%@",error);
+    
+}
 -(void)screenRecorder:(ScreenRecorder *)recorder recorderFile:(NSURL *)fileUrl FinishWithError:(NSError *)error{
     if(_displayType.currentTag != screenRecorderFileType)return;
+//    UISaveVideoAtPathToSavedPhotosAlbum(fileUrl.path, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
     dispatch_async(dispatch_get_main_queue(), ^{
         [_yuvShowView removeFromSuperview];
         [_displayView addSubview:_movieShow];

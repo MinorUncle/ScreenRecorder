@@ -66,6 +66,7 @@ typedef enum ScreenRecorderStatus{
 -(void)stopRecord;
 -(void)pause;
 -(void)resume;
+-(void)addExternalAudioSource:(uint8_t*)data size:(int)size pts:(double)pts;
 -(UIImage*)captureImageWithView:(UIView*)view;
 
 

@@ -64,7 +64,7 @@ public:
     int currentLenth();
     
     //根据index获得vause,当超过_inPointer和_outPointer范围则失败，用于遍历数组，不会产生压栈推栈作用
-    bool getValueWithIndex(const long *index,T* value);
+    bool getValueWithIndex(const long index,T* value);
     GJQueue(int capacity);
     GJQueue();
     void clean();
@@ -105,13 +105,11 @@ void GJQueue<T>::_init()
     _mutexInit();
 }
 template<class T>
-bool GJQueue<T>::getValueWithIndex(const long *index,T* value){
-    long inpoint = _inPointer%_allocSize;
-    long outpoint = _outPointer%_allocSize;
-    long current = index%_allocSize;
-    if (current < inpoint || current >= outpoint) {
+bool GJQueue<T>::getValueWithIndex(const long index,T* value){
+    if (index < _outPointer || index >= _inPointer) {
         return false;
     }
+    long current = index%_allocSize;
     *value = buffer[current];
     return true;
 }
@@ -135,8 +133,10 @@ bool GJQueue<T>::queuePop(T* temBuffer){
         _lock(&_uniqueLock);
         GJQueueLOG("after Wait in.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);
     }
+    int index = _outPointer%_allocSize;
+    *temBuffer = buffer[index];
+    memset(&buffer[index], 0, sizeof(T));//防止在oc里的引用一直不释放；
     
-    *temBuffer = buffer[_outPointer%_allocSize];
     _outPointer++;
     _mutexSignal(&_outCond);
     GJQueueLOG("after signal out.  incount:%ld  outcount:%ld----------\n",_inPointer,_outPointer);

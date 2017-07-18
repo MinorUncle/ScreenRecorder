@@ -46,7 +46,6 @@ GJBuffer* BufferPool::getBuffer(int size){
         }else{
             buffer->size = size;
         }
-
     }
     if (!buffer) {
         buffer = new GJBuffer((int8_t*)malloc(size),size);
